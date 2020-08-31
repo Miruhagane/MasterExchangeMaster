@@ -52,10 +52,10 @@ namespace WebApplication2.admiinistrativo
         public void exportar()
         {
             var cajero = Cajero1.SelectedValue;
-            string f1 = fechainicio.Text;
-            string f2 = fechafinal.Text;
+            string f1 = fechainicio.Text ;
+            string f2 = fechafinal.Text ;
 
-            SqlDataAdapter da = new SqlDataAdapter("select a.Lng_IdRegistro, d.Txt_TipoTran as 'Tipo Trasaccion', a.Dbl_MontoRecibir as Compraste,c.Txt_Moneda as 'Moneda Comprada', a.Dbl_MontoPagar as Pagastes,(select e.Txt_Moneda from Ct_Moneda e where a.Int_IdMonVenta= e.Int_IdMoneda) 'Moneda Vendida', Dbl_Entregar as 'Entregaste', a.Dbl_Cambio as 'Cambio en Pesos',a.Fec_Fecha as Fecha from Tb_Registros a inner join Ct_Moneda c on a.Int_IdMoneda = c.Int_IdMoneda inner join Ct_TipoTran d on a.Int_IdTipoTran = d.Int_IdTipoTran inner join Tb_RegUsu b on a.Lng_IdRegistro = b.Lng_IdRegistro where b.Int_IdUsuario = " + cajero + " and Fec_Fecha between '" + f1 + "' and '" + f2 + "' order by 1", con);
+            SqlDataAdapter da = new SqlDataAdapter("select a.Lng_IdRegistro, d.Txt_TipoTran as 'Tipo Trasaccion', a.Dbl_MontoRecibir as Compraste,c.Txt_Moneda as 'Moneda Comprada', a.Dbl_MontoPagar as Pagastes,(select e.Txt_Moneda from Ct_Moneda e where a.Int_IdMonVenta= e.Int_IdMoneda) 'Moneda Vendida', Dbl_Entregar as 'Entregaste', a.Dbl_Cambio as 'Cambio en Pesos',a.Fec_Fecha as Fecha from Tb_Registros a inner join Ct_Moneda c on a.Int_IdMoneda = c.Int_IdMoneda inner join Ct_TipoTran d on a.Int_IdTipoTran = d.Int_IdTipoTran inner join Tb_RegUsu b on a.Lng_IdRegistro = b.Lng_IdRegistro where b.Int_IdUsuario = " + cajero + " and Fec_Fecha between '"+f1+ " 00:00:00.000' and '"+f2+" 23:59:59.000' order by 1", con);
             DataTable cr = new DataTable();
             da.Fill(cr);
 
@@ -97,7 +97,7 @@ namespace WebApplication2.admiinistrativo
             string f1 = fechainicio.Text;
             string f2 = fechafinal.Text;
 
-            SqlDataAdapter da = new SqlDataAdapter("select a.Lng_IdRegistro as ID, d.Txt_TipoTran as 'Tipo Trasaccion', convert(decimal(15,2), a.Dbl_MontoRecibir, 2) as Compraste, c.Txt_Moneda as 'Moneda Comprada', convert(decimal(15,2), a.Dbl_MontoPagar, 2) as Pagastes,(select e.Txt_Moneda from Ct_Moneda e where a.Int_IdMonVenta= e.Int_IdMoneda) 'Moneda Vendida', convert(decimal(15,2),Dbl_Entregar,2) as 'Entregaste', convert(decimal(15,2),a.Dbl_Cambio,2) as 'Cambio en Pesos',a.Fec_Fecha as Fecha from Tb_Registros a inner join Ct_Moneda c on a.Int_IdMoneda = c.Int_IdMoneda inner join Ct_TipoTran d on a.Int_IdTipoTran = d.Int_IdTipoTran inner join Tb_RegUsu b on a.Lng_IdRegistro = b.Lng_IdRegistro where b.Int_IdUsuario = "+cajero+" and Fec_Fecha between '"+f1+"' and '"+f2+"' order by 1", con);
+            SqlDataAdapter da = new SqlDataAdapter("select a.Lng_IdRegistro as ID, d.Txt_TipoTran as 'Tipo Trasaccion', convert(decimal(15,2), a.Dbl_MontoRecibir, 2) as Compraste, c.Txt_Moneda as 'Moneda Comprada', convert(decimal(15,2), a.Dbl_MontoPagar, 2) as Pagastes,(select e.Txt_Moneda from Ct_Moneda e where a.Int_IdMonVenta= e.Int_IdMoneda) 'Moneda Vendida', convert(decimal(15,2),Dbl_Entregar,2) as 'Entregaste', convert(decimal(15,2),a.Dbl_Cambio,2) as 'Cambio en Pesos',a.Fec_Fecha as Fecha from Tb_Registros a inner join Ct_Moneda c on a.Int_IdMoneda = c.Int_IdMoneda inner join Ct_TipoTran d on a.Int_IdTipoTran = d.Int_IdTipoTran inner join Tb_RegUsu b on a.Lng_IdRegistro = b.Lng_IdRegistro where b.Int_IdUsuario = " +cajero+ " and Fec_Fecha between '"+f1+" 00:00:00.000' and '" + f2+ " 23:59:59.000' order by 1", con);
             DataTable dt = new DataTable();
             da.Fill(dt);
             this.GridView2.DataSource = (dt);

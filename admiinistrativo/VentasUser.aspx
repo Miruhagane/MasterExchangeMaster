@@ -70,7 +70,7 @@
                             <asp:Label ID="Label1" runat="server" Text="Cajero"></asp:Label>
                             <asp:DropDownList  class="custom-select" ID="Cajero1" runat="server" DataSourceID="SqlDataSource1" DataTextField="Txt_NomCorto" DataValueField="Int_Idusuario"></asp:DropDownList>
 
-                                <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Int_Idusuario], [Txt_NomCorto] FROM [Tb_Usuarios]"></asp:SqlDataSource>
+                                <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString %>" SelectCommand="SELECT [Int_Idusuario], [Txt_NomCorto] FROM [Tb_Usuarios]"></asp:SqlDataSource>
 
                             </div>
 
