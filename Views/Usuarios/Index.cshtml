@@ -1,0 +1,164 @@
+﻿@model IEnumerable<WebApplication2.Models.Tb_Usuarios>
+@using System.IO;
+@{
+    ViewBag.Title = "Buscar Usuario";
+
+}
+
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+
+
+        <div id="gradiente1" class="mt-3 ml-5 card col-md-5">
+            <div class="card-body card-img-overlay">
+                <div class="form-row">
+
+
+                    <div class="col-sm-12">
+                        <label class="h6">Nombre Completo</label>
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Txt_Nombre) @Html.DisplayFor(modelItem => item.Txt_Apellido)" disabled />
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="h6">Nombre Corto</label>
+
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Txt_NomCorto)" disabled />
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label class="h6">Correo Electronico</label>
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Txt_email)" disabled />
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="h6">Telefono Celular </label>
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Num_Telefono_1)" disabled />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="h6">Telefono de Casa</label>
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Num_Telefono_2)" disabled />
+                    </div>
+
+
+                    <div class="col-sm-6">
+                        <label class="h6">Area</label>
+
+                        <input class="form-control" value="@ViewBag.area" disabled />
+                        
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="h6"> Fecha de Alta</label>
+                        <input class="form-control" value="@item.Fec_Alta.ToString("dd/MM/yyyy")" disabled />
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                        <label class="h6">Plaza</label>
+
+                        <input class="form-control" value="@ViewBag.plaza" disabled />
+
+                        <div style="display: none">
+                            @Html.DisplayNameFor(model => model.Int_IdPlaza)
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="h6">Sucursal</label>
+
+                        <input class="form-control" value="@ViewBag.sucursal" disabled />
+                        
+                        <div style="display: none">
+                            @Html.DisplayNameFor(model => model.Lng_IdSucursal)
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="h6">Empresa Perteneciente</label>
+
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Int_IdEmpresa)" disabled />
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="h6">¿Cual sera su departamento?</label>
+
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Int_IdDepartamentos)" disabled />
+                    </div>
+
+                    <div class="col-md-12 text-center mt-1">
+
+                        <button type="button" class="btn btn-info">@Html.ActionLink("Actualizar", "Edit", new { id = item.Int_Idusuario }, new { @class = "identy" }) </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-5 " style="height:20%">
+            <div class="row no-gutters">
+                <div class="col-md-12 ">
+                    <img src="@Url.Action("convertirimg", "usuarios", new { Usuario = item.Int_Idusuario})" class="card-img" alt="..." />
+                </div>
+            </div>
+        </div>
+  
+    }
+}
+
+
+
+<div class="modal fade " id="modalusuario" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Buscar Usuario </h5>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
+            </div>
+            @using (Html.BeginForm("Index", "Usuarios", FormMethod.Post))
+            {
+                <div class="modal-body">
+
+                    @Html.TextBox("Usuario", "", new { @class = "Form-control is-invalid", @id = "usuarioId" })
+                    <div id="validationServer05Feedback" class="invalid-feedback">
+                        Nombre de Usuario, Nombre corto o Correo Electronico
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="submit" class="btn btn-success">Buscar Usuario</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    (function () {
+        buscarusuario();
+    })();
+
+    function buscarusuario() {
+        var usuarioid = document.getElementById("usuarioId").value;
+        if (usuarioid == "") {
+            $('#modalusuario').modal('show');
+        }
+        else {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Usuario encontrado',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+
+    }
+</script>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<WebApplication2.Models.Tb_Usuarios>
+@using System.IO;
+@{
+    ViewBag.Title = "Buscar Usuario";
+
+}
+
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+
+
+        <div id="gradiente1" class="mt-3 ml-5 card col-md-5">
+            <div class="card-body card-img-overlay">
+                <div class="form-row">
+
+
+                    <div class="col-sm-12">
+                        <label class="h6">Nombre Completo</label>
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Txt_Nombre) @Html.DisplayFor(modelItem => item.Txt_Apellido)" disabled />
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="h6">Nombre Corto</label>
+
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Txt_NomCorto)" disabled />
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label class="h6">Correo Electronico</label>
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Txt_email)" disabled />
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="h6">Telefono Celular </label>
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Num_Telefono_1)" disabled />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="h6">Telefono de Casa</label>
+                        <input class="form-control" value="@Html.DisplayFor(modelItem => item.Num_Telefono_2)" disabled />
+                    </div>
+
+
+                    <div class="col-sm-6">
+                        <label class="h6">Area</label>
+
+                        <input class="form-control" value="@ViewBag.area" disabled />
+
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="h6">Plaza</label>
+                        <input class="form-control" value="@ViewBag.plaza" disabled />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="h6">Sucursal</label>
+
+                        <input class="form-control" value="@ViewBag.sucursal" disabled />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-5 " style="height:20%">
+            <div class="row no-gutters">
+                <div class="col-md-12 ">
+                    <img src="@Url.Action("convertirimg", "usuarios", new { Usuario = item.Int_Idusuario})" class="card-img" alt="..." />
+                </div>
+            </div>
+        </div>
+
+    }
+}

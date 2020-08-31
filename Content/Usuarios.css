@@ -1,0 +1,8 @@
+﻿
+#gradiente1 {
+    background-image: url('img/fondo-proyecto-creativo.jpg');
+    background-repeat: no-repeat, repeat;
+    background-size: cover;
+    background-position: center;
+    height: 550px;
+}

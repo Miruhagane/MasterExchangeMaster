@@ -1,0 +1,682 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="dbcasa_cambio.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Ct_Areas">
+          <Key>
+            <PropertyRef Name="Int_IdArea" />
+          </Key>
+          <Property Name="Int_IdArea" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Txt_Area" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ct_Moneda">
+          <Key>
+            <PropertyRef Name="Int_IdMoneda" />
+          </Key>
+          <Property Name="Int_IdMoneda" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Txt_Moneda" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Ct_Plazas">
+          <Key>
+            <PropertyRef Name="Int_IdPlazas" />
+          </Key>
+          <Property Name="Int_IdPlazas" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Txt_Plazas" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ct_TipoTran">
+          <Key>
+            <PropertyRef Name="Int_IdTipoTran" />
+          </Key>
+          <Property Name="Int_IdTipoTran" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Txt_TipoTran" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Tb_Clientes">
+          <Key>
+            <PropertyRef Name="Lng_IdCliente" />
+          </Key>
+          <Property Name="Lng_IdCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Txt_NumCliente" Type="nvarchar" MaxLength="20" />
+          <Property Name="Txt_Cliente" Type="nvarchar" MaxLength="150" />
+          <Property Name="Txt_Direccion" Type="nvarchar" MaxLength="200" />
+          <Property Name="Txt_Identificacion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Txt_Telefono" Type="nchar" MaxLength="20" />
+          <Property Name="Txt_Email" Type="nvarchar" MaxLength="120" />
+          <Property Name="Fec_Alta" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tb_PlazasApli">
+          <Key>
+            <PropertyRef Name="Lng_IdPlazasApli" />
+          </Key>
+          <Property Name="Lng_IdPlazasApli" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Lng_IdTaxa" Type="int" />
+          <Property Name="Int_IdPlazas" Type="int" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.Tb_RegCli' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Tb_RegCli">
+          <Key>
+            <PropertyRef Name="Lng_IdRegCli" />
+          </Key>
+          <Property Name="Lng_IdRegCli" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Lng_IdCliente" Type="int" />
+          <Property Name="Lng_IdRegistro" Type="int" />
+        </EntityType>
+        <EntityType Name="Tb_Registros">
+          <Key>
+            <PropertyRef Name="Lng_IdRegistro" />
+          </Key>
+          <Property Name="Lng_IdRegistro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Int_IdTipoTran" Type="int" />
+          <Property Name="Int_IdMoneda" Type="int" />
+          <Property Name="Int_IdMonVenta" Type="int" />
+          <Property Name="Dbl_MontoRecibir" Type="numeric" Precision="18" Scale="4" />
+          <Property Name="Dbl_MontoPagar" Type="numeric" Precision="18" Scale="4" />
+          <Property Name="Dbl_TipoCambio" Type="numeric" Precision="18" Scale="4" />
+          <Property Name="Dbl_TipoCambioven" Type="numeric" Precision="18" Scale="4" />
+          <Property Name="Dbl_TipoCambioEsp" Type="numeric" Precision="18" Scale="4" />
+          <Property Name="Bol_Especial" Type="bit" />
+          <Property Name="Dbl_Entregar" Type="numeric" Precision="18" Scale="4" />
+          <Property Name="Dbl_Cambio" Type="numeric" Precision="18" Scale="4" />
+          <Property Name="Int_IdTpv" Type="int" />
+          <Property Name="Fec_Fecha" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tb_RegistrosHistorico">
+          <Key>
+            <PropertyRef Name="Lng_IdRegistroHistorico" />
+          </Key>
+          <Property Name="Lng_IdRegistroHistorico" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Lng_IdRegistro" Type="int" />
+          <Property Name="Int_IdTipoTran" Type="int" />
+          <Property Name="Int_IdMoneda" Type="int" />
+          <Property Name="Dbl_MontoRecibir" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Dbl_MontoPagar" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Dbl_TipoCambio" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Dbl_TipoCambioEsp" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Bol_Especial" Type="bit" />
+          <Property Name="Dbl_Entregar" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Dbl_Cambio" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Int_IdTpv" Type="int" />
+          <Property Name="Fec_Fecha" Type="datetime" />
+          <Property Name="Fec_Dia" Type="datetime" />
+          <Property Name="Lng_IdCliente" Type="int" />
+        </EntityType>
+        <EntityType Name="Tb_RegUsu">
+          <Key>
+            <PropertyRef Name="lng_IdRegUsu" />
+          </Key>
+          <Property Name="lng_IdRegUsu" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Int_IdUsuario" Type="int" />
+          <Property Name="Lng_IdRegistro" Type="int" />
+        </EntityType>
+        <EntityType Name="Tb_Sucursal">
+          <Key>
+            <PropertyRef Name="Lng_IdSucursal" />
+          </Key>
+          <Property Name="Lng_IdSucursal" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Int_IdPlaza" Type="int" />
+          <Property Name="Txt_Sucursal" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Tb_Taxas">
+          <Key>
+            <PropertyRef Name="Lng_IdTaxa" />
+          </Key>
+          <Property Name="Lng_IdTaxa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Int_IdMoneda" Type="int" />
+          <Property Name="dbl_Valor" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Bol_Tipo" Type="bit" />
+          <Property Name="Fec_Dia" Type="datetime" />
+          <Property Name="Fec_Vencimiento" Type="datetime" />
+          <Property Name="Int_IdGrupo" Type="int" />
+        </EntityType>
+        <EntityType Name="Tb_Usuarios">
+          <Key>
+            <PropertyRef Name="Int_Idusuario" />
+          </Key>
+          <Property Name="Int_Idusuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Txt_Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Txt_Apellido" Type="nvarchar" MaxLength="100" />
+          <Property Name="Txt_NomCorto" Type="nvarchar" MaxLength="50" />
+          <Property Name="Txt_Password" Type="nvarchar" MaxLength="10" />
+          <Property Name="Bol_Activo" Type="int" Nullable="false" />
+          <Property Name="Int_IdArea" Type="int" />
+          <Property Name="Int_IdSubarea" Type="int" />
+          <Property Name="Fec_Alta" Type="date" />
+          <Property Name="Fec_Baja" Type="date" />
+          <Property Name="Int_Ext" Type="nchar" MaxLength="10" />
+          <Property Name="Num_Telefono_1" Type="nvarchar" MaxLength="20" />
+          <Property Name="Bol_Bloqueado" Type="bit" />
+          <Property Name="Num_Telefono_2" Type="nvarchar" MaxLength="20" />
+          <Property Name="Txt_email" Type="nvarchar" MaxLength="80" />
+          <Property Name="Bol_Promotor" Type="bit" />
+          <Property Name="Int_IdEmpresa" Type="int" />
+          <Property Name="Txt_Password2" Type="nvarchar" MaxLength="10" />
+          <Property Name="Txt_Password3" Type="nvarchar" MaxLength="10" />
+          <Property Name="Int_Idempleado" Type="int" />
+          <Property Name="Int_IdPlaza" Type="int" />
+          <Property Name="Lng_IdSucursal" Type="int" />
+          <Property Name="Int_IdDepartamentos" Type="int" />
+          <Property Name="Img_Foto" Type="image" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaCompra' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="TaxaCompra">
+          <Key>
+            <PropertyRef Name="Lng_IdTaxa" />
+            <PropertyRef Name="Int_IdMoneda" />
+          </Key>
+          <Property Name="IdTaxa" Type="int" />
+          <Property Name="Moneda" Type="nvarchar" MaxLength="20" />
+          <Property Name="Valor" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Dia" Type="datetime" />
+          <Property Name="Lng_IdTaxa" Type="int" Nullable="false" />
+          <Property Name="Int_IdMoneda" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="TaxaVenta">
+          <Key>
+            <PropertyRef Name="Lng_IdTaxa" />
+            <PropertyRef Name="Int_IdMoneda" />
+          </Key>
+          <Property Name="IdTaxa" Type="int" />
+          <Property Name="Moneda" Type="varchar" MaxLength="20" />
+          <Property Name="Valor" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Dia" Type="datetime" />
+          <Property Name="Lng_IdTaxa" Type="int" Nullable="false" />
+          <Property Name="Int_IdMoneda" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="dbcasa_cambioStoreContainer">
+          <EntitySet Name="Ct_Areas" EntityType="Self.Ct_Areas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ct_Moneda" EntityType="Self.Ct_Moneda" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ct_Plazas" EntityType="Self.Ct_Plazas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ct_TipoTran" EntityType="Self.Ct_TipoTran" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_Clientes" EntityType="Self.Tb_Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_PlazasApli" EntityType="Self.Tb_PlazasApli" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_Registros" EntityType="Self.Tb_Registros" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_RegistrosHistorico" EntityType="Self.Tb_RegistrosHistorico" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_RegUsu" EntityType="Self.Tb_RegUsu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_Sucursal" EntityType="Self.Tb_Sucursal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_Taxas" EntityType="Self.Tb_Taxas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_Usuarios" EntityType="Self.Tb_Usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_RegCli" EntityType="Self.Tb_RegCli" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Tb_RegCli].[Lng_IdRegCli] AS [Lng_IdRegCli], 
+    [Tb_RegCli].[Lng_IdCliente] AS [Lng_IdCliente], 
+    [Tb_RegCli].[Lng_IdRegistro] AS [Lng_IdRegistro]
+    FROM [dbo].[Tb_RegCli] AS [Tb_RegCli]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TaxaCompra" EntityType="Self.TaxaCompra" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TaxaCompra].[IdTaxa] AS [IdTaxa], 
+    [TaxaCompra].[Moneda] AS [Moneda], 
+    [TaxaCompra].[Valor] AS [Valor], 
+    [TaxaCompra].[Dia] AS [Dia], 
+    [TaxaCompra].[Lng_IdTaxa] AS [Lng_IdTaxa], 
+    [TaxaCompra].[Int_IdMoneda] AS [Int_IdMoneda]
+    FROM [dbo].[TaxaCompra] AS [TaxaCompra]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TaxaVenta" EntityType="Self.TaxaVenta" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TaxaVenta].[IdTaxa] AS [IdTaxa], 
+    [TaxaVenta].[Moneda] AS [Moneda], 
+    [TaxaVenta].[Valor] AS [Valor], 
+    [TaxaVenta].[Dia] AS [Dia], 
+    [TaxaVenta].[Lng_IdTaxa] AS [Lng_IdTaxa], 
+    [TaxaVenta].[Int_IdMoneda] AS [Int_IdMoneda]
+    FROM [dbo].[TaxaVenta] AS [TaxaVenta]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbcasa_cambio" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ct_Moneda">
+          <Key>
+            <PropertyRef Name="Int_IdMoneda" />
+          </Key>
+          <Property Name="Int_IdMoneda" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Txt_Moneda" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Tb_Clientes">
+          <Key>
+            <PropertyRef Name="Lng_IdCliente" />
+          </Key>
+          <Property Name="Lng_IdCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Txt_NumCliente" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Txt_Cliente" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Txt_Direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Txt_Identificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Txt_Telefono" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Txt_Email" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+          <Property Name="Fec_Alta" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Tb_RegistrosHistorico">
+          <Key>
+            <PropertyRef Name="Lng_IdRegistroHistorico" />
+          </Key>
+          <Property Name="Lng_IdRegistroHistorico" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Lng_IdRegistro" Type="Int32" />
+          <Property Name="Int_IdTipoTran" Type="Int32" />
+          <Property Name="Int_IdMoneda" Type="Int32" />
+          <Property Name="Dbl_MontoRecibir" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Dbl_MontoPagar" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Dbl_TipoCambio" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Dbl_TipoCambioEsp" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Bol_Especial" Type="Boolean" />
+          <Property Name="Dbl_Entregar" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Dbl_Cambio" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Int_IdTpv" Type="Int32" />
+          <Property Name="Fec_Fecha" Type="DateTime" Precision="3" />
+          <Property Name="Fec_Dia" Type="DateTime" Precision="3" />
+          <Property Name="Lng_IdCliente" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Tb_Taxas">
+          <Key>
+            <PropertyRef Name="Lng_IdTaxa" />
+          </Key>
+          <Property Name="Lng_IdTaxa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Int_IdMoneda" Type="Int32" />
+          <Property Name="dbl_Valor" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Bol_Tipo" Type="Boolean" />
+          <Property Name="Fec_Dia" Type="DateTime" Precision="3" />
+          <Property Name="Fec_Vencimiento" Type="DateTime" Precision="3" />
+          <Property Name="Int_IdGrupo" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="MasterExchangeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Ct_Moneda" EntityType="Self.Ct_Moneda" />
+          <EntitySet Name="Tb_Clientes" EntityType="Self.Tb_Clientes" />
+          <EntitySet Name="Tb_RegistrosHistorico" EntityType="Self.Tb_RegistrosHistorico" />
+          <EntitySet Name="Tb_Taxas" EntityType="Self.Tb_Taxas" />
+          <EntitySet Name="Tb_RegCli" EntityType="dbcasa_cambio.Tb_RegCli" />
+          <FunctionImport Name="buscar" ReturnType="Collection(dbcasa_cambio.buscar_Result1)">
+          <Parameter Name="numero" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Tabla_Compras" ReturnType="Collection(dbcasa_cambio.Tabla_Compras_Result)" />
+          <FunctionImport Name="buscar1" EntitySet="Tb_Clientes" ReturnType="Collection(dbcasa_cambio.Tb_Clientes)">
+            <Parameter Name="numero" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Ct_Plazas" EntityType="dbcasa_cambio.Ct_Plazas" />
+          <EntitySet Name="Tb_PlazasApli" EntityType="dbcasa_cambio.Tb_PlazasApli" />
+          <EntitySet Name="Tb_RegUsu" EntityType="dbcasa_cambio.Tb_RegUsu" />
+          <EntitySet Name="TaxaCompras" EntityType="dbcasa_cambio.TaxaCompra" />
+          <EntitySet Name="TaxaVentas" EntityType="dbcasa_cambio.TaxaVenta" />
+          <EntitySet Name="Tb_Registros" EntityType="dbcasa_cambio.Tb_Registros" />
+          <EntitySet Name="Ct_Areas" EntityType="dbcasa_cambio.Ct_Areas" />
+          <EntitySet Name="Ct_TipoTran" EntityType="dbcasa_cambio.Ct_TipoTran" />
+          <EntitySet Name="Tb_Sucursal" EntityType="dbcasa_cambio.Tb_Sucursal" />
+          <EntitySet Name="Tb_Usuarios" EntityType="dbcasa_cambio.Tb_Usuarios" />
+        </EntityContainer>
+        <EntityType Name="Tb_RegCli">
+          <Key>
+            <PropertyRef Name="Lng_IdRegCli" />
+          </Key>
+          <Property Name="Lng_IdRegCli" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Lng_IdCliente" Type="Int32" />
+          <Property Name="Lng_IdRegistro" Type="Int32" />
+        </EntityType>
+        <ComplexType Name="buscar_Result">
+          <Property Type="Int32" Name="Lng_IdCliente" Nullable="false" />
+          <Property Type="String" Name="Txt_NumCliente" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Txt_Cliente" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Txt_Direccion" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Txt_Identificacion" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Txt_Telefono" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Txt_Email" Nullable="true" MaxLength="120" />
+          <Property Type="DateTime" Name="Fec_Alta" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="Tabla_Compras_Result">
+          <Property Type="Int32" Name="IdTaxa" Nullable="true" />
+          <Property Type="String" Name="Moneda" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="Valor" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="Dia" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="buscar_Result1">
+          <Property Type="Int32" Name="Lng_IdCliente" Nullable="false" />
+          <Property Type="String" Name="Txt_NumCliente" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Txt_Cliente" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Txt_Direccion" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Txt_Identificacion" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Txt_Telefono" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Txt_Email" Nullable="true" MaxLength="120" />
+          <Property Type="DateTime" Name="Fec_Alta" Nullable="true" Precision="23" />
+        </ComplexType>
+        <EntityType Name="Ct_Plazas">
+          <Key>
+            <PropertyRef Name="Int_IdPlazas" />
+          </Key>
+          <Property Name="Int_IdPlazas" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Txt_Plazas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Tb_PlazasApli">
+          <Key>
+            <PropertyRef Name="Lng_IdPlazasApli" />
+          </Key>
+          <Property Name="Lng_IdPlazasApli" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Lng_IdTaxa" Type="Int32" />
+          <Property Name="Int_IdPlazas" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Tb_RegUsu">
+          <Key>
+            <PropertyRef Name="lng_IdRegUsu" />
+          </Key>
+          <Property Name="lng_IdRegUsu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Int_IdUsuario" Type="Int32" />
+          <Property Name="Lng_IdRegistro" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TaxaCompra">
+          <Key>
+            <PropertyRef Name="Lng_IdTaxa" />
+            <PropertyRef Name="Int_IdMoneda" />
+          </Key>
+          <Property Name="IdTaxa" Type="Int32" />
+          <Property Name="Moneda" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Valor" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Dia" Type="DateTime" Precision="3" />
+          <Property Name="Lng_IdTaxa" Type="Int32" Nullable="false" />
+          <Property Name="Int_IdMoneda" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TaxaVenta">
+          <Key>
+            <PropertyRef Name="Lng_IdTaxa" />
+            <PropertyRef Name="Int_IdMoneda" />
+          </Key>
+          <Property Name="IdTaxa" Type="Int32" />
+          <Property Name="Moneda" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Valor" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Dia" Type="DateTime" Precision="3" />
+          <Property Name="Lng_IdTaxa" Type="Int32" Nullable="false" />
+          <Property Name="Int_IdMoneda" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tb_Registros">
+          <Key>
+            <PropertyRef Name="Lng_IdRegistro" />
+          </Key>
+          <Property Name="Lng_IdRegistro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Int_IdTipoTran" Type="Int32" />
+          <Property Name="Int_IdMoneda" Type="Int32" />
+          <Property Name="Int_IdMonVenta" Type="Int32" />
+          <Property Name="Dbl_MontoRecibir" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Dbl_MontoPagar" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Dbl_TipoCambio" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Dbl_TipoCambioven" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Dbl_TipoCambioEsp" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Bol_Especial" Type="Boolean" />
+          <Property Name="Dbl_Entregar" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Dbl_Cambio" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Int_IdTpv" Type="Int32" />
+          <Property Name="Fec_Fecha" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Ct_Areas">
+          <Key>
+            <PropertyRef Name="Int_IdArea" />
+          </Key>
+          <Property Name="Int_IdArea" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Txt_Area" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Ct_TipoTran">
+          <Key>
+            <PropertyRef Name="Int_IdTipoTran" />
+          </Key>
+          <Property Name="Int_IdTipoTran" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Txt_TipoTran" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Tb_Sucursal">
+          <Key>
+            <PropertyRef Name="Lng_IdSucursal" />
+          </Key>
+          <Property Name="Lng_IdSucursal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Int_IdPlaza" Type="Int32" />
+          <Property Name="Txt_Sucursal" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Tb_Usuarios">
+          <Key>
+            <PropertyRef Name="Int_Idusuario" />
+          </Key>
+          <Property Name="Int_Idusuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Txt_Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Txt_Apellido" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Txt_NomCorto" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Txt_Password" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Bol_Activo" Type="Int32" Nullable="false" />
+          <Property Name="Int_IdArea" Type="Int32" />
+          <Property Name="Int_IdSubarea" Type="Int32" />
+          <Property Name="Fec_Alta" Type="DateTime" Precision="0" />
+          <Property Name="Fec_Baja" Type="DateTime" Precision="0" />
+          <Property Name="Int_Ext" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Num_Telefono_1" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Bol_Bloqueado" Type="Boolean" />
+          <Property Name="Num_Telefono_2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Txt_email" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Bol_Promotor" Type="Boolean" />
+          <Property Name="Int_IdEmpresa" Type="Int32" />
+          <Property Name="Txt_Password2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Txt_Password3" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Int_Idempleado" Type="Int32" />
+          <Property Name="Int_IdPlaza" Type="Int32" />
+          <Property Name="Lng_IdSucursal" Type="Int32" />
+          <Property Name="Int_IdDepartamentos" Type="Int32" />
+          <Property Name="Img_Foto" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbcasa_cambioStoreContainer" CdmEntityContainer="MasterExchangeEntities">
+          <EntitySetMapping Name="Ct_Moneda">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Ct_Moneda">
+              <MappingFragment StoreEntitySet="Ct_Moneda">
+                <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
+                <ScalarProperty Name="Txt_Moneda" ColumnName="Txt_Moneda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_Clientes">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_Clientes">
+              <MappingFragment StoreEntitySet="Tb_Clientes">
+                <ScalarProperty Name="Lng_IdCliente" ColumnName="Lng_IdCliente" />
+                <ScalarProperty Name="Txt_NumCliente" ColumnName="Txt_NumCliente" />
+                <ScalarProperty Name="Txt_Cliente" ColumnName="Txt_Cliente" />
+                <ScalarProperty Name="Txt_Direccion" ColumnName="Txt_Direccion" />
+                <ScalarProperty Name="Txt_Identificacion" ColumnName="Txt_Identificacion" />
+                <ScalarProperty Name="Txt_Telefono" ColumnName="Txt_Telefono" />
+                <ScalarProperty Name="Txt_Email" ColumnName="Txt_Email" />
+                <ScalarProperty Name="Fec_Alta" ColumnName="Fec_Alta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_RegistrosHistorico">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_RegistrosHistorico">
+              <MappingFragment StoreEntitySet="Tb_RegistrosHistorico">
+                <ScalarProperty Name="Lng_IdRegistroHistorico" ColumnName="Lng_IdRegistroHistorico" />
+                <ScalarProperty Name="Lng_IdRegistro" ColumnName="Lng_IdRegistro" />
+                <ScalarProperty Name="Int_IdTipoTran" ColumnName="Int_IdTipoTran" />
+                <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
+                <ScalarProperty Name="Dbl_MontoRecibir" ColumnName="Dbl_MontoRecibir" />
+                <ScalarProperty Name="Dbl_MontoPagar" ColumnName="Dbl_MontoPagar" />
+                <ScalarProperty Name="Dbl_TipoCambio" ColumnName="Dbl_TipoCambio" />
+                <ScalarProperty Name="Dbl_TipoCambioEsp" ColumnName="Dbl_TipoCambioEsp" />
+                <ScalarProperty Name="Bol_Especial" ColumnName="Bol_Especial" />
+                <ScalarProperty Name="Dbl_Entregar" ColumnName="Dbl_Entregar" />
+                <ScalarProperty Name="Dbl_Cambio" ColumnName="Dbl_Cambio" />
+                <ScalarProperty Name="Int_IdTpv" ColumnName="Int_IdTpv" />
+                <ScalarProperty Name="Fec_Fecha" ColumnName="Fec_Fecha" />
+                <ScalarProperty Name="Fec_Dia" ColumnName="Fec_Dia" />
+                <ScalarProperty Name="Lng_IdCliente" ColumnName="Lng_IdCliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_Taxas">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_Taxas">
+              <MappingFragment StoreEntitySet="Tb_Taxas">
+                <ScalarProperty Name="Lng_IdTaxa" ColumnName="Lng_IdTaxa" />
+                <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
+                <ScalarProperty Name="dbl_Valor" ColumnName="dbl_Valor" />
+                <ScalarProperty Name="Bol_Tipo" ColumnName="Bol_Tipo" />
+                <ScalarProperty Name="Fec_Dia" ColumnName="Fec_Dia" />
+                <ScalarProperty Name="Fec_Vencimiento" ColumnName="Fec_Vencimiento" />
+                <ScalarProperty Name="Int_IdGrupo" ColumnName="Int_IdGrupo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_RegCli">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_RegCli">
+              <MappingFragment StoreEntitySet="Tb_RegCli">
+                <ScalarProperty Name="Lng_IdRegistro" ColumnName="Lng_IdRegistro" />
+                <ScalarProperty Name="Lng_IdCliente" ColumnName="Lng_IdCliente" />
+                <ScalarProperty Name="Lng_IdRegCli" ColumnName="Lng_IdRegCli" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ct_Plazas">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Ct_Plazas">
+              <MappingFragment StoreEntitySet="Ct_Plazas">
+                <ScalarProperty Name="Txt_Plazas" ColumnName="Txt_Plazas" />
+                <ScalarProperty Name="Int_IdPlazas" ColumnName="Int_IdPlazas" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_PlazasApli">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_PlazasApli">
+              <MappingFragment StoreEntitySet="Tb_PlazasApli">
+                <ScalarProperty Name="Int_IdPlazas" ColumnName="Int_IdPlazas" />
+                <ScalarProperty Name="Lng_IdTaxa" ColumnName="Lng_IdTaxa" />
+                <ScalarProperty Name="Lng_IdPlazasApli" ColumnName="Lng_IdPlazasApli" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_RegUsu">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_RegUsu">
+              <MappingFragment StoreEntitySet="Tb_RegUsu">
+                <ScalarProperty Name="Lng_IdRegistro" ColumnName="Lng_IdRegistro" />
+                <ScalarProperty Name="Int_IdUsuario" ColumnName="Int_IdUsuario" />
+                <ScalarProperty Name="lng_IdRegUsu" ColumnName="lng_IdRegUsu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaxaCompras">
+            <EntityTypeMapping TypeName="dbcasa_cambio.TaxaCompra">
+              <MappingFragment StoreEntitySet="TaxaCompra">
+                <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
+                <ScalarProperty Name="Lng_IdTaxa" ColumnName="Lng_IdTaxa" />
+                <ScalarProperty Name="Dia" ColumnName="Dia" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Moneda" ColumnName="Moneda" />
+                <ScalarProperty Name="IdTaxa" ColumnName="IdTaxa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaxaVentas">
+            <EntityTypeMapping TypeName="dbcasa_cambio.TaxaVenta">
+              <MappingFragment StoreEntitySet="TaxaVenta">
+                <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
+                <ScalarProperty Name="Lng_IdTaxa" ColumnName="Lng_IdTaxa" />
+                <ScalarProperty Name="Dia" ColumnName="Dia" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Moneda" ColumnName="Moneda" />
+                <ScalarProperty Name="IdTaxa" ColumnName="IdTaxa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_Registros">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_Registros">
+              <MappingFragment StoreEntitySet="Tb_Registros">
+                <ScalarProperty Name="Fec_Fecha" ColumnName="Fec_Fecha" />
+                <ScalarProperty Name="Int_IdTpv" ColumnName="Int_IdTpv" />
+                <ScalarProperty Name="Dbl_Cambio" ColumnName="Dbl_Cambio" />
+                <ScalarProperty Name="Dbl_Entregar" ColumnName="Dbl_Entregar" />
+                <ScalarProperty Name="Bol_Especial" ColumnName="Bol_Especial" />
+                <ScalarProperty Name="Dbl_TipoCambioEsp" ColumnName="Dbl_TipoCambioEsp" />
+                <ScalarProperty Name="Dbl_TipoCambioven" ColumnName="Dbl_TipoCambioven" />
+                <ScalarProperty Name="Dbl_TipoCambio" ColumnName="Dbl_TipoCambio" />
+                <ScalarProperty Name="Dbl_MontoPagar" ColumnName="Dbl_MontoPagar" />
+                <ScalarProperty Name="Dbl_MontoRecibir" ColumnName="Dbl_MontoRecibir" />
+                <ScalarProperty Name="Int_IdMonVenta" ColumnName="Int_IdMonVenta" />
+                <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
+                <ScalarProperty Name="Int_IdTipoTran" ColumnName="Int_IdTipoTran" />
+                <ScalarProperty Name="Lng_IdRegistro" ColumnName="Lng_IdRegistro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ct_Areas">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Ct_Areas">
+              <MappingFragment StoreEntitySet="Ct_Areas">
+                <ScalarProperty Name="Txt_Area" ColumnName="Txt_Area" />
+                <ScalarProperty Name="Int_IdArea" ColumnName="Int_IdArea" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ct_TipoTran">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Ct_TipoTran">
+              <MappingFragment StoreEntitySet="Ct_TipoTran">
+                <ScalarProperty Name="Txt_TipoTran" ColumnName="Txt_TipoTran" />
+                <ScalarProperty Name="Int_IdTipoTran" ColumnName="Int_IdTipoTran" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_Sucursal">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_Sucursal">
+              <MappingFragment StoreEntitySet="Tb_Sucursal">
+                <ScalarProperty Name="Txt_Sucursal" ColumnName="Txt_Sucursal" />
+                <ScalarProperty Name="Int_IdPlaza" ColumnName="Int_IdPlaza" />
+                <ScalarProperty Name="Lng_IdSucursal" ColumnName="Lng_IdSucursal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_Usuarios">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_Usuarios">
+              <MappingFragment StoreEntitySet="Tb_Usuarios">
+                <ScalarProperty Name="Img_Foto" ColumnName="Img_Foto" />
+                <ScalarProperty Name="Int_IdDepartamentos" ColumnName="Int_IdDepartamentos" />
+                <ScalarProperty Name="Lng_IdSucursal" ColumnName="Lng_IdSucursal" />
+                <ScalarProperty Name="Int_IdPlaza" ColumnName="Int_IdPlaza" />
+                <ScalarProperty Name="Int_Idempleado" ColumnName="Int_Idempleado" />
+                <ScalarProperty Name="Txt_Password3" ColumnName="Txt_Password3" />
+                <ScalarProperty Name="Txt_Password2" ColumnName="Txt_Password2" />
+                <ScalarProperty Name="Int_IdEmpresa" ColumnName="Int_IdEmpresa" />
+                <ScalarProperty Name="Bol_Promotor" ColumnName="Bol_Promotor" />
+                <ScalarProperty Name="Txt_email" ColumnName="Txt_email" />
+                <ScalarProperty Name="Num_Telefono_2" ColumnName="Num_Telefono_2" />
+                <ScalarProperty Name="Bol_Bloqueado" ColumnName="Bol_Bloqueado" />
+                <ScalarProperty Name="Num_Telefono_1" ColumnName="Num_Telefono_1" />
+                <ScalarProperty Name="Int_Ext" ColumnName="Int_Ext" />
+                <ScalarProperty Name="Fec_Baja" ColumnName="Fec_Baja" />
+                <ScalarProperty Name="Fec_Alta" ColumnName="Fec_Alta" />
+                <ScalarProperty Name="Int_IdSubarea" ColumnName="Int_IdSubarea" />
+                <ScalarProperty Name="Int_IdArea" ColumnName="Int_IdArea" />
+                <ScalarProperty Name="Bol_Activo" ColumnName="Bol_Activo" />
+                <ScalarProperty Name="Txt_Password" ColumnName="Txt_Password" />
+                <ScalarProperty Name="Txt_NomCorto" ColumnName="Txt_NomCorto" />
+                <ScalarProperty Name="Txt_Apellido" ColumnName="Txt_Apellido" />
+                <ScalarProperty Name="Txt_Nombre" ColumnName="Txt_Nombre" />
+                <ScalarProperty Name="Int_Idusuario" ColumnName="Int_Idusuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

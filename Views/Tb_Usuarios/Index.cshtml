@@ -1,0 +1,173 @@
+﻿@model IEnumerable<WebApplication2.Models.Tb_Usuarios>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Txt_Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Txt_Apellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Txt_NomCorto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Txt_Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bol_Activo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Int_IdArea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Int_IdSubarea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fec_Alta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fec_Baja)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Int_Ext)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Num_Telefono_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bol_Bloqueado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Num_Telefono_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Txt_email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bol_Promotor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Int_IdEmpresa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Txt_Password2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Txt_Password3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Int_Idempleado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Int_IdPlaza)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lng_IdSucursal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Int_IdDepartamentos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Img_Foto)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Txt_Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Txt_Apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Txt_NomCorto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Txt_Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bol_Activo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Int_IdArea)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Int_IdSubarea)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fec_Alta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fec_Baja)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Int_Ext)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Num_Telefono_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bol_Bloqueado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Num_Telefono_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Txt_email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bol_Promotor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Int_IdEmpresa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Txt_Password2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Txt_Password3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Int_Idempleado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Int_IdPlaza)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lng_IdSucursal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Int_IdDepartamentos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Img_Foto)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Int_Idusuario }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Int_Idusuario }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Int_Idusuario })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

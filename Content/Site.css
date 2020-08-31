@@ -1,0 +1,89 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+for details on configuring this project to bundle and minify static web assets. */
+body {
+    background: url("img/blanco.jpg");
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+#logo1{
+    width: 100%;
+    height: auto;
+}
+
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.mir {
+    background-color: #343a40;
+}
+
+.menubtn {
+    width: 80%;
+}
+
+.identy{
+    color:white;
+}
+
+    .identy:hover {
+        color: lightgray;
+    }
+
+.sinmostras{
+    display : none;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+.invisible{
+
+    display: none;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+.margin1 
+{
+margin-bottom: 0;
+}
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+input {
+    font-family: "Palatino", URW Palladio L, serif;
+}
+
+p {
+    font-family: "Palatino", URW Palladio L, serif;
+}
+label {
+    font-family: "Palatino", URW Palladio L, serif;
+}
+
+a {
+    font-family: "Palatino", URW Palladio L, serif;
+}
+

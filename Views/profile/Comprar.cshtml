@@ -1,0 +1,243 @@
+﻿@model WebApplication2.Models.Tb_Registros
+
+@{
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
+
+    List<SelectListItem> mir = (List<SelectListItem>)ViewBag.mir;
+
+}
+
+<div class="">
+
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <form class=" form-row">
+
+        <div style="display: none;">
+            <div class="form-group">
+
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Int_IdTipoTran, new { htmlAttributes = new { @class = "form-control", @id = "tipodetrans", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.Int_IdTipoTran, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="inputState">Divisa</label>
+            @Html.DropDownList("Datos", items, "selecciona la divisa", new { @class = "form-control", id = "padre" })
+
+            <div style="display: none;">
+                @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "monedaid", @readonly = true } })
+                @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
+            </div>
+
+            <select id="hijo" name="hijo" style=" display : none;">
+            </select>
+        </div>
+        <div class="form-group ">
+            <label for="inputAddress2">Cantidad</label>
+
+            @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad", @oninput = "compras_cantidad()" } })
+            @Html.ValidationMessageFor(model => model.Dbl_MontoRecibir, "", new { @class = "text-danger" })
+        </div>
+
+
+
+        <div class="form-group ">
+            <label> Total a pagar </label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">$</div>
+                </div>
+                @Html.EditorFor(model => model.Dbl_MontoPagar, new { htmlAttributes = new { @type = "Number", @class = "form-control disabled", @readonly = true, @placeholder = "Total a Pagar", @id = "total_pago" } })
+
+                @Html.ValidationMessageFor(model => model.Dbl_MontoPagar, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*no visibles*@
+
+        <div class="form-group ">
+            <label>Tipo de Cambio</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">$</div>
+                </div>
+                @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @class = "form-control disabled", @readonly = true, @id = "valor", @name = "valor" } })
+                @Html.ValidationMessageFor(model => model.Dbl_TipoCambio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div style=" display : none;">
+            <div class="form-group">
+                <label for="inputAddress2">Especial</label>
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.Bol_Especial, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.Bol_Especial, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" style="display:none">
+            <label for="inputAddress2">Entregado</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Dbl_Entregar, new { htmlAttributes = new { @type = "Number", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Dbl_Entregar, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label> Tipo de Cobro</label>
+
+            <div class="col-md-10">
+
+
+                @Html.DropDownList("mir", mir, "selecciona un tipo de cobro", new { @class = "form-control", @id = "tipos" })
+
+                <div style="display : none;">
+                    @Html.EditorFor(model => model.Int_IdTpv, new { htmlAttributes = new { @class = "form-control", @id = "obj" } })
+                    @Html.ValidationMessageFor(model => model.Int_IdTpv, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group" style="display : none;">
+            <label for="inputAddress2">Fecha de Registro</label>
+            <div class="col-md-10">
+
+                @Html.TextBoxFor(model => model.Fec_Fecha, new { @Value = @DateTime.Now.ToString("MM/dd/aaaa HH:mm") })
+                @Html.ValidationMessageFor(model => model.Fec_Fecha, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+
+        <input type="submit" class="btn btn-success " value="Comprar" />
+
+        <button type="button" onclick="validacion()" class="btn btn-secondary" id="modal1">
+            verficar datos
+        </button>
+
+
+    </form>
+}
+
+
+
+<script>
+    var cbo = document.getElementById("padre");
+
+
+    cbo.addEventListener("change", refresh);
+
+
+    refresh();
+
+    function refresh() {
+
+        fetch("@Url.Content("~/Profile/valores")" + "?idmoneda=" + cbo.value)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+
+                }
+            })
+            .then(function (data) {
+                data.forEach(function (Elementos) {
+
+                    let cbopadre = document.getElementById("hijo");
+                    let opt = document.createElement("option");
+
+                    opt.appendChild(document.createTextNode(Elementos.Text));
+
+                    opt.value = Elementos.value;
+
+                    cbopadre.appendChild(opt);
+
+                    var a = document.getElementById("hijo").textContent;
+                    var b = document.getElementById("hijo").value;
+                    document.getElementById("monedaid").value = b;
+
+                    document.getElementById("valor").value = a;
+
+                    document.getElementById("hijo").textContent = "";
+
+                    var tipo = 1;
+
+                    document.getElementById("tipodetrans").value = tipo;
+
+                    document.getElementById("obj").value = tipo;
+
+
+
+                })
+
+            })
+    }
+
+</script>
+
+<script>
+    function compras_cantidad() {
+
+
+        var valoress = document.getElementById("valor").value;
+        var cantidades = document.getElementById("cantidad").value;
+
+
+        if (cantidad.value == "") {
+
+            alert("Tienes Que escribir la cantidad a resivir ");
+
+        }
+
+        else {
+            let t_pagar = cantidades * valoress;
+            document.getElementById("total_pago").value = t_pagar;
+        }
+
+    }
+
+</script>
+
+
+<script type="text/javascript">
+
+    function validacion() {
+        var totalp = document.getElementById("total_pago").value;
+        if (totalp >= 1000) {
+
+            $(function () {
+                $('#modalshow').on('show.bs.modal', function (e) {
+                    alert('El Total a Pagar Es Mayor a 1000 MXN, Por Favor Registre al Usuario')
+                })
+            });
+
+            $(document).on('click', '#modal1', function () {
+                $('#modalshow').modal('show')
+            })
+        }
+        else {
+
+            console.log("ya sabias pendejo");
+        }
+
+    }
+
+
+
+</script>
+
+
+

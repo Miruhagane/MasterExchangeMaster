@@ -1,0 +1,36 @@
+﻿@model List<WebApplication2.Models.ViewModels.Tventas>
+@{ 
+
+    Layout = null;
+}
+<div class="table-responsive-sm">
+    <table class="table table-sm">
+        <tr>
+          
+            <th>
+                Moneda
+            </th>
+            <th>
+                Valor
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+         
+                <td>
+                    @item.Moneda
+                </td>
+                <td>
+                    @item.Valor
+                </td>
+
+
+            </tr>
+        }
+
+    </table>
+    </div>
