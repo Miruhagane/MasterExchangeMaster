@@ -397,12 +397,12 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\idcliente.js" />
+    <Content Include="Scripts\venta.js" />
     <Content Include="Scripts\jquery.datetimepicker.full.js" />
     <Content Include="Scripts\jquery.datetimepicker.min.css" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jsventas.js" />
+    <Content Include="Scripts\multimoneda.js" />
     <Content Include="tazas\frmtazas.aspx" />
     <Content Include="Content\estilos.css" />
     <Content Include="Content\img\blanco.jpg" />
@@ -556,7 +556,7 @@
     <Content Include="Views\profile\Comprar.cshtml" />
     <Content Include="Views\profile\Tcomprar.cshtml" />
     <Content Include="Views\profile\Tventas.cshtml" />
-    <Content Include="Views\profile\venta.cshtml" />
+    <Content Include="Views\profile\Multimoneda.cshtml" />
     <Content Include="Views\ActDivisa\Create.cshtml" />
     <Content Include="Views\ActDivisa\Delete.cshtml" />
     <Content Include="Views\ActDivisa\Details.cshtml" />
@@ -586,6 +586,7 @@
     <Content Include="Views\Tb_Usuarios\Edit.cshtml" />
     <Content Include="Views\Tb_Usuarios\Index.cshtml" />
     <Content Include="Views\Usuarios\Perfil.cshtml" />
+    <Content Include="Views\profile\Venta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
