@@ -52,28 +52,17 @@
 
             <div class="menu">
                 <div class="d-block text-light p-1 border-0">
-
+                    
                     <button type="button" class="btn btn-success menubtn" onclick="location.href='@Url.Action("Index", "profile")'">
-                        <i class="fas fa-arrow-left">Comprar</i>
+                        <i class="fas fa-file-download">Comprar</i>
                     </button>
                 </div>
 
                 <div class="d-block text-light p-1 border-0 ">
 
                     <button type="button" class="btn btn-danger menubtn" onclick="location.href='@Url.Action("venta", "profile")'">
-                        <i class="fas fa-arrow-right">Venta</i>
+                        <i class="fas fa-file-upload">Venta</i>
                     </button>
-
-                </div>
-                
-
-
-                <div class="d-block text-light p-1 border-0 ">
-
-                    <button type="button" class="btn btn-info menubtn" onclick="location.href='@Url.Action("Multimoneda", "profile")'">
-                        <i class="fas fa-exchange-alt">Multimoneda</i>
-                    </button>
-
 
                 </div>
 
@@ -86,18 +75,18 @@
 
                 </div>
 
-                <div class="btn-group  d-block text-light p-1 border-0">
+                <div class="btn-group  d-block text-light p-1 border-0" >
                     <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="usuarios" onclick="btndropdown()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-users-cog  text-light"> Administracion</i>
                     </button>
                     <div class="dropdown-menu bg-dark">
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Create", "Usuarios")'"><i class="fas fa-user-plus">Crear Usuario </i></button>
-                        <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Index", "Usuarios")'"><i class="fas fa-user-tag pr-1">Buscar Usuario</i></button>
+                        <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Index", "Usuarios")'" ><i class="fas fa-user-tag pr-1">Buscar Usuario</i></button>
 
                     </div>
                 </div>
 
-
+                
                 <a href="#" class="d-block text-light p-3 border-0">
                     <i class="icon ion-md-person lead mr-2"></i>
                     cierre y corte

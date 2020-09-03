@@ -282,7 +282,15 @@ namespace WebApplication2.Controllers
             return PartialView();
         }
 
-        
+
+        public ActionResult venta()
+        {
+            modulodivisas();
+            comboventa();
+            return View();
+        }
+
+
         public ActionResult Index(string idregistro)
         {
             
@@ -329,62 +337,9 @@ namespace WebApplication2.Controllers
             return View();
         }
 
-
-        public ActionResult Venta(string idregistro)
-        {
-            ViewBag.id = idregistro;
-            comboventa();
-            return View();
-        }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Venta([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Tb_Registros.Add(tb_Registros);
-
-                await db.SaveChangesAsync();
-                Tb_RegCli.Lng_IdRegistro = tb_Registros.Lng_IdRegistro;
-                int idregistro = tb_Registros.Lng_IdRegistro;
-
-
-                SqlDataAdapter obja = new SqlDataAdapter("insert into Tb_RegCli(Lng_IdRegistro , Lng_IdCliente) values( " + Tb_RegCli.Lng_IdRegistro + " , " + idcliente + " )", con);
-                DataSet a = new DataSet();
-                obja.Fill(a);
-                a.Reset();
-
-                SqlDataAdapter otr = new SqlDataAdapter("insert into Tb_RegUsu(Int_IdUsuario , Lng_IdRegistro) values( " + User.Identity.Name + " , " + Tb_RegCli.Lng_IdRegistro + " )", con);
-                DataSet b = new DataSet();
-                otr.Fill(b);
-                b.Reset();
-
-                string idreg = Convert.ToString(idregistro);
-
-                return RedirectToAction("Venta", new { idregistro = idreg });
-            }
-
-            comboventa();
-
-            return View();
-        }
-
-
-        public ActionResult Multimoneda(string idregistro)
-        {
-            modulodivisas();
-            comboventa();
-
-            ViewBag.id = idregistro;
-
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Multimoneda([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,int_idmonventa,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
+        public async Task<ActionResult> venta([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,int_idmonventa,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
         {
             modulodivisas();
 
@@ -396,7 +351,6 @@ namespace WebApplication2.Controllers
 
                 await db.SaveChangesAsync();
                 Tb_RegCli.Lng_IdRegistro = tb_Registros.Lng_IdRegistro;
-                int idregistro = tb_Registros.Lng_IdRegistro;
 
                 SqlDataAdapter obja = new SqlDataAdapter("insert into Tb_RegCli(Lng_IdRegistro , Lng_IdCliente) values( " + Tb_RegCli.Lng_IdRegistro + " , " + idcliente + " )", con);
                 DataSet a = new DataSet();
@@ -408,10 +362,6 @@ namespace WebApplication2.Controllers
                 DataSet b = new DataSet();
                 otr.Fill(b);
                 b.Reset();
-
-                string idreg = Convert.ToString(idregistro);
-
-                return RedirectToAction("Multimoneda", new { idregistro = idreg });
 
 
             }
@@ -454,6 +404,8 @@ namespace WebApplication2.Controllers
                 
                 }
             }
+
+            
             return RedirectToAction("Index");
         }
 
@@ -488,8 +440,9 @@ namespace WebApplication2.Controllers
             
                 
 
-            return Json(ticket, JsonRequestBehavior.AllowGet);
+            return Json( ticket, JsonRequestBehavior.AllowGet);
         }
+
 
     }
 }
