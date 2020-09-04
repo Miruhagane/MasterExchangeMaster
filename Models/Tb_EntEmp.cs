@@ -15,8 +15,8 @@ namespace WebApplication2.Models
     public partial class Tb_EntEmp
     {
         public int Lng_IdEntEmp { get; set; }
-        public Nullable<int> Lng_IdEntrada { get; set; }
-        public Nullable<int> Int_IdUsuario { get; set; }
-        public Nullable<int> Int_IdTurno { get; set; }
+        public int Lng_IdEntrada { get; set; }
+        public int Int_IdUsuario { get; set; }
+        public int Int_IdTurno { get; set; }
     }
 }

@@ -355,8 +355,8 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySet Name="Tb_Sucursal" EntityType="dbcasa_cambio.Tb_Sucursal" />
           <EntitySet Name="Tb_Usuarios" EntityType="dbcasa_cambio.Tb_Usuarios" />
           <EntitySet Name="Taxacompcombs" EntityType="dbcasa_cambio.Taxacompcomb" />
-          <EntitySet Name="Tb_EntEmp" EntityType="dbcasa_cambio.Tb_EntEmp" />
           <EntitySet Name="Tb_EntradaSuc" EntityType="dbcasa_cambio.Tb_EntradaSuc" />
+          <EntitySet Name="Tb_EntEmp" EntityType="dbcasa_cambio.Tb_EntEmp" />
         </EntityContainer>
         <EntityType Name="Tb_RegCli">
           <Key>
@@ -521,15 +521,6 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Name="Lng_IdTaxa" Type="Int32" Nullable="false" />
           <Property Name="Int_IdMoneda" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="Tb_EntEmp">
-          <Key>
-            <PropertyRef Name="Lng_IdEntEmp" />
-          </Key>
-          <Property Name="Lng_IdEntEmp" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Lng_IdEntrada" Type="Int32" />
-          <Property Name="Int_IdUsuario" Type="Int32" />
-          <Property Name="Int_IdTurno" Type="Int32" />
-        </EntityType>
         <EntityType Name="Tb_EntradaSuc">
           <Key>
             <PropertyRef Name="Lng_IdEntrada" />
@@ -540,6 +531,15 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Name="Fec_Fin" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Int_Sucursal" Type="Int32" />
           <Property Name="Int_IdMoneda" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Tb_EntEmp">
+          <Key>
+            <PropertyRef Name="Lng_IdEntEmp" />
+          </Key>
+          <Property Name="Lng_IdEntEmp" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Lng_IdEntrada" Type="Int32" />
+          <Property Name="Int_IdUsuario" Type="Int32" />
+          <Property Name="Int_IdTurno" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -749,16 +749,6 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Tb_EntEmp">
-            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_EntEmp">
-              <MappingFragment StoreEntitySet="Tb_EntEmp">
-                <ScalarProperty Name="Int_IdTurno" ColumnName="Int_IdTurno" />
-                <ScalarProperty Name="Int_IdUsuario" ColumnName="Int_IdUsuario" />
-                <ScalarProperty Name="Lng_IdEntrada" ColumnName="Lng_IdEntrada" />
-                <ScalarProperty Name="Lng_IdEntEmp" ColumnName="Lng_IdEntEmp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tb_EntradaSuc">
             <EntityTypeMapping TypeName="dbcasa_cambio.Tb_EntradaSuc">
               <MappingFragment StoreEntitySet="Tb_EntradaSuc">
@@ -768,6 +758,16 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
                 <ScalarProperty Name="Fec_Ini" ColumnName="Fec_Ini" />
                 <ScalarProperty Name="Dbl_SaldoEntrada" ColumnName="Dbl_SaldoEntrada" />
                 <ScalarProperty Name="Lng_IdEntrada" ColumnName="Lng_IdEntrada" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_EntEmp">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_EntEmp">
+              <MappingFragment StoreEntitySet="Tb_EntEmp">
+                <ScalarProperty Name="Int_IdTurno" ColumnName="Int_IdTurno" />
+                <ScalarProperty Name="Int_IdUsuario" ColumnName="Int_IdUsuario" />
+                <ScalarProperty Name="Lng_IdEntrada" ColumnName="Lng_IdEntrada" />
+                <ScalarProperty Name="Lng_IdEntEmp" ColumnName="Lng_IdEntEmp" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
