@@ -35,7 +35,7 @@ function compras_cantidad() {
         document.getElementById("totalpagar").value = t_pagar.toFixed(2);
         let entregado = t_pagar - valor3;
 
-        console.log(entregado);
+        
         let total2 = entregado * valor2;
 
         console.log(total2);

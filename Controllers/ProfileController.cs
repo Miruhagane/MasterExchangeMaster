@@ -91,6 +91,28 @@ namespace WebApplication2.Controllers
         }
 
         [HttpGet]
+        public JsonResult valores_compra(Nullable<decimal> idmoneda)
+        {
+
+            List<Elementos> lst = new List<Elementos>();
+            using (Models.MasterExchangeEntities dk = new Models.MasterExchangeEntities())
+            {
+                lst = (from d in dk.Taxacompcombs
+                       where d.Int_IdMoneda == idmoneda
+                       select new Elementos
+                       {
+                           value = d.Int_IdMoneda,
+                           Text = d.Valor
+                       }
+                     ).ToList();
+
+            }
+
+            return Json(lst, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpGet]
         public JsonResult divisaventa(Nullable<decimal> idmoneda)
         {
             List<Elementos> lst = new List<Elementos>();
@@ -165,7 +187,43 @@ namespace WebApplication2.Controllers
                     Text = df.Moneda.ToString(),
                     Value = df.Int_IdMoneda.ToString(),
                     Selected = false
+
                 };
+                
+            });
+
+            ViewBag.items = items;
+
+        }
+
+        public void divisasCompra_venta()
+        {
+
+            List<moneda> lst = null;
+
+            using (Models.MasterExchangeEntities dr = new Models.MasterExchangeEntities())
+            {
+                lst = (
+                     from d in dr.Taxacompcombs
+                     select new moneda
+                     {
+                         Int_IdMoneda = d.Int_IdMoneda,
+                         Moneda = d.Moneda
+
+                     }).ToList();
+            }
+
+
+            List<SelectListItem> items = lst.ConvertAll(df =>
+            {
+                return new SelectListItem()
+                {
+                    Text = df.Moneda.ToString(),
+                    Value = df.Int_IdMoneda.ToString(),
+                    Selected = false
+
+                };
+
             });
 
             ViewBag.items = items;
@@ -329,52 +387,9 @@ namespace WebApplication2.Controllers
             return View();
         }
 
-
         public ActionResult Venta(string idregistro)
         {
-            ViewBag.id = idregistro;
-            comboventa();
-            return View();
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Venta([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Tb_Registros.Add(tb_Registros);
-
-                await db.SaveChangesAsync();
-                Tb_RegCli.Lng_IdRegistro = tb_Registros.Lng_IdRegistro;
-                int idregistro = tb_Registros.Lng_IdRegistro;
-
-
-                SqlDataAdapter obja = new SqlDataAdapter("insert into Tb_RegCli(Lng_IdRegistro , Lng_IdCliente) values( " + Tb_RegCli.Lng_IdRegistro + " , " + idcliente + " )", con);
-                DataSet a = new DataSet();
-                obja.Fill(a);
-                a.Reset();
-
-                SqlDataAdapter otr = new SqlDataAdapter("insert into Tb_RegUsu(Int_IdUsuario , Lng_IdRegistro) values( " + User.Identity.Name + " , " + Tb_RegCli.Lng_IdRegistro + " )", con);
-                DataSet b = new DataSet();
-                otr.Fill(b);
-                b.Reset();
-
-                string idreg = Convert.ToString(idregistro);
-
-                return RedirectToAction("Venta", new { idregistro = idreg });
-            }
-
-            comboventa();
-
-            return View();
-        }
-
-
-        public ActionResult Multimoneda(string idregistro)
-        {
-            modulodivisas();
+            divisasCompra_venta();
             comboventa();
 
             ViewBag.id = idregistro;
@@ -384,9 +399,9 @@ namespace WebApplication2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Multimoneda([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,int_idmonventa,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
+        public async Task<ActionResult> Venta([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,int_idmonventa,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
         {
-            modulodivisas();
+            divisasCompra_venta();
 
             if (ModelState.IsValid)
             {
@@ -416,7 +431,7 @@ namespace WebApplication2.Controllers
 
             }
 
-            modulodivisas();
+            divisasCompra_venta();
             comboventa();
 
             return View();

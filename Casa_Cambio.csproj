@@ -294,6 +294,9 @@
     <Compile Include="Models\Ct_TipoTran.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Taxacompcomb.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TaxaCompra.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
@@ -301,6 +304,12 @@
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tb_Clientes.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tb_EntEmp.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tb_EntradaSuc.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tb_PlazasApli.cs">
@@ -556,7 +565,7 @@
     <Content Include="Views\profile\Comprar.cshtml" />
     <Content Include="Views\profile\Tcomprar.cshtml" />
     <Content Include="Views\profile\Tventas.cshtml" />
-    <Content Include="Views\profile\Multimoneda.cshtml" />
+    <Content Include="Views\profile\Venta.cshtml" />
     <Content Include="Views\ActDivisa\Create.cshtml" />
     <Content Include="Views\ActDivisa\Delete.cshtml" />
     <Content Include="Views\ActDivisa\Details.cshtml" />
@@ -586,7 +595,6 @@
     <Content Include="Views\Tb_Usuarios\Edit.cshtml" />
     <Content Include="Views\Tb_Usuarios\Index.cshtml" />
     <Content Include="Views\Usuarios\Perfil.cshtml" />
-    <Content Include="Views\profile\Venta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

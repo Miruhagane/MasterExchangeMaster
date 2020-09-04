@@ -1,47 +1,42 @@
-﻿@model WebApplication2.Models.Tb_Registros
+﻿
+@model WebApplication2.Models.Tb_Registros
 
 
 @{
 
-    ViewBag.Title = "Venta";
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
     List<SelectListItem> venta = (List<SelectListItem>)ViewBag.venta;
 
-
+    ViewBag.Title = "Venta";
 }
 
+@*formulario de ventas*@
 
 
-@*Formulario Venta*@
-
-
-<div class="col-xl-5 pt-5">
+<div class="col-sm-5 pt-5">
     <div class="card shadow-lg bg-white rounded">
         <div class="card-header bg-dark text-white">
             Venta en: @Session["sucursaledelusuario"]
         </div>
         <div class="card-body">
 
-
             @using (Html.BeginForm())
-
             {
-
-
                 @Html.AntiForgeryToken()
-
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+
                 <div style="display: none">
-                    <div>
-                        <input id="cliente" name="idcliente" class="form-control" value="0" />
-                        <input id="idregistroticket" value="@ViewBag.id" />
-                        <input id="idtipodeusuario" value="@Session["intareadeusurio"]" />
-
-                    </div>
-
                     <div class="form-group col-sm-8">
+                        <div>
+                            <div>
+                                <input id="cliente" name="idcliente" class="form-control" value="0" />
+                                <input id="idregistroticket" value="@ViewBag.id" />
+                                <input id="idtipodeusuario" value="@Session["intareadeusurio"]" />
 
+                            </div>
+                        </div>
 
                         @Html.EditorFor(model => model.Int_IdTipoTran, new { htmlAttributes = new { @class = "form-control", @id = "tipodetrans", @readonly = true } })
                         @Html.ValidationMessageFor(model => model.Int_IdTipoTran, "", new { @class = "text-danger" })
@@ -50,56 +45,31 @@
 
                 </div>
 
-
                 <div class="form-group col-sm-8">
 
-
-                    <label for="inputState">Divisa</label>
-                    @Html.DropDownList("Datos", venta, "selecciona la divisa", new { @type = "number", @class = "form-control", id = "padre" })
+                    <label for="inputState">Divisa a Comprar</label>
+                    @Html.DropDownList("Datos", items, "selecciona la divisa", new { @type = "number", @class = "form-control", @id = "padre" })
 
                     <div style="display: none;">
                         @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "monedaid", @readonly = true } })
                         @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
                     </div>
 
-                    <select id="hijo" name="hijo" style=" display : none;">
+                    <select id="hijo" name="hijo" style="display: none" >
                     </select>
                 </div>
 
-
-                <div>
-                    <div id="especialdiv" class="form-group col-sm-8">
+                <div style=" display : none;">
+                    <div class="form-group col-sm-8">
                         <label for="inputAddress2">Especial</label>
                         <div>
-
                             <div class="checkbox">
-
-                                @Html.EditorFor(model => model.Bol_Especial, new { AllowHtmlAttribute = new { @class = "form-control", @id = "especial" } })
+                                @Html.EditorFor(model => model.Bol_Especial, new { @class = "form-control " })
                                 @Html.ValidationMessageFor(model => model.Bol_Especial, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group col-sm-8">
-                    <label>Tipo de Cambio</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">$</div>
-                        </div>
-                        @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @type = "number", @class = "form-control ", @readonly = true, @id = "valor", @name = "valor" } })
-                        @Html.ValidationMessageFor(model => model.Dbl_TipoCambio, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-
-                <div class="form-group col-sm-8">
-                    <label for="inputAddress2">Cantidad En MXN</label>
-
-                    @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad", @oninput = "compras_cantidad()" } })
-                    @Html.ValidationMessageFor(model => model.Dbl_MontoRecibir, "", new { @class = "text-danger" })
-                </div>
-
 
                 <div style="display: none">
                     <select id="usd1" name="usd1">
@@ -109,33 +79,108 @@
 
                 </div>
 
+                <div class="form-group col-sm-8" id="valorCompra" style="display: none">
+                    <label>Tipo de Cambio Compra</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @type = "text", @class = "form-control disabled", @readonly = true, @id = "valor", @name = "valor" } })
+                        @Html.ValidationMessageFor(model => model.Dbl_TipoCambio, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                   <div class="form-group col-sm-8">
+                    <label for="inputAddress2">Cantidad a Comprar</label>
+
+                    @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad", @oninput = "compras_cantidad()" } })
+                    @Html.ValidationMessageFor(model => model.Dbl_MontoRecibir, "", new { @class = "text-danger" })
+                </div>
+
+
+                <div class="form-group col-sm-8">
+
+                    <label for="inputState">Divisa a Vender</label>
+                    @Html.DropDownList("Datos", venta, "selecciona la divisa",  new { @type = "number", @class = "form-control", @id = "Madre" })
+
+                    <div style="display: none">
+                        @Html.EditorFor(model => model.Int_IdMonVenta, new { htmlAttributes = new { @class = "form-control", @id = "monid", @readonly = true } })
+                        @Html.ValidationMessageFor(model => model.Int_IdMonVenta, "", new { @class = "text-danger" })
+                    </div>
+
+                    <select id="hija" name="hija" style="display: none">
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-8" id="cambioventa" style="display: none">
+                    <label>Tipo de Cambio venta</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        @Html.EditorFor(model => model.Dbl_TipoCambioven, new { htmlAttributes = new { @type = "text", @class = "form-control disabled", @readonly = true, @id = "valor2", @name = "valor2" } })
+                        @Html.ValidationMessageFor(model => model.Dbl_TipoCambioven, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+             
+
+
+
                 <div class="form-group col-sm-8 ">
                     <label> Total a pagar </label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">$</div>
                         </div>
+                        <input class="form-control" disabled id="totalpagar" />
+                        <div style="display: none">
+                            @Html.EditorFor(model => model.Dbl_MontoPagar, new { htmlAttributes = new { @type = "number", @step = "0.01", @class = "form-control disabled", @readonly = true, @placeholder = "Total a Pagar", @id = "total_pago" } })
 
-                        <input id="mtotal" class="form-control" disabled />
+                            @Html.ValidationMessageFor(model => model.Dbl_MontoPagar, "", new { @class = "text-danger" })
+                        </div>
 
-                    </div>
-
-                    <div style="display: none">
-                        @Html.EditorFor(model => model.Dbl_MontoPagar, new { htmlAttributes = new { @type = "number", @step = "0.01", @class = "form-control disabled", @readonly = true, @placeholder = "Total a Pagar", @id = "total_pago" } })
-
-                        @Html.ValidationMessageFor(model => model.Dbl_MontoPagar, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
+                <div class="form-group col-sm-8 ">
+                    <label>Cantidad entregada</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        @Html.EditorFor(model => model.Dbl_Entregar, new { htmlAttributes = new { @type = "number", @class = "form-control", @id = "entregado", @oninput = "compras_cantidad()" } })
+                        @Html.ValidationMessageFor(model => model.Dbl_Entregar, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+
+                <div class="form-group col-sm-8 ">
+                    <label>Cambio en pesos</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        @Html.EditorFor(model => model.Dbl_Cambio, new { htmlAttributes = new { @type = "number", @step = "0.01", @class = "form-control disabled", @readonly = true, @id = "cambio" } })
+                        @Html.ValidationMessageFor(model => model.Dbl_Cambio, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
                 @*no visibles*@
 
 
 
-                <div class="form-group col-sm-8" style="display:none">
-                    <label for="inputAddress2">Entregado</label>
-                    <div>
-                        @Html.EditorFor(model => model.Dbl_Entregar, new { htmlAttributes = new { @type = "Text", @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Dbl_Entregar, "", new { @class = "text-danger" })
+                <div style=" display : none;">
+                    <div class="form-group col-sm-8">
+                        <label for="inputAddress2">Especial</label>
+                        <div>
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.Bol_Especial, new { @class = "form-control " })
+                                @Html.ValidationMessageFor(model => model.Bol_Especial, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -155,6 +200,7 @@
                 <div class="form-group col-sm-8" style="display:none">
                     <label for="inputAddress2">Fecha de Registro</label>
 
+
                     @Html.TextBoxFor(model => model.Fec_Fecha, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
                     @Html.ValidationMessageFor(model => model.Fec_Fecha, "", new { @class = "text-danger" })
 
@@ -166,13 +212,14 @@
                 <button type="button" onclick="crt()" id="modal1" class="btn btn-warning"> Comprar </button>
 
                 @*<button type="button" class="btn btn-primary" data-target="#ticket" data-toggle="modal">verificar cliente </button>*@
+
                 <script>
                     function success() {
 
                         Swal.fire({
                             position: 'top-end',
                             icon: 'success',
-                            title: 'Compra realizada Correctamente',
+                            title: 'Venta Realizada Correctamente',
                             showConfirmButton: false,
                             timer: 3000
 
@@ -180,41 +227,156 @@
 
                     }
                 </script>
-
-
             }
 
 
         </div>
     </div>
 </div>
-<div class="col-xl-5 pt-5">
+<div class="col-sm-6 pt-5">
     <div class="card shadow-lg bg-white rounded">
-        <div class="card-header bg-dark text-white ">
-            Divisas
+        <div class="card-header bg-dark text-white">
+            Divisas venta
         </div>
         <div class="card-body">
-
             @Html.Action("Tventas")
         </div>
     </div>
 </div>
 
 
+@*Modulo Ticker*@
+<div class="modal fade " id="ticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel"> <strong>Detalles de Compra</strong> </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="tickete" class="modal-body text-center">
+
+                <p class="h6 margin1"><small> Brazil Money Exchange Centro Cambiario</small></p>
+                <p class="h6 margin1"><small> CENTRO CAMBIARIO SA DE CV</small></p>
+                <p class="h6 margin1"><small>RFC: BME1112161K1</small></p>
+                <p class="h6 margin1"><small>SUCURSAL: @Session["sucursaledelusuario"]</small></p>
+                <p class="h6 margin1"><small>Av. SayI MZ. 05 L. 02 Smza 6A entre Av. Bonampak y Av. Tulum</small></p>
+
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <p class="h6 margin1"><small>Venta De Divisas</small></p>
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <table class="table table-sm table-bordered margin1">
+                    <thead class="table table-striped">
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"><small>Folio</small></th>
+                            <td id="Idticket"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Cajero</small></th>
+                            <td id="Nombre"><small>@Session["usuario"] @Session["apellido"]</small></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Fecha de Compra</small></th>
+                            <td id="fecha"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Moneda</small></th>
+                            <td id="moneda" ></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Monto</small></th>
+                            <td id="monto"> </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Tipo De Cambio</small></th>
+                            <td id="cambio"></td>
+
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Total a Pagar:</small></th>
+                            <td id="pago"></td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <p class="h6 margin1"><small>Cliente</small></p>
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <p class="h6 margin1">
+                    <small>
+                        El cliente Declara Bajo Protesta de Decir La
+                        Verdad Que Esta Operacion Se Realiza Con
+                        Recursos De Procedencia Y Destino Licitos
+                    </small>
+                </p>
+                <p class="h6 margin1"><small>------------------------------------------</small></p>
+                <p class="h6 margin1"><small>Un Buen Viajante No Tiene Planes(Confusio)</small></p>
+                <p class="h6 margin1"><small>A Good Traveler Has No Plans(Confusio)</small></p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button onclick="printJS('tickete', 'html')" type="button" class="btn btn-primary">Imprimir</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*obtener usdventa*@
+<script>
+    (function () {
+        aler();
+    })();
+
+    function aler(){
+        fetch("@Url.Content("~/Profile/usdventa")")
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+
+            }).then(function (data) {
+                data.forEach(function (Elementos) {
+                    let usd = document.getElementById("usd1");
+                    let otp = document.createElement("option");;
+                    otp.appendChild(document.createTextNode(Elementos.Text));
+                    otp.value = Elementos.value;
+
+                    console.log(usd);
+                    usd.appendChild(otp);
+
+                    var usd1 = document.getElementById("usd1").textContent;
 
 
+                    var usd3 = parseFloat(usd1);
 
+                    document.getElementById("usd").value = usd3;
 
+                })
+            })
+    }
+</script>
 
 @*modulo buscar cliente*@
-<div class="modal fade " id="modalshow" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade " id="modalshow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Buscar cliente </h5>
-                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>*@
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div>
@@ -270,22 +432,24 @@
     </div>
 </div>
 
-@*modulo agregar cliente*@
-<div class="modal fade " id="modalclientes" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+@*modulos agregar clientes*@
+<div class="modal fade " id="modalclientes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Agregar Cliente</h5>
-                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>*@
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
+
                 @using (Ajax.BeginForm("Clientes", new AjaxOptions
                 {
 
                     HttpMethod = "POST",
 
+                    UpdateTargetId = "mensaje",
                     OnComplete = "buscar()"
                 }))
                 {
@@ -383,131 +547,7 @@
     </div>
 </div>
 
-@*modulo impresion de ticket*@
-<div class="modal fade " id="ticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel"> <strong>Detalles de Compra</strong> </h6>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div id="tickete" class="modal-body text-center">
-
-                <p class="h6 margin1"><small> Brazil Money Exchange Centro Cambiario</small></p>
-                <p class="h6 margin1"><small> CENTRO CAMBIARIO SA DE CV</small></p>
-                <p class="h6 margin1"><small>RFC: BME1112161K1</small></p>
-                <p class="h6 margin1"><small>SUCURSAL: @Session["sucursaledelusuario"]</small></p>
-                <p class="h6 margin1"><small>Av. SayI MZ. 05 L. 02 Smza 6A entre Av. Bonampak y Av. Tulum</small></p>
-
-                <p class="h6 margin1"><small>-----------------------------------------</small></p>
-                <p class="h6 margin1"><small>Compra De Divisas</small></p>
-                <p class="h6 margin1"><small>-----------------------------------------</small></p>
-                <table class="table table-sm table-bordered margin1">
-                    <thead class="table table-striped">
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row"><small>Folio</small></th>
-                            <td id="Idticket"></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row"><small>Cajero</small></th>
-                            <td id="Nombre"><small>@Session["usuario"] @Session["apellido"]</small></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row"><small>Fecha de Compra</small></th>
-                            <td id="fecha"></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row"><small>Moneda</small></th>
-                            <td id="moneda"></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row"><small>Monto</small></th>
-                            <td id="monto"></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row"><small>Tipo De Cambio</small></th>
-                            <td id="cambio"></td>
-
-                        </tr>
-
-                        <tr>
-                            <th scope="row"><small>Total a Pagar:</small></th>
-                            <td id="pago"></td>
-
-                        </tr>
-
-                    </tbody>
-                </table>
-                <p class="h6 margin1"><small>-----------------------------------------</small></p>
-                <p class="h6 margin1"><small>Cliente</small></p>
-                <p class="h6 margin1"><small>-----------------------------------------</small></p>
-                <p class="h6 margin1">
-                    <small>
-                        El cliente Declara Bajo Protesta de Decir La
-                        Verdad Que Esta Operacion Se Realiza Con
-                        Recursos De Procedencia Y Destino Licitos
-                    </small>
-                </p>
-                <p class="h6 margin1"><small>------------------------------------------</small></p>
-                <p class="h6 margin1"><small>Un Buen Viajante No Tiene Planes(Confusio)</small></p>
-                <p class="h6 margin1"><small>A Good Traveler Has No Plans(Confusio)</small></p>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button onclick="printJS('tickete', 'html')" type="button" class="btn btn-primary">Imprimir</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-@*obtener usdventa*@
-<script>
-    (function () {
-        aler();
-    })();
-
-    function aler(){
-        fetch("@Url.Content("~/Profile/usdventa")")
-            .then(function (result) {
-                if (result.ok) {
-                    return result.json();
-                }
-
-            }).then(function (data) {
-                data.forEach(function (Elementos) {
-                    let usd = document.getElementById("usd1");
-                    let otp = document.createElement("option");;
-                    otp.appendChild(document.createTextNode(Elementos.Text));
-                    otp.value = Elementos.value;
-
-                    console.log(usd);
-                    usd.appendChild(otp);
-
-                    var usd1 = document.getElementById("usd1").textContent;
-
-
-                    var usd3 = parseFloat(usd1);
-
-                    document.getElementById("usd").value = usd3;
-
-                })
-            })
-    }
-</script>
-
-
-@*Obtener Divisa venta*@
+@*script obtener divisas compra*@
 <script>
     var cbo = document.getElementById("padre");
 
@@ -519,7 +559,7 @@
 
     function refresh() {
 
-        fetch("/Profile/valores2" + "?idmoneda=" + cbo.value)
+        fetch("@Url.Content("~/Profile/valores_compra")" + "?idmoneda=" + cbo.value)
             .then(function (result) {
                 if (result.ok) {
                     return result.json();
@@ -533,36 +573,53 @@
                     let opt = document.createElement("option");
 
                     opt.appendChild(document.createTextNode(Elementos.Text));
-
+                    
                     opt.value = Elementos.value;
-
+                    
                     cbopadre.appendChild(opt);
-
-                    var a = document.getElementById("hijo").textContent;
-                    var b = document.getElementById("hijo").value;
+                        var a = document.getElementById("hijo").textContent;
+                        var b = document.getElementById("hijo").value;
 
                     var c = parseFloat(a);
+                 
+                        document.getElementById("monedaid").value = b;
 
+                        document.getElementById("valor").value = c;
 
-                    document.getElementById("monedaid").value = b;
-
-                    document.getElementById("valor").value = c;
-
-                    document.getElementById("hijo").textContent = "";
+                        document.getElementById("hijo").textContent = "";
 
                     var tipo = 2;
+
+                    if (padre.value != 7) {
+                        document.getElementById("valorCompra").style.display = "";
+                    }
+                    else
+                    {
+                        document.getElementById("valorCompra").style.display = "none";
+                    }
 
                     document.getElementById("tipodetrans").value = tipo;
 
                     document.getElementById("obj").value = tipo;
-
                     var valoress = document.getElementById("valor").value;
                     var cantidades = document.getElementById("cantidad").value;
+                    var valor2 = document.getElementById("valor2").value;
+                    var valor3 = document.getElementById("entregado").value;
 
 
-                    let t_pagar = cantidades * valoress;
-                    document.getElementById("total_pago").value = t_pagar;
-                    document.getElementById("mtotal").value = t_pagar.toFixed(2);
+
+                    let multi = cantidades * valoress;
+
+
+                    let t_pagar = multi / valor2;
+
+                    document.getElementById("total_pago").value = t_pagar.toFixed(2);
+
+                    console.log("entregado",entregado);
+                    let total2 = entregado * valor2;
+
+                    document.getElementById("cambio").value = total2.toFixed(0);
+
 
 
                 })
@@ -574,9 +631,324 @@
     }
 </script>
 
-@*Tipo de usuario*@
+@*script obtener divisas venta*@
+<script>
+    var cbo1 = document.getElementById("Madre");
+
+
+    cbo1.addEventListener("change", refresh);
+
+
+    refresh();
+
+    function refresh() {
+
+        fetch("@Url.Content("~/Profile/valores2")" + "?idmoneda=" + cbo1.value)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+
+                }
+            })
+            .then(function (data) {
+                data.forEach(function (Elementos) {
+
+                    console.log(Elementos);
+
+
+                    let cbomadre = document.getElementById("hija");
+                    let opt = document.createElement("option");
+
+                    opt.appendChild(document.createTextNode(Elementos.Text));
+
+                    opt.value = Elementos.value;
+
+                    cbomadre.appendChild(opt);
+
+                    var a = document.getElementById("hija").textContent;
+                    var b = document.getElementById("hija").value;
+                    var c = parseFloat(a);
+
+                    document.getElementById("monid").value = b;
+
+                    document.getElementById("valor2").value = c;
+
+                    document.getElementById("hija").textContent = "";
+
+                    if (Madre.value != 7) {
+                        document.getElementById("cambioventa").style.display = "";
+                    }
+                    else
+                    {
+                        document.getElementById("cambioventa").style.display = "none";
+                    }
+
+                    var valoress = document.getElementById("valor").value;
+                    var cantidades = document.getElementById("cantidad").value;
+                    var valor2 = document.getElementById("valor2").value;
+                    var valor3 = document.getElementById("entregado").value;
+                   
+                    let multi = cantidades * valoress;
+
+
+                    let t_pagar = multi / valor2;
+
+                    document.getElementById("total_pago").value = t_pagar.toFixed(2);
+                    let entregado = t_pagar - valor3;
+
+                    let total2 = entregado * valor2;
+
+                    document.getElementById("cambio").value = total2.toFixed(1);
+
+
+                })
+
+            })
+
+
+
+    }
+</script>
+
+@*script compras*@
+<script src="~/Scripts/multimoneda.js"></script>
+
+
+@*script buscar cliente*@
 <script>
 
+    function buscar() {
+
+
+
+        var cbo = document.getElementById("intento").value;
+        var obr = document.getElementById("identificador").value;
+        var tel = document.getElementById("telefono").value;
+
+        if (cbo == "" || cbo =="0")
+        {
+
+
+            $('#modalclientes').modal('hide');
+
+
+            $('#modalshow').modal('show');
+
+
+            fetch("@Url.Content("~/profile/buscar")" + "?numero=" + obr)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+
+                }
+            })
+
+                .then(function (pjson) {
+
+
+
+                    let id = "";
+                    let Nombre = "";
+                    let telefono = "";
+                    let correo = "";
+                    let identificacion = "";
+                    let direccion = "";
+
+                    for (let i = 0; i < pjson.length; i++) {
+                        id += pjson[i].Lng_IdCliente
+                        Nombre += pjson[i].Txt_Cliente
+                        telefono += pjson[i].Txt_Telefono
+                        correo += pjson[i].Txt_Email
+                        identificacion += pjson[i].Txt_Identificacion
+                        direccion += pjson[i].Txt_Direccion
+                    }
+                    document.getElementById("Id").innerHTML = id;
+                    document.getElementById("Nombre").innerHTML = Nombre;
+                    document.getElementById("telefono").innerHTML = telefono;
+                    document.getElementById("correo").innerHTML = correo;
+                    document.getElementById("identificacion").innerHTML = identificacion;
+                    document.getElementById("direccion").innerHTML = direccion;
+
+                    document.getElementById("cliente").value = id;
+
+                    if (id == "") {
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Cliente no registrado, Por favor agreguelo',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                    else {
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Cliente Encontrado y/o Encontrado',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+
+                })
+        }
+
+        else if ( tel == "" || tel == "0")
+        {
+
+             $('#modalclientes').modal('hide');
+
+
+            $('#modalshow').modal('show');
+
+
+            fetch("@Url.Content("~/profile/buscar")" + "?numero=" + tel)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+
+                }
+            })
+
+                .then(function (pjson) {
+
+
+
+                    let id = "";
+                    let Nombre = "";
+                    let telefono = "";
+                    let correo = "";
+                    let identificacion = "";
+                    let direccion = "";
+
+                    for (let i = 0; i < pjson.length; i++) {
+                        id += pjson[i].Lng_IdCliente
+                        Nombre += pjson[i].Txt_Cliente
+                        telefono += pjson[i].Txt_Telefono
+                        correo += pjson[i].Txt_Email
+                        identificacion += pjson[i].Txt_Identificacion
+                        direccion += pjson[i].Txt_Direccion
+                    }
+                    document.getElementById("Id").innerHTML = id;
+                    document.getElementById("Nombre").innerHTML = Nombre;
+                    document.getElementById("telefono").innerHTML = telefono;
+                    document.getElementById("correo").innerHTML = correo;
+                    document.getElementById("identificacion").innerHTML = identificacion;
+                    document.getElementById("direccion").innerHTML = direccion;
+
+                    document.getElementById("cliente").value = id;
+
+                    if (id == "") {
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Cliente no registrado, Por favor agreguelo',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                    else {
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Cliente Encontrado y/o Encontrado',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+
+                })
+        }
+        else
+        {
+
+
+              fetch("@Url.Content("~/profile/buscar")" + "?numero=" + cbo)
+                 .then(function (result) {
+                     if (result.ok != null) {
+
+                    return result.json();
+
+                }
+            }).then(function (pjson) {
+
+
+
+                let id = "";
+                let Nombre = "";
+                let telefono = "";
+                let correo = "";
+                let identificacion = "";
+                let direccion = "";
+
+
+
+                for (let i = 0; i < pjson.length; i++)
+                {
+                    id += pjson[i].Lng_IdCliente
+                    Nombre += pjson[i].Txt_Cliente
+                    telefono +=  pjson[i].Txt_Telefono
+                    correo +=  pjson[i].Txt_Email
+                    identificacion += pjson[i].Txt_Identificacion
+                    direccion +=  pjson[i].Txt_Direccion
+                }
+                document.getElementById("Id").innerHTML = id;
+                document.getElementById("Nombre").innerHTML = Nombre;
+                document.getElementById("telefono").innerHTML = telefono;
+                document.getElementById("correo").innerHTML = correo;
+                document.getElementById("identificacion").innerHTML = identificacion;
+                document.getElementById("direccion").innerHTML = direccion;
+                document.getElementById("cliente").value = id;
+
+                if (id == "")
+                {
+
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Cliente no registrado, Por favor agreguelo',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+                else
+                {
+
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Cliente Encontrado',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+
+
+            })
+
+
+        }
+
+
+    }
+
+    function buscar1() {
+        $('#modalshow').modal('hide');
+
+        $('#modalclientes').modal('show');
+
+    }
+
+
+
+</script>
+
+@*Tipo de usuario*@
+<script>
     (function () {
         obtenertipousuario();
     })();
@@ -605,6 +977,7 @@
         }
     }
 
+
     //obtener tipo especial
     var esp = document.getElementById("Bol_Especial");
 
@@ -623,158 +996,10 @@
             console.log("funcion remove readonly corriendo");
             var cambiodesabilitado = document.getElementById("valor");
             cambiodesabilitado.removeAttribute("readonly");
+
+            var cambiodesabilitado = document.getElementById("valor2");
+            cambiodesabilitado.removeAttribute("readonly");
         }
-    }
-</script>
-
-
-@*operaciones*@
-
-<script src="~/Scripts/venta.js"></script>
-
-@*Buscar Cliente*@
-<script>
-
-    function buscar() {
-
-        var cbo = document.getElementById("intento").value;
-        var obr = document.getElementById("identificador").value;
-
-        if (cbo == "" || cbo == "0") {
-
-            $('#modalclientes').modal('hide');
-
-            $('#modalshow').modal('show');
-
-            fetch("/profile/buscar" + "?numero=" + obr)
-                .then(function (result) {
-                    if (result.ok) {
-                        return result.json();
-
-                    }
-                })
-
-                .then(function (pjson) {
-
-                    let id = "";
-                    let Nombre = "";
-                    let telefono = "";
-                    let correo = "";
-                    let identificacion = "";
-                    let direccion = "";
-
-                    for (let i = 0; i < pjson.length; i++) {
-                        id += pjson[i].Lng_IdCliente
-                        Nombre += pjson[i].Txt_Cliente
-                        telefono += pjson[i].Txt_Telefono
-                        correo += pjson[i].Txt_Email
-                        identificacion += pjson[i].Txt_Identificacion
-                        direccion += pjson[i].Txt_Direccion
-                    }
-                    document.getElementById("Id").innerHTML = id;
-                    document.getElementById("Nombre").innerHTML = Nombre;
-                    document.getElementById("telefono").innerHTML = telefono;
-                    document.getElementById("correo").innerHTML = correo;
-                    document.getElementById("identificacion").innerHTML = identificacion;
-                    document.getElementById("direccion").innerHTML = direccion;
-
-                    document.getElementById("cliente").value = id;
-
-                    if (id == "") {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Cliente no registrado, Por favor agreguelo',
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                    }
-                    else {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Cliente Encontrado y/o Encontrado',
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                    }
-
-                })
-        }
-
-        else {
-
-
-            fetch("/profile/buscar" + "?numero=" + cbo)
-                .then(function (result) {
-                    if (result.ok) {
-                        return result.json();
-
-                    }
-                })
-
-                .then(function (pjson) {
-
-                    let id = "";
-                    let Nombre = "";
-                    let telefono = "";
-                    let correo = "";
-                    let identificacion = "";
-                    let direccion = "";
-
-                    for (let i = 0; i < pjson.length; i++) {
-                        id += pjson[i].Lng_IdCliente
-                        Nombre += pjson[i].Txt_Cliente
-                        telefono += pjson[i].Txt_Telefono
-                        correo += pjson[i].Txt_Email
-                        identificacion += pjson[i].Txt_Identificacion
-                        direccion += pjson[i].Txt_Direccion
-                    }
-                    document.getElementById("Id").innerHTML = id;
-                    document.getElementById("Nombre").innerHTML = Nombre;
-                    document.getElementById("telefono").innerHTML = telefono;
-                    document.getElementById("correo").innerHTML = correo;
-                    document.getElementById("identificacion").innerHTML = identificacion;
-                    document.getElementById("direccion").innerHTML = direccion;
-
-                    document.getElementById("cliente").value = id;
-
-                    if (id == "") {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Cliente no registrado, Por favor agreguelo',
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                    }
-                    else {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Cliente Encontrado y/o Encontrado',
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                    }
-
-                })
-
-        }
-
-    }
-
-
-    function buscar1() {
-        $('#modalshow').modal('hide');
-
-        $('#modalclientes').modal('show');
-
-
     }
 
 </script>
@@ -788,9 +1013,12 @@
         return m ? (new Date(+m[1])).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : d;
     }
 
+
     (function () {
         llamadarticket();
+    
     })();
+
     function llamadarticket() {
         if (idregistroticket.value == "" || idregistroticket.value == "0") {
             console.log("funciona");
@@ -860,3 +1088,7 @@
 
     }
 </script>
+
+
+
+

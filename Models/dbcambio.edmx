@@ -31,7 +31,7 @@
             <PropertyRef Name="Int_IdTipoTran" />
           </Key>
           <Property Name="Int_IdTipoTran" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Txt_TipoTran" Type="nchar" MaxLength="10" />
+          <Property Name="Txt_TipoTran" Type="nchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Tb_Clientes">
           <Key>
@@ -45,6 +45,26 @@
           <Property Name="Txt_Telefono" Type="nchar" MaxLength="20" />
           <Property Name="Txt_Email" Type="nvarchar" MaxLength="120" />
           <Property Name="Fec_Alta" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tb_EntEmp">
+          <Key>
+            <PropertyRef Name="Lng_IdEntEmp" />
+          </Key>
+          <Property Name="Lng_IdEntEmp" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Lng_IdEntrada" Type="int" />
+          <Property Name="Int_IdUsuario" Type="int" />
+          <Property Name="Int_IdTurno" Type="int" />
+        </EntityType>
+        <EntityType Name="Tb_EntradaSuc">
+          <Key>
+            <PropertyRef Name="Lng_IdEntrada" />
+          </Key>
+          <Property Name="Lng_IdEntrada" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dbl_SaldoEntrada" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Fec_Ini" Type="datetime" />
+          <Property Name="Fec_Fin" Type="datetime" Nullable="false" />
+          <Property Name="Int_Sucursal" Type="int" />
+          <Property Name="Int_IdMoneda" Type="int" />
         </EntityType>
         <EntityType Name="Tb_PlazasApli">
           <Key>
@@ -161,6 +181,20 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.Tb_RegCli' no tiene de
           <Property Name="Img_Foto" Type="image" />
         </EntityType>
         <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.Taxacompcomb' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Taxacompcomb">
+          <Key>
+            <PropertyRef Name="Lng_IdTaxa" />
+            <PropertyRef Name="Int_IdMoneda" />
+          </Key>
+          <Property Name="IdTaxa" Type="int" />
+          <Property Name="Moneda" Type="varchar" MaxLength="20" />
+          <Property Name="Valor" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Dia" Type="datetime" />
+          <Property Name="Lng_IdTaxa" Type="int" Nullable="false" />
+          <Property Name="Int_IdMoneda" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaCompra' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="TaxaCompra">
           <Key>
@@ -194,6 +228,8 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySet Name="Ct_Plazas" EntityType="Self.Ct_Plazas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ct_TipoTran" EntityType="Self.Ct_TipoTran" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tb_Clientes" EntityType="Self.Tb_Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_EntEmp" EntityType="Self.Tb_EntEmp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_EntradaSuc" EntityType="Self.Tb_EntradaSuc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tb_PlazasApli" EntityType="Self.Tb_PlazasApli" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tb_Registros" EntityType="Self.Tb_Registros" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tb_RegistrosHistorico" EntityType="Self.Tb_RegistrosHistorico" Schema="dbo" store:Type="Tables" />
@@ -207,6 +243,16 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
     [Tb_RegCli].[Lng_IdCliente] AS [Lng_IdCliente], 
     [Tb_RegCli].[Lng_IdRegistro] AS [Lng_IdRegistro]
     FROM [dbo].[Tb_RegCli] AS [Tb_RegCli]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Taxacompcomb" EntityType="Self.Taxacompcomb" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Taxacompcomb].[IdTaxa] AS [IdTaxa], 
+    [Taxacompcomb].[Moneda] AS [Moneda], 
+    [Taxacompcomb].[Valor] AS [Valor], 
+    [Taxacompcomb].[Dia] AS [Dia], 
+    [Taxacompcomb].[Lng_IdTaxa] AS [Lng_IdTaxa], 
+    [Taxacompcomb].[Int_IdMoneda] AS [Int_IdMoneda]
+    FROM [dbo].[Taxacompcomb] AS [Taxacompcomb]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="TaxaCompra" EntityType="Self.TaxaCompra" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -308,6 +354,9 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySet Name="Ct_TipoTran" EntityType="dbcasa_cambio.Ct_TipoTran" />
           <EntitySet Name="Tb_Sucursal" EntityType="dbcasa_cambio.Tb_Sucursal" />
           <EntitySet Name="Tb_Usuarios" EntityType="dbcasa_cambio.Tb_Usuarios" />
+          <EntitySet Name="Taxacompcombs" EntityType="dbcasa_cambio.Taxacompcomb" />
+          <EntitySet Name="Tb_EntEmp" EntityType="dbcasa_cambio.Tb_EntEmp" />
+          <EntitySet Name="Tb_EntradaSuc" EntityType="dbcasa_cambio.Tb_EntradaSuc" />
         </EntityContainer>
         <EntityType Name="Tb_RegCli">
           <Key>
@@ -421,7 +470,7 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
             <PropertyRef Name="Int_IdTipoTran" />
           </Key>
           <Property Name="Int_IdTipoTran" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Txt_TipoTran" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Txt_TipoTran" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="Tb_Sucursal">
           <Key>
@@ -459,6 +508,38 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Name="Lng_IdSucursal" Type="Int32" />
           <Property Name="Int_IdDepartamentos" Type="Int32" />
           <Property Name="Img_Foto" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Taxacompcomb">
+          <Key>
+            <PropertyRef Name="Lng_IdTaxa" />
+            <PropertyRef Name="Int_IdMoneda" />
+          </Key>
+          <Property Name="IdTaxa" Type="Int32" />
+          <Property Name="Moneda" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Valor" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Dia" Type="DateTime" Precision="3" />
+          <Property Name="Lng_IdTaxa" Type="Int32" Nullable="false" />
+          <Property Name="Int_IdMoneda" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tb_EntEmp">
+          <Key>
+            <PropertyRef Name="Lng_IdEntEmp" />
+          </Key>
+          <Property Name="Lng_IdEntEmp" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Lng_IdEntrada" Type="Int32" />
+          <Property Name="Int_IdUsuario" Type="Int32" />
+          <Property Name="Int_IdTurno" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Tb_EntradaSuc">
+          <Key>
+            <PropertyRef Name="Lng_IdEntrada" />
+          </Key>
+          <Property Name="Lng_IdEntrada" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dbl_SaldoEntrada" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Fec_Ini" Type="DateTime" Precision="3" />
+          <Property Name="Fec_Fin" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Int_Sucursal" Type="Int32" />
+          <Property Name="Int_IdMoneda" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -653,6 +734,40 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
                 <ScalarProperty Name="Txt_Apellido" ColumnName="Txt_Apellido" />
                 <ScalarProperty Name="Txt_Nombre" ColumnName="Txt_Nombre" />
                 <ScalarProperty Name="Int_Idusuario" ColumnName="Int_Idusuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Taxacompcombs">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Taxacompcomb">
+              <MappingFragment StoreEntitySet="Taxacompcomb">
+                <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
+                <ScalarProperty Name="Lng_IdTaxa" ColumnName="Lng_IdTaxa" />
+                <ScalarProperty Name="Dia" ColumnName="Dia" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Moneda" ColumnName="Moneda" />
+                <ScalarProperty Name="IdTaxa" ColumnName="IdTaxa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_EntEmp">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_EntEmp">
+              <MappingFragment StoreEntitySet="Tb_EntEmp">
+                <ScalarProperty Name="Int_IdTurno" ColumnName="Int_IdTurno" />
+                <ScalarProperty Name="Int_IdUsuario" ColumnName="Int_IdUsuario" />
+                <ScalarProperty Name="Lng_IdEntrada" ColumnName="Lng_IdEntrada" />
+                <ScalarProperty Name="Lng_IdEntEmp" ColumnName="Lng_IdEntEmp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_EntradaSuc">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_EntradaSuc">
+              <MappingFragment StoreEntitySet="Tb_EntradaSuc">
+                <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
+                <ScalarProperty Name="Int_Sucursal" ColumnName="Int_Sucursal" />
+                <ScalarProperty Name="Fec_Fin" ColumnName="Fec_Fin" />
+                <ScalarProperty Name="Fec_Ini" ColumnName="Fec_Ini" />
+                <ScalarProperty Name="Dbl_SaldoEntrada" ColumnName="Dbl_SaldoEntrada" />
+                <ScalarProperty Name="Lng_IdEntrada" ColumnName="Lng_IdEntrada" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

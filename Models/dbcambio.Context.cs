@@ -42,6 +42,9 @@ namespace WebApplication2.Models
         public virtual DbSet<Ct_TipoTran> Ct_TipoTran { get; set; }
         public virtual DbSet<Tb_Sucursal> Tb_Sucursal { get; set; }
         public virtual DbSet<Tb_Usuarios> Tb_Usuarios { get; set; }
+        public virtual DbSet<Taxacompcomb> Taxacompcombs { get; set; }
+        public virtual DbSet<Tb_EntEmp> Tb_EntEmp { get; set; }
+        public virtual DbSet<Tb_EntradaSuc> Tb_EntradaSuc { get; set; }
     
         public virtual ObjectResult<buscar_Result1> buscar(string numero)
         {
