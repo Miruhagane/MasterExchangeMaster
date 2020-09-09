@@ -297,11 +297,11 @@ namespace WebApplication2.Controllers
         }
         public ActionResult Tcomprar()
         {
-            List<tazas> lst1;
+            List<Tcompras> lst1;
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
                 lst1 = (from d in dr.TaxaCompras
-                        select new tazas
+                        select new Tcompras
                         {
                             IdTaxa = d.IdTaxa,
                             Moneda = d.Moneda,

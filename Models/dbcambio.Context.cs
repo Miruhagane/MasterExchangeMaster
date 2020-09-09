@@ -77,5 +77,23 @@ namespace WebApplication2.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Tb_Clientes>("buscar1", mergeOption, numeroParameter);
         }
+    
+        public virtual ObjectResult<Tb_EntradaSuc> inven_sucursal(Nullable<int> sucursal)
+        {
+            var sucursalParameter = sucursal.HasValue ?
+                new ObjectParameter("sucursal", sucursal) :
+                new ObjectParameter("sucursal", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Tb_EntradaSuc>("inven_sucursal", sucursalParameter);
+        }
+    
+        public virtual ObjectResult<Tb_EntradaSuc> inven_sucursal(Nullable<int> sucursal, MergeOption mergeOption)
+        {
+            var sucursalParameter = sucursal.HasValue ?
+                new ObjectParameter("sucursal", sucursal) :
+                new ObjectParameter("sucursal", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Tb_EntradaSuc>("inven_sucursal", mergeOption, sucursalParameter);
+        }
     }
 }

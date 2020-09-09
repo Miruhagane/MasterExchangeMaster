@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WebApplication2.Models.ViewModels
 {
-    public class tazas
+    public class Tcompras
     {
         public Nullable<int> IdTaxa { get; set; }
         public string Moneda { get; set; }

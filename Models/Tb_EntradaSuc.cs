@@ -15,10 +15,11 @@ namespace WebApplication2.Models
     public partial class Tb_EntradaSuc
     {
         public int Lng_IdEntrada { get; set; }
-        public Nullable<decimal> Dbl_SaldoEntrada { get; set; }
+        public decimal Dbl_SaldoEntrada { get; set; }
         public Nullable<System.DateTime> Fec_Ini { get; set; }
         public System.DateTime Fec_Fin { get; set; }
         public Nullable<int> Int_Sucursal { get; set; }
         public Nullable<int> Int_IdMoneda { get; set; }
+        public Nullable<bool> Bol_Activo { get; set; }
     }
 }

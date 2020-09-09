@@ -273,6 +273,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdministracionController.cs" />
+    <Compile Include="Controllers\CajaController.cs" />
+    <Compile Include="Controllers\EntradaCajaController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\Tb_UsuariosController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
@@ -292,6 +294,9 @@
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Ct_TipoTran.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\inven_sucursal_Result.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Taxacompcomb.cs">
@@ -340,8 +345,11 @@
     <Compile Include="Models\ViewModels\Plazas.cs" />
     <Compile Include="Models\ViewModels\reegistro.cs" />
     <Compile Include="Models\ViewModels\registrosall.cs" />
+    <Compile Include="Models\ViewModels\saldos.cs" />
     <Compile Include="Models\ViewModels\Sucursal.cs" />
+    <Compile Include="Models\ViewModels\tazas.cs" />
     <Compile Include="Models\ViewModels\tbusuarios.cs" />
+    <Compile Include="Models\ViewModels\Tcompras.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -381,11 +389,17 @@
     <Compile Include="Models\usuario.cs" />
     <Compile Include="Models\ViewModels\listaclientes.cs" />
     <Compile Include="Models\ViewModels\moneda.cs" />
-    <Compile Include="Models\ViewModels\tazas.cs" />
     <Compile Include="Models\ViewModels\tipo_pago.cs" />
     <Compile Include="Models\ViewModels\Tventas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\cambiorepository.cs" />
+    <Compile Include="tazas\TazasVentas.aspx.cs">
+      <DependentUpon>TazasVentas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="tazas\TazasVentas.aspx.designer.cs">
+      <DependentUpon>TazasVentas.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="admiinistrativo\VentasUser.aspx" />
@@ -547,6 +561,8 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="tazas\TazasVentas.aspx" />
+    <Content Include="Views\EntradaCaja\entradajs\Indexjs.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -595,6 +611,15 @@
     <Content Include="Views\Tb_Usuarios\Edit.cshtml" />
     <Content Include="Views\Tb_Usuarios\Index.cshtml" />
     <Content Include="Views\Usuarios\Perfil.cshtml" />
+    <Content Include="Views\Caja\Create.cshtml" />
+    <Content Include="Views\Caja\Delete.cshtml" />
+    <Content Include="Views\Caja\Details.cshtml" />
+    <Content Include="Views\Caja\Edit.cshtml" />
+    <Content Include="Views\Caja\Index.cshtml" />
+    <Content Include="Views\EntradaCaja\Index.cshtml" />
+    <Content Include="Views\EntradaCaja\inventario.cshtml" />
+    <Content Include="Views\Administracion\Taxacompras.cshtml" />
+    <Content Include="Views\Administracion\TazasVentas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

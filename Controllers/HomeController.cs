@@ -42,10 +42,12 @@ namespace WebApplication2.Controllers
                
                 if (userv != null)
                 {
-                   //obtener los valores del usuario
+                    Session["idSucursal"] = userv.Lng_IdSucursal;
+                    //obtener los valores del usuario
                     string id = userv.Int_Idusuario.ToString();
                     int? tipo = userv.Int_IdArea;
                     int? Sucursal = userv.Lng_IdSucursal;
+                    string suc = userv.Lng_IdSucursal.ToString();
 
                     //obtener el area del usuario
                     var area = db.Ct_Areas.FirstOrDefault(a => a.Int_IdArea == tipo);
@@ -67,6 +69,7 @@ namespace WebApplication2.Controllers
                     Session["area"] = areausuario;
                     Session["intareadeusurio"] = tipo;
                     Session["sucursaledelusuario"] = Sucursalusuario;
+                    
                     Session["plazadelusuaio"] = plazadelusuario;
                     
 

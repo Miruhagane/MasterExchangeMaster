@@ -65,6 +65,7 @@
           <Property Name="Fec_Fin" Type="datetime" Nullable="false" />
           <Property Name="Int_Sucursal" Type="int" />
           <Property Name="Int_IdMoneda" Type="int" />
+          <Property Name="Bol_Activo" Type="bit" />
         </EntityType>
         <EntityType Name="Tb_PlazasApli">
           <Key>
@@ -222,6 +223,9 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Name="Lng_IdTaxa" Type="int" Nullable="false" />
           <Property Name="Int_IdMoneda" Type="int" Nullable="false" />
         </EntityType>
+        <Function Name="inven_sucursal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sucursal" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="dbcasa_cambioStoreContainer">
           <EntitySet Name="Ct_Areas" EntityType="Self.Ct_Areas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ct_Moneda" EntityType="Self.Ct_Moneda" Schema="dbo" store:Type="Tables" />
@@ -357,6 +361,9 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySet Name="Taxacompcombs" EntityType="dbcasa_cambio.Taxacompcomb" />
           <EntitySet Name="Tb_EntradaSuc" EntityType="dbcasa_cambio.Tb_EntradaSuc" />
           <EntitySet Name="Tb_EntEmp" EntityType="dbcasa_cambio.Tb_EntEmp" />
+          <FunctionImport Name="inven_sucursal" EntitySet="Tb_EntradaSuc" ReturnType="Collection(dbcasa_cambio.Tb_EntradaSuc)">
+            <Parameter Name="sucursal" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Tb_RegCli">
           <Key>
@@ -531,6 +538,7 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Name="Fec_Fin" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Int_Sucursal" Type="Int32" />
           <Property Name="Int_IdMoneda" Type="Int32" />
+          <Property Name="Bol_Activo" Type="Boolean" />
         </EntityType>
         <EntityType Name="Tb_EntEmp">
           <Key>
@@ -541,6 +549,15 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Name="Int_IdUsuario" Type="Int32" />
           <Property Name="Int_IdTurno" Type="Int32" />
         </EntityType>
+        <ComplexType Name="inven_sucursal_Result">
+          <Property Type="Int32" Name="IdTaxa" Nullable="true" />
+          <Property Type="String" Name="Moneda" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="Fec_Ini" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="Fec_Fin" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="Lng_IdEntrada" Nullable="false" />
+          <Property Type="Int32" Name="Int_IdMoneda" Nullable="false" />
+          <Property Type="Int32" Name="Lng_IdEntrada1" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -752,6 +769,7 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySetMapping Name="Tb_EntradaSuc">
             <EntityTypeMapping TypeName="dbcasa_cambio.Tb_EntradaSuc">
               <MappingFragment StoreEntitySet="Tb_EntradaSuc">
+                <ScalarProperty Name="Bol_Activo" ColumnName="Bol_Activo" />
                 <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
                 <ScalarProperty Name="Int_Sucursal" ColumnName="Int_Sucursal" />
                 <ScalarProperty Name="Fec_Fin" ColumnName="Fec_Fin" />
@@ -771,6 +789,8 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="inven_sucursal" FunctionName="dbcasa_cambio.Store.inven_sucursal">
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -38,15 +38,10 @@
         <input id="uservalue" value="@Session["intareadeusurio"]" />
     </div>
     
-
-
-
     <div class="d-flex " id="content-wrapper">
         <div id="sidebar-container" class="fondo ">
 
             <div class="logo">
-
-             
 
             </div>
 
@@ -65,14 +60,11 @@
                     </button>
 
                 </div>
-                
-                <div class="d-block text-light p-1 border-0">
 
+                <div class="d-block text-light p-1 border-0">
                     <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "Administracion")'">
                         <i class="fas fa-tasks">Panel De Control</i>
                     </button>
-
-
                 </div>
 
                 <div class="btn-group  d-block text-light p-1 border-0">
@@ -81,16 +73,23 @@
                     </button>
                     <div class="dropdown-menu bg-dark">
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Create", "Usuarios")'"><i class="fas fa-user-plus">Crear Usuario </i></button>
-                        <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Index", "Usuarios")'"><i class="fas fa-user-tag pr-1">Buscar Usuario</i></button>
-
+                        <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Index", "Usuarios")'"><i class="fas fa-user-tag pl-1">Buscar Usuario</i></button>
                     </div>
                 </div>
 
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "EntradaCaja")'"><i class="fas fa-angle-double-down">Entrada de Caja</i></button>
+                </div>
 
-                <a href="#" class="d-block text-light p-3 border-0">
-                    <i class="icon ion-md-person lead mr-2"></i>
-                    cierre y corte
-                </a>
+                <div class="d-block text-light border-0">
+                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Taxacompras", "Administracion")'"><i class="fas fa-list-alt">Tazas de compra</i></button>
+                </div>
+
+                <div class="d-block text-light border-0">
+                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("TazasVentas", "Administracion")'"><i class="fas fa-list-alt">Tazas de Venta</i></button>
+                </div>
+                
+
                 <a href="#" class="d-block text-light p-3 border-0">
                     <i class="icon ion-md-settings lead mr-2"></i>
                     Personalizacion

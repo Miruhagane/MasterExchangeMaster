@@ -9,18 +9,16 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows;
 
-namespace WebApplication2.aspx
+namespace WebApplication2.tazas
 {
-    public partial class frmtazas : System.Web.UI.Page
+    public partial class TazasVentas : System.Web.UI.Page
     {
-
         string con = ConfigurationManager.ConnectionStrings["server2"].ConnectionString;
-        
-        string[] valoresmoneda = {"","","","","",""};
-         
+
+        string[] valoresmoneda = { "", "", "", "", "", "" };
 
         protected void Page_Load(object sender, EventArgs e)
-        { 
+        {
             string iduser1 = Convert.ToString(Session["intareadeusurio"]);
             IdUser.Text = iduser1;
             obtndivisa();
@@ -30,27 +28,27 @@ namespace WebApplication2.aspx
         {
             int v = 0;
 
-            for ( int tb = 0; tb < 6; tb++)
-                {
-                    
-                if (valoresmoneda[v] == "")
-                    {
-                        valoresmoneda[v] = ((TextBox)Tb_taxaCompras.Rows[v].FindControl("TextValor")).Text;
-                    }
-                    else
-                    {
-                        valoresmoneda[v] += "" + ((TextBox)Tb_taxaCompras.Rows[v].FindControl("TextValor")).Text;
-                    }
+            for (int tb = 0; tb < 6; tb++)
+            {
 
-                    v = v + 1;
+                if (valoresmoneda[v] == "")
+                {
+                    valoresmoneda[v] = ((TextBox)Tb_taxaVentas.Rows[v].FindControl("TextValor")).Text;
                 }
+                else
+                {
+                    valoresmoneda[v] += "" + ((TextBox)Tb_taxaVentas.Rows[v].FindControl("TextValor")).Text;
+                }
+
+                v = v + 1;
+            }
 
         }
 
         private void valorXsuxursal()
         {
             int valor = 0;
-            
+
             string sucursalcancun = "";
 
             for (int i = 0; i < CheckBoxcancun.Items.Count; i++)
@@ -60,30 +58,30 @@ namespace WebApplication2.aspx
                     if (sucursalcancun == "")
                     {
                         sucursalcancun = CheckBoxcancun.Items[i].Value;
-                       
+
                     }
 
                 }
                 if (sucursalcancun != "")
-                { 
-                
-                   for (int b = 0; b < 6; b++)
                 {
-                    SqlConnection conectorbd = new SqlConnection(con);
-                    SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + valoresmoneda[valor]+ ", 1, GETDATE(), '', 1)", conectorbd);
-                    conectorbd.Open();
-                    inser1.ExecuteNonQuery();
-                    conectorbd.Close();
 
-                    SqlCommand query = new SqlCommand("INSERT INTO [dbo].[Tb_TaxSuc] ([Lng_IdSucursal], [Int_IdGrupo]) VALUES (" + sucursalcancun + ", 1)", conectorbd);
-                    conectorbd.Open();
-                    query.ExecuteNonQuery();
-                    conectorbd.Close();
-                    
-                 }
- 
+                    for (int b = 0; b < 6; b++)
+                    {
+                        SqlConnection conectorbd = new SqlConnection(con);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + valoresmoneda[valor] + ", 1, GETDATE(), '', 2)", conectorbd);
+                        conectorbd.Open();
+                        inser1.ExecuteNonQuery();
+                        conectorbd.Close();
+
+                        SqlCommand query = new SqlCommand("INSERT INTO [dbo].[Tb_TaxSuc] ([Lng_IdSucursal], [Int_IdGrupo]) VALUES (" + sucursalcancun + ", 2)", conectorbd);
+                        conectorbd.Open();
+                        query.ExecuteNonQuery();
+                        conectorbd.Close();
+
+                    }
+
                 }
-                
+
                 valor = valor + 1;
                 sucursalcancun = "";
 
@@ -93,7 +91,7 @@ namespace WebApplication2.aspx
         private void valorXplaya()
         {
             int valor = 0;
-            
+
             string carmen = "";
 
             for (int i = 0; i < CheckBoxcarmen.Items.Count; i++)

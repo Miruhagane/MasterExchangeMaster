@@ -10,13 +10,15 @@
 namespace WebApplication2.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Tb_EntEmp
+    public partial class inven_sucursal_Result
     {
-        public int Lng_IdEntEmp { get; set; }
-        public Nullable<int> Lng_IdEntrada { get; set; }
-        public Nullable<int> Int_IdUsuario { get; set; }
-        public Nullable<int> Int_IdTurno { get; set; }
+        public Nullable<int> IdTaxa { get; set; }
+        public string Moneda { get; set; }
+        public Nullable<System.DateTime> Fec_Ini { get; set; }
+        public System.DateTime Fec_Fin { get; set; }
+        public int Lng_IdEntrada { get; set; }
+        public int Int_IdMoneda { get; set; }
+        public Nullable<int> Lng_IdEntrada1 { get; set; }
     }
 }
