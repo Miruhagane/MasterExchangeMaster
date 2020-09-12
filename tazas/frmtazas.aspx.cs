@@ -23,11 +23,19 @@ namespace WebApplication2.aspx
         { 
             string iduser1 = Convert.ToString(Session["intareadeusurio"]);
             IdUser.Text = iduser1;
-            obtndivisa();
+            
         }
 
         private void obtndivisa()
         {
+            int sucursalid = Convert.ToInt32(sucursalselect.SelectedValue);
+            SqlDataAdapter compras = new SqlDataAdapter("SELECT DISTINCT a.Int_IdMoneda AS IdTaxa, b.Txt_Moneda AS Moneda, a.dbl_Valor AS Valor, a.Fec_Dia AS Dia, a.Lng_IdTaxa, b.Int_IdMoneda FROM dbo.Tb_Taxas AS a INNER JOIN dbo.Ct_Moneda AS b ON a.Int_IdMoneda = b.Int_IdMoneda inner join dbo.Tb_TaxSuc AS c On a.Lng_IdTaxa = c.Lng_IdTaxSuc WHERE(a.Bol_Tipo = 0) AND(a.Int_IdGrupo = (SELECT MAX(Int_IdGrupo) AS Expr1 FROM dbo.Tb_Taxas AS x WHERE(Bol_Tipo = 0))) AND(a.Int_IdMoneda IN(1, 2, 3, 4, 5, 6)) and c.Lng_IdSucursal = "+ sucursalid + "", con);
+            DataTable tabla = new DataTable();
+            compras.Fill(tabla);
+            this.Tb_taxaCompras.DataSource = (tabla);
+            Tb_taxaCompras.DataBind();
+;
+            //obtener valores de cada divisa
             int v = 0;
 
             for ( int tb = 0; tb < 6; tb++)
@@ -35,11 +43,11 @@ namespace WebApplication2.aspx
                     
                 if (valoresmoneda[v] == "")
                     {
-                        valoresmoneda[v] = ((TextBox)Tb_taxaCompras.Rows[v].FindControl("TextValor")).Text;
+                        valoresmoneda[v] = ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
                     }
                     else
                     {
-                        valoresmoneda[v] += "" + ((TextBox)Tb_taxaCompras.Rows[v].FindControl("TextValor")).Text;
+                        valoresmoneda[v] += "" + ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
                     }
 
                     v = v + 1;
@@ -313,6 +321,11 @@ namespace WebApplication2.aspx
             valorXtulum();
             valorxcdmx();
             valorxleon();
+        }
+
+        protected void Buscarsucursal_Click(object sender, EventArgs e)
+        {
+            obtndivisa();
         }
     }
 }

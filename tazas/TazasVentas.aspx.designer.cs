@@ -42,15 +42,6 @@ namespace WebApplication2.tazas
         protected global::System.Web.UI.WebControls.GridView Tb_taxaVentas;
 
         /// <summary>
-        /// Control TaxaVentas.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource TaxaVentas;
-
-        /// <summary>
         /// Control CheckBoxcancun.
         /// </summary>
         /// <remarks>
@@ -184,5 +175,32 @@ namespace WebApplication2.tazas
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Guardar;
+
+        /// <summary>
+        /// Control sucursalselect.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList sucursalselect;
+
+        /// <summary>
+        /// Control sucursales.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sucursales;
+
+        /// <summary>
+        /// Control Buscarsucursal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Buscarsucursal;
     }
 }

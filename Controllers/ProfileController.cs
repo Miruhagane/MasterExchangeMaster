@@ -295,19 +295,23 @@ namespace WebApplication2.Controllers
             }
             return Json(usd, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult Tcomprar()
         {
-            List<Tcompras> lst1;
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
+            bool a = true;
+            IList<int> idmonedas = new List<int>(){ 1, 2, 3, 4, 5, 6 };
+            List<Tcompras> lst1 = new List<Tcompras>();
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
-                lst1 = (from d in dr.TaxaCompras
+                lst1 = (from d in dr.Tb_Taxas
+                        join da in dr.Ct_Moneda on d.Int_IdMoneda equals da.Int_IdMoneda
+                        join db in dr.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                        where d.Bol_Tipo == a &&  idmonedas.Contains((int)d.Int_IdMoneda) && db.Lng_IdSucursal == sucursalid
                         select new Tcompras
                         {
-                            IdTaxa = d.IdTaxa,
-                            Moneda = d.Moneda,
-                            Valor = d.Valor,
-                            Dia = d.Dia
-
+                            Moneda = da.Txt_Moneda,
+                            Valor = d.dbl_Valor
                         }).ToList();
             }
 
@@ -316,17 +320,21 @@ namespace WebApplication2.Controllers
 
         public ActionResult Tventas()
         {
-            List<Tventas> lst1;
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
+            bool a = false;
+            IList<int> idmonedas = new List<int>() { 1, 2, 3, 4, 5, 6 };
+
+            List<Tventas> lst1 = new List<Tventas>();
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
-                lst1 = (from d in dr.TaxaVentas
+                lst1 = (from d in dr.Tb_Taxas
+                        join da in dr.Ct_Moneda on d.Int_IdMoneda equals da.Int_IdMoneda
+                        join db in dr.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                        where d.Bol_Tipo == a && idmonedas.Contains((int)d.Int_IdMoneda) && db.Lng_IdSucursal == sucursalid
                         select new Tventas
                         {
-                            IdTaxa = d.IdTaxa,
-                            Moneda = d.Moneda,
-                            Valor = d.Valor,
-                            Dia = d.Dia
-
+                            Moneda = da.Txt_Moneda,
+                            Valor = d.dbl_Valor
                         }).ToList();
             }
 

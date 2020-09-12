@@ -13,7 +13,7 @@ using EntityState = System.Data.Entity.EntityState;
 using WebApplication2.Models.ViewModels;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
-
+using System.Data.EntityClient;
 
 namespace WebApplication2.Controllers
 {
@@ -57,22 +57,63 @@ namespace WebApplication2.Controllers
 
         }
 
-       
-        public JsonResult inventario()
+        public ActionResult invet()
         {
-            var ds = db.Database.ExecuteSqlCommand("select Tb_EntradaSuc.Int_IdMoneda  as IdTaxa, Ct_Moneda.Txt_Moneda as Moneda, Tb_EntradaSuc.Dbl_SaldoEntrada  as 'Valor' from dbo.Tb_EntradaSuc INNER JOIN dbo.Ct_Moneda ON Tb_EntradaSuc.Int_IdMoneda  = Ct_Moneda.Int_IdMoneda  inner join dbo.Tb_EntEmp On Tb_EntradaSuc.Lng_IdEntrada = Tb_EntEmp.Lng_IdEntrada Where(Tb_EntradaSuc.Bol_Activo = 1) and(Tb_EntradaSuc.Int_IdMoneda IN(1, 2, 3, 4, 5, 6, 7)) and Tb_EntradaSuc.Int_Sucursal = @sucursal", new SqlParameter("@sucursal", Session["idSucursal"]));
-            var jsonresult1 = JsonConvert.SerializeObject(ds);     
-            return Json(jsonresult1, JsonRequestBehavior.AllowGet);  
+            bool a = true;
+            int idsucursal = 1;
+          
+            IList<int> idmonedas = new List<int>() {1,2,3,4,5,6};
+
+            List<inventario> querty = new List<inventario>();
+            using (MasterExchangeEntities dr = new MasterExchangeEntities())
+            {
+                querty = (from c in dr.Tb_EntradaSuc
+                          join ca in dr.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
+                          join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
+                          where c.Int_Sucursal == idsucursal && c.Bol_Activo == a 
+                          select new inventario()
+                          { 
+                              Int_IdMoneda = cb.Int_IdMoneda,
+                              Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
+                              Txt_Moneda = cb.Txt_Moneda
+                          }).ToList();
+            }
+            return View(querty);
         }
+
+        public JsonResult invets()
+        {
+            bool a = true;
+            int idsucursal = 1;
+
+            IList<int> idmonedas = new List<int>() { 1, 2, 3, 4, 5, 6 };
+
+            List<inventario> querty = new List<inventario>();
+            using (MasterExchangeEntities dr = new MasterExchangeEntities())
+            {
+                querty = (from c in dr.Tb_EntradaSuc
+                          join ca in dr.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
+                          join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
+                          where c.Int_Sucursal == idsucursal && c.Bol_Activo == a
+                          select new inventario()
+                          {
+                              Int_IdMoneda = cb.Int_IdMoneda,
+                              Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
+                              Txt_Moneda = cb.Txt_Moneda
+                          }).ToList();
+
+                return Json(querty, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         // GET: EntradaCaja
         public ActionResult Index()
         {
             modulodivisas();
             return View();
-        }
 
-      
+        }
 
         // POST: EntradaCaja/Index
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 

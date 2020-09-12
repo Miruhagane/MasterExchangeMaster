@@ -152,6 +152,14 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.Tb_RegCli' no tiene de
           <Property Name="Fec_Vencimiento" Type="datetime" />
           <Property Name="Int_IdGrupo" Type="int" />
         </EntityType>
+        <EntityType Name="Tb_TaxSuc">
+          <Key>
+            <PropertyRef Name="Lng_IdTaxSuc" />
+          </Key>
+          <Property Name="Lng_IdTaxSuc" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Lng_IdSucursal" Type="int" />
+          <Property Name="Int_IdGrupo" Type="int" />
+        </EntityType>
         <EntityType Name="Tb_Usuarios">
           <Key>
             <PropertyRef Name="Int_Idusuario" />
@@ -240,6 +248,7 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySet Name="Tb_RegUsu" EntityType="Self.Tb_RegUsu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tb_Sucursal" EntityType="Self.Tb_Sucursal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tb_Taxas" EntityType="Self.Tb_Taxas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_TaxSuc" EntityType="Self.Tb_TaxSuc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tb_Usuarios" EntityType="Self.Tb_Usuarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tb_RegCli" EntityType="Self.Tb_RegCli" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -362,8 +371,9 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySet Name="Tb_EntradaSuc" EntityType="dbcasa_cambio.Tb_EntradaSuc" />
           <EntitySet Name="Tb_EntEmp" EntityType="dbcasa_cambio.Tb_EntEmp" />
           <FunctionImport Name="inven_sucursal" EntitySet="Tb_EntradaSuc" ReturnType="Collection(dbcasa_cambio.Tb_EntradaSuc)">
-            <Parameter Name="sucursal" Mode="In" Type="Int32" />
+          <Parameter Name="sucursal" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Tb_TaxSuc" EntityType="dbcasa_cambio.Tb_TaxSuc" />
         </EntityContainer>
         <EntityType Name="Tb_RegCli">
           <Key>
@@ -558,6 +568,14 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Type="Int32" Name="Int_IdMoneda" Nullable="false" />
           <Property Type="Int32" Name="Lng_IdEntrada1" Nullable="true" />
         </ComplexType>
+        <EntityType Name="Tb_TaxSuc">
+          <Key>
+            <PropertyRef Name="Lng_IdTaxSuc" />
+          </Key>
+          <Property Name="Lng_IdTaxSuc" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Lng_IdSucursal" Type="Int32" />
+          <Property Name="Int_IdGrupo" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -791,6 +809,15 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="inven_sucursal" FunctionName="dbcasa_cambio.Store.inven_sucursal">
           </FunctionImportMapping>
+          <EntitySetMapping Name="Tb_TaxSuc">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_TaxSuc">
+              <MappingFragment StoreEntitySet="Tb_TaxSuc">
+                <ScalarProperty Name="Int_IdGrupo" ColumnName="Int_IdGrupo" />
+                <ScalarProperty Name="Lng_IdSucursal" ColumnName="Lng_IdSucursal" />
+                <ScalarProperty Name="Lng_IdTaxSuc" ColumnName="Lng_IdTaxSuc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

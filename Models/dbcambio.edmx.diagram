@@ -22,6 +22,7 @@
         <EntityTypeShape EntityType="dbcasa_cambio.Taxacompcomb" Width="1.5" PointX="7.375" PointY="11.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_EntradaSuc" Width="1.5" PointX="11.375" PointY="9.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_EntEmp" Width="1.5" PointX="11.375" PointY="6.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_TaxSuc" Width="1.5" PointX="0.75" PointY="12.75" />
 
       </Diagram>
     </edmx:Diagrams>

@@ -45,6 +45,7 @@ namespace WebApplication2.Models
         public virtual DbSet<Taxacompcomb> Taxacompcombs { get; set; }
         public virtual DbSet<Tb_EntradaSuc> Tb_EntradaSuc { get; set; }
         public virtual DbSet<Tb_EntEmp> Tb_EntEmp { get; set; }
+        public virtual DbSet<Tb_TaxSuc> Tb_TaxSuc { get; set; }
     
         public virtual ObjectResult<buscar_Result1> buscar(string numero)
         {

@@ -338,10 +338,14 @@
     <Compile Include="Models\Tb_Taxas.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Tb_TaxSuc.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tb_Usuarios.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\Areas.cs" />
+    <Compile Include="Models\ViewModels\inventario.cs" />
     <Compile Include="Models\ViewModels\Plazas.cs" />
     <Compile Include="Models\ViewModels\reegistro.cs" />
     <Compile Include="Models\ViewModels\registrosall.cs" />
@@ -617,9 +621,10 @@
     <Content Include="Views\Caja\Edit.cshtml" />
     <Content Include="Views\Caja\Index.cshtml" />
     <Content Include="Views\EntradaCaja\Index.cshtml" />
-    <Content Include="Views\EntradaCaja\inventario.cshtml" />
     <Content Include="Views\Administracion\Taxacompras.cshtml" />
     <Content Include="Views\Administracion\TazasVentas.cshtml" />
+    <Content Include="Views\EntradaCaja\invet.cshtml" />
+    <Content Include="Views\EntradaCaja\invets.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
