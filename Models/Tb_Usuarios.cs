@@ -11,7 +11,8 @@ namespace WebApplication2.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Tb_Usuarios
     {
         public int Int_Idusuario { get; set; }
@@ -22,7 +23,11 @@ namespace WebApplication2.Models
         public int Bol_Activo { get; set; }
         public Nullable<int> Int_IdArea { get; set; }
         public Nullable<int> Int_IdSubarea { get; set; }
-        public Nullable<System.DateTime> Fec_Alta { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime Fec_Alta { get; set; }
+
+
         public Nullable<System.DateTime> Fec_Baja { get; set; }
         public string Int_Ext { get; set; }
         public string Num_Telefono_1 { get; set; }

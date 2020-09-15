@@ -21,10 +21,7 @@
 </head>
 <body>
     <form id="form1" runat="server" class="form-row">
-        <div class="col-sm-12 pl-2">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalsucursales">Buscar sucursal</button>
-
-        </div>
+       
           <div style="display: none">
             <asp:TextBox ID="IdUser" runat="server"></asp:TextBox>    
         </div>
@@ -90,10 +87,21 @@
                              <label class="form-check-label" for="Leon1"> Leon</label>
                          </div>
 
+                <div class=" col-sm-12">
+                    <div class="col-sm-6">
+                        <asp:Button ID="Guardar" CssClass="btn btn-info" runat="server" Text="Guardar" OnClick="Guardar_Click" />
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalsucursales">Buscar sucursal</button>
+                    </div>
+
+                </div>
+
+
             </div>
 
             <div class="col-sm-4 form-group  ">
-                           <div class="col-sm-12" id="listcancun" style="display:none">
+                           <div class="col-sm-6" id="listcancun" style="display:none">
                                <asp:CheckBoxList ID="CheckBoxcancun" runat="server" DataSourceID="suc_cancun" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
                                <asp:SqlDataSource ID="suc_cancun" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Txt_Sucursal], [Int_IdPlaza] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                    <SelectParameters>
@@ -102,7 +110,7 @@
                                </asp:SqlDataSource>
                            </div>
 
-                           <div class="col-sm-12" id="listaplaya" style="display:none">
+                           <div class="col-sm-6" id="listaplaya" style="display:none">
                                <asp:CheckBoxList ID="CheckBoxcarmen" runat="server" DataSourceID="suc_playa" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
                                <asp:SqlDataSource ID="suc_playa" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                    <SelectParameters>
@@ -111,7 +119,7 @@
                                </asp:SqlDataSource>
                            </div>
 
-                           <div class="col-sm-12" id="listacabos" style="display:none">
+                           <div class="col-sm-6" id="listacabos" style="display:none">
                                <asp:CheckBoxList ID="CheckBoxcabos" runat="server" DataSourceID="suc_cabos" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
                                <asp:SqlDataSource ID="suc_cabos" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                    <SelectParameters>
@@ -120,7 +128,7 @@
                                </asp:SqlDataSource>
                            </div>
 
-                           <div class="col-sm-12" id="listatulum" style="display:none">
+                           <div class="col-sm-6" id="listatulum" style="display:none">
                                <asp:CheckBoxList ID="CheckBoxtulum" runat="server" DataSourceID="suc_tulum" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
                                <asp:SqlDataSource ID="suc_tulum" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                    <SelectParameters>
@@ -129,7 +137,7 @@
                                </asp:SqlDataSource>
                            </div>
 
-                           <div class="col-sm-12" id="listacdmx" style="display:none">
+                           <div class="col-sm-6" id="listacdmx" style="display:none">
                                <asp:CheckBoxList ID="CheckBoxcdmx" runat="server" DataSourceID="suc_cdmx" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
                                <asp:SqlDataSource ID="suc_cdmx" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                    <SelectParameters>
@@ -138,7 +146,7 @@
                                </asp:SqlDataSource>
                            </div>
 
-                           <div class="col-sm-12" id="listaleon" style="display:none">
+                           <div class="col-sm-6" id="listaleon" style="display:none">
                                <asp:CheckBoxList ID="CheckBoxleon" runat="server" DataSourceID="suc_leon" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
                                <asp:SqlDataSource ID="suc_leon" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                    <SelectParameters>
@@ -154,20 +162,7 @@
               
         </div>
 
-        <div class=" col-sm-12">
-                        <div class="col-sm-6">
-                            <asp:Label ID="valores" runat="server"></asp:Label>
-                            <asp:Label ID="idmon" runat="server"></asp:Label>
-                        </div>
-                        
-                        <div class="col-sm-6">
-                            <asp:Button ID="Guardar" CssClass="btn btn-info" runat="server" Text="Guardar" OnClick="Guardar_Click" />
-
-                        </div>
-
-                    
-                    </div>
-
+     
         <div class="modal fade" id="modalsucursales" tabindex="-1"  data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">

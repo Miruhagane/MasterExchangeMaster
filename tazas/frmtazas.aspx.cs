@@ -17,6 +17,7 @@ namespace WebApplication2.aspx
         string con = ConfigurationManager.ConnectionStrings["server2"].ConnectionString;
         
         string[] valoresmoneda = {"","","","","",""};
+        int[] idmonedas = { 1, 2, 3, 4, 5, 6 }; 
          
 
         protected void Page_Load(object sender, EventArgs e)
@@ -36,28 +37,13 @@ namespace WebApplication2.aspx
             Tb_taxaCompras.DataBind();
 ;
             //obtener valores de cada divisa
-            int v = 0;
-
-            for ( int tb = 0; tb < 6; tb++)
-                {
-                    
-                if (valoresmoneda[v] == "")
-                    {
-                        valoresmoneda[v] = ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
-                    }
-                    else
-                    {
-                        valoresmoneda[v] += "" + ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
-                    }
-
-                    v = v + 1;
-                }
+        
 
         }
 
         private void valorXsuxursal()
         {
-            int valor = 0;
+           
             
             string sucursalcancun = "";
 
@@ -67,18 +53,35 @@ namespace WebApplication2.aspx
                 {
                     if (sucursalcancun == "")
                     {
-                        sucursalcancun = CheckBoxcancun.Items[i].Value;
-                       
+                        sucursalcancun = CheckBoxcancun.Items[i].Value;  
                     }
-
                 }
                 if (sucursalcancun != "")
-                { 
-                
-                   for (int b = 0; b < 6; b++)
                 {
+                    int val = 0;
+                    int v = 0;
+                    int valor = 0;
+                    for (int tb = 0; tb < 6; tb++)
+                    {
+
+                        if (valoresmoneda[v] == "")
+                        {
+                            valoresmoneda[v] = ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+                            
+                        }
+                        else
+                        {
+                            valoresmoneda[v] += "" + ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+                        }
+
+
+                        v = v + 1;
+                    }
+
+                    for (int b = 0; b < 6; b++)
+                  {
                     SqlConnection conectorbd = new SqlConnection(con);
-                    SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + valoresmoneda[valor]+ ", 1, GETDATE(), '', 1)", conectorbd);
+                    SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( "+ idmonedas[valor]+ "," + valoresmoneda[valor]+ ", 0, GETDATE(), '', 1)", conectorbd);
                     conectorbd.Open();
                     inser1.ExecuteNonQuery();
                     conectorbd.Close();
@@ -87,12 +90,19 @@ namespace WebApplication2.aspx
                     conectorbd.Open();
                     query.ExecuteNonQuery();
                     conectorbd.Close();
-                    
-                 }
+
+                        valor = valor + 1;
+                    }
+
+                    for (int l = 0; l < 6; l++)
+                    {
+                        valoresmoneda[val] = "";
+                        val = val + 1;
+                    }
  
                 }
                 
-                valor = valor + 1;
+               
                 sucursalcancun = "";
 
             }
@@ -100,12 +110,14 @@ namespace WebApplication2.aspx
 
         private void valorXplaya()
         {
-            int valor = 0;
+          
             
             string carmen = "";
 
             for (int i = 0; i < CheckBoxcarmen.Items.Count; i++)
             {
+          
+
                 if (CheckBoxcarmen.Items[i].Selected)
                 {
                     if (carmen == "")
@@ -117,11 +129,31 @@ namespace WebApplication2.aspx
                 }
                 if (carmen != "")
                 {
+                    int val = 0;
+                    int valor = 0;
+                    int v = 0;
+
+                    for (int tb = 0; tb < 6; tb++)
+                    {
+
+                        if (valoresmoneda[v] == "")
+                        {
+                            valoresmoneda[v] = ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+
+                        }
+                        else
+                        {
+                            valoresmoneda[v] += "" + ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+                        }
+
+
+                        v = v + 1;
+                    }
 
                     for (int b = 0; b < 6; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
-                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 0, GETDATE(), '', 1)", conectorbd);
                         conectorbd.Open();
                         inser1.ExecuteNonQuery();
                         conectorbd.Close();
@@ -130,12 +162,17 @@ namespace WebApplication2.aspx
                         conectorbd.Open();
                         query.ExecuteNonQuery();
                         conectorbd.Close();
+                        valor = valor + 1;
 
                     }
-
+                    for (int l = 0; l < 6; l++)
+                    {
+                        valoresmoneda[val] = "";
+                        val = val + 1;
+                    }
                 }
 
-                valor = valor + 1;
+          
                 carmen = "";
 
             }
@@ -143,12 +180,14 @@ namespace WebApplication2.aspx
 
         private void valorXcabos()
         {
-            int valor = 0;
+            
 
             string cabos = "";
 
             for (int i = 0; i < CheckBoxcabos.Items.Count; i++)
             {
+            
+
                 if (CheckBoxcabos.Items[i].Selected)
                 {
                     if (cabos == "")
@@ -160,11 +199,31 @@ namespace WebApplication2.aspx
                 }
                 if (cabos != "")
                 {
+                    int val = 0;
+                    int v = 0;
+                    int valor = 0;
+
+                    for (int tb = 0; tb < 6; tb++)
+                    {
+
+                        if (valoresmoneda[v] == "")
+                        {
+                            valoresmoneda[v] = ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+
+                        }
+                        else
+                        {
+                            valoresmoneda[v] += "" + ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+                        }
+
+
+                        v = v + 1;
+                    }
 
                     for (int b = 0; b < 6; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
-                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + idmonedas[valor] + "," + valoresmoneda[valor] + ", 0, GETDATE(), '', 1)", conectorbd);
                         conectorbd.Open();
                         inser1.ExecuteNonQuery();
                         conectorbd.Close();
@@ -173,12 +232,16 @@ namespace WebApplication2.aspx
                         conectorbd.Open();
                         query.ExecuteNonQuery();
                         conectorbd.Close();
-
+                        valor = valor + 1;
                     }
-
+                    for (int l = 0; l < 6; l++)
+                    {
+                        valoresmoneda[val] = "";
+                        val = val + 1;
+                    }
                 }
 
-                valor = valor + 1;
+              
                 cabos = "";
 
             }
@@ -186,7 +249,7 @@ namespace WebApplication2.aspx
 
         private void valorXtulum()
         {
-            int valor = 0;
+        
 
             string tulum = "";
 
@@ -203,11 +266,31 @@ namespace WebApplication2.aspx
                 }
                 if (tulum != "")
                 {
+                    int val = 0;
+                    int valor = 0;
+                    int v = 0;
+
+                    for (int tb = 0; tb < 6; tb++)
+                    {
+
+                        if (valoresmoneda[v] == "")
+                        {
+                            valoresmoneda[v] = ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+
+                        }
+                        else
+                        {
+                            valoresmoneda[v] += "" + ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+                        }
+
+
+                        v = v + 1;
+                    }
 
                     for (int b = 0; b < 6; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
-                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + idmonedas[valor] + "," + valoresmoneda[valor] + ", 0, GETDATE(), '', 1)", conectorbd);
                         conectorbd.Open();
                         inser1.ExecuteNonQuery();
                         conectorbd.Close();
@@ -217,11 +300,16 @@ namespace WebApplication2.aspx
                         query.ExecuteNonQuery();
                         conectorbd.Close();
 
+                        valor = valor + 1;
                     }
-
+                    for (int l = 0; l < 6; l++)
+                    {
+                        valoresmoneda[val] = "";
+                        val = val + 1;
+                    }
                 }
 
-                valor = valor + 1;
+        
                 tulum = "";
 
             }
@@ -229,7 +317,7 @@ namespace WebApplication2.aspx
 
         private void valorxcdmx()
         {
-            int valor = 0;
+           
 
             string cdmx = "";
 
@@ -246,11 +334,32 @@ namespace WebApplication2.aspx
                 }
                 if (cdmx != "")
                 {
+                    int val = 0;
+                    int valor = 0;
+
+                    int v = 0;
+
+                    for (int tb = 0; tb < 6; tb++)
+                    {
+
+                        if (valoresmoneda[v] == "")
+                        {
+                            valoresmoneda[v] = ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+
+                        }
+                        else
+                        {
+                            valoresmoneda[v] += "" + ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+                        }
+
+
+                        v = v + 1;
+                    }
 
                     for (int b = 0; b < 6; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
-                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + ", " + valoresmoneda[valor] + ", 0, GETDATE(), '', 1)", conectorbd);
                         conectorbd.Open();
                         inser1.ExecuteNonQuery();
                         conectorbd.Close();
@@ -259,12 +368,16 @@ namespace WebApplication2.aspx
                         conectorbd.Open();
                         query.ExecuteNonQuery();
                         conectorbd.Close();
-
+                        valor = valor + 1;
                     }
-
+                    for (int l = 0; l < 6; l++)
+                    {
+                        valoresmoneda[val] = "";
+                        val = val + 1;
+                    }
                 }
 
-                valor = valor + 1;
+      
                 cdmx = "";
 
             }
@@ -272,7 +385,7 @@ namespace WebApplication2.aspx
 
         private void valorxleon()
         {
-            int valor = 0;
+            
 
             string leon = "";
 
@@ -289,11 +402,31 @@ namespace WebApplication2.aspx
                 }
                 if (leon != "")
                 {
+                    int val = 0;
+                    int v = 0;
+                    int valor = 0;
+
+                    for (int tb = 0; tb < 6; tb++)
+                    {
+
+                        if (valoresmoneda[v] == "")
+                        {
+                            valoresmoneda[v] = ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+
+                        }
+                        else
+                        {
+                            valoresmoneda[v] += "" + ((TextBox)Tb_taxaCompras.Rows[v].FindControl("textvalor")).Text;
+                        }
+
+
+                        v = v + 1;
+                    }
 
                     for (int b = 0; b < 6; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
-                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + idmonedas[valor] + "," + valoresmoneda[valor] + ", 0, GETDATE(), '', 1)", conectorbd);
                         conectorbd.Open();
                         inser1.ExecuteNonQuery();
                         conectorbd.Close();
@@ -302,12 +435,17 @@ namespace WebApplication2.aspx
                         conectorbd.Open();
                         query.ExecuteNonQuery();
                         conectorbd.Close();
-
+                        valor = valor + 1;
                     }
 
+                    for (int l = 0; l < 6; l++)
+                    {
+                        valoresmoneda[val] = "";
+                        val = val + 1;
+                    }
                 }
 
-                valor = valor + 1;
+ 
                 leon = "";
 
             }

@@ -276,6 +276,7 @@
     <Compile Include="Controllers\CajaController.cs" />
     <Compile Include="Controllers\EntradaCajaController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\Tb_EntradaSucController.cs" />
     <Compile Include="Controllers\Tb_UsuariosController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Models\buscar_Result.cs">
@@ -623,8 +624,13 @@
     <Content Include="Views\EntradaCaja\Index.cshtml" />
     <Content Include="Views\Administracion\Taxacompras.cshtml" />
     <Content Include="Views\Administracion\TazasVentas.cshtml" />
+    <Content Include="Views\Tb_EntradaSuc\Create.cshtml" />
+    <Content Include="Views\Tb_EntradaSuc\Delete.cshtml" />
+    <Content Include="Views\Tb_EntradaSuc\Details.cshtml" />
+    <Content Include="Views\Tb_EntradaSuc\Edit.cshtml" />
+    <Content Include="Views\Tb_EntradaSuc\Index.cshtml" />
+    <Content Include="Views\EntradaCaja\actualizar.cshtml" />
     <Content Include="Views\EntradaCaja\invet.cshtml" />
-    <Content Include="Views\EntradaCaja\invets.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -80,7 +80,10 @@
                 <div class="d-block text-light  border-0">
                     <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "EntradaCaja")'">Entrada de Caja</button>
                 </div>
-
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("actualizar", "EntradaCaja", new { id = Session["identrada"]})'">Cierre de Caja</button>
+                </div>
+                
                 <div class="d-block text-light border-0">
                     <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Taxacompras", "Administracion")'">Tazas de compra</button>
                 </div>
@@ -88,7 +91,7 @@
                 <div class="d-block text-light border-0">
                     <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("TazasVentas", "Administracion")'">Tazas de Venta</button>
                 </div>
-                
+
 
                 <a href="#" class="d-block text-light p-3 border-0">
                     <i class="icon ion-md-settings lead mr-2"></i>

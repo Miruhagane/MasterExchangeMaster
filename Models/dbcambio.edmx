@@ -54,6 +54,8 @@
           <Property Name="Lng_IdEntrada" Type="int" />
           <Property Name="Int_IdUsuario" Type="int" />
           <Property Name="Int_IdTurno" Type="int" />
+          <Property Name="Fec_Ini" Type="datetime" />
+          <Property Name="Fec_Fin" Type="datetime" />
         </EntityType>
         <EntityType Name="Tb_EntradaSuc">
           <Key>
@@ -62,10 +64,11 @@
           <Property Name="Lng_IdEntrada" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Dbl_SaldoEntrada" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Fec_Ini" Type="datetime" />
-          <Property Name="Fec_Fin" Type="datetime" Nullable="false" />
+          <Property Name="Fec_Fin" Type="datetime" />
           <Property Name="Int_Sucursal" Type="int" />
           <Property Name="Int_IdMoneda" Type="int" />
           <Property Name="Bol_Activo" Type="bit" />
+          <Property Name="Dbl_SaldoSalido" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Tb_PlazasApli">
           <Key>
@@ -545,10 +548,11 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Name="Lng_IdEntrada" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Dbl_SaldoEntrada" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Fec_Ini" Type="DateTime" Precision="3" />
-          <Property Name="Fec_Fin" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Fec_Fin" Type="DateTime" Precision="3" />
           <Property Name="Int_Sucursal" Type="Int32" />
           <Property Name="Int_IdMoneda" Type="Int32" />
           <Property Name="Bol_Activo" Type="Boolean" />
+          <Property Name="Dbl_SaldoSalido" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Tb_EntEmp">
           <Key>
@@ -558,6 +562,8 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Name="Lng_IdEntrada" Type="Int32" />
           <Property Name="Int_IdUsuario" Type="Int32" />
           <Property Name="Int_IdTurno" Type="Int32" />
+          <Property Name="Fec_Ini" Type="DateTime" Precision="3" />
+          <Property Name="Fec_Fin" Type="DateTime" Precision="3" />
         </EntityType>
         <ComplexType Name="inven_sucursal_Result">
           <Property Type="Int32" Name="IdTaxa" Nullable="true" />
@@ -787,6 +793,7 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySetMapping Name="Tb_EntradaSuc">
             <EntityTypeMapping TypeName="dbcasa_cambio.Tb_EntradaSuc">
               <MappingFragment StoreEntitySet="Tb_EntradaSuc">
+                <ScalarProperty Name="Dbl_SaldoSalido" ColumnName="Dbl_SaldoSalido" />
                 <ScalarProperty Name="Bol_Activo" ColumnName="Bol_Activo" />
                 <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
                 <ScalarProperty Name="Int_Sucursal" ColumnName="Int_Sucursal" />
@@ -800,6 +807,8 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySetMapping Name="Tb_EntEmp">
             <EntityTypeMapping TypeName="dbcasa_cambio.Tb_EntEmp">
               <MappingFragment StoreEntitySet="Tb_EntEmp">
+                <ScalarProperty Name="Fec_Fin" ColumnName="Fec_Fin" />
+                <ScalarProperty Name="Fec_Ini" ColumnName="Fec_Ini" />
                 <ScalarProperty Name="Int_IdTurno" ColumnName="Int_IdTurno" />
                 <ScalarProperty Name="Int_IdUsuario" ColumnName="Int_IdUsuario" />
                 <ScalarProperty Name="Lng_IdEntrada" ColumnName="Lng_IdEntrada" />

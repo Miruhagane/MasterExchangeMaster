@@ -299,38 +299,53 @@ namespace WebApplication2.Controllers
         public ActionResult Tcomprar()
         {
             int sucursalid = Convert.ToInt32(Session["idSucursal"]);
-            bool a = true;
+            
+            bool b = false;
             IList<int> idmonedas = new List<int>(){ 1, 2, 3, 4, 5, 6 };
-            List<Tcompras> lst1 = new List<Tcompras>();
+
+           
+            IEnumerable<Tcompras> lst1 = new List<Tcompras>();
+
+            var idint = db.Tb_Taxas.Where(e => e.Bol_Tipo == b).Max(e => e.Int_IdGrupo);
+            int grupo = Convert.ToInt32(idint);
+
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
                 lst1 = (from d in dr.Tb_Taxas
+                        
                         join da in dr.Ct_Moneda on d.Int_IdMoneda equals da.Int_IdMoneda
                         join db in dr.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
-                        where d.Bol_Tipo == a &&  idmonedas.Contains((int)d.Int_IdMoneda) && db.Lng_IdSucursal == sucursalid
+                        where  d.Bol_Tipo == b && idmonedas.Contains((int)d.Int_IdMoneda) && db.Lng_IdSucursal == sucursalid && d.Int_IdGrupo == grupo
                         select new Tcompras
                         {
                             Moneda = da.Txt_Moneda,
-                            Valor = d.dbl_Valor
+                            Valor = d.dbl_Valor,
+
+
                         }).ToList();
             }
 
             return View(lst1);
         }
 
+
+
         public ActionResult Tventas()
         {
             int sucursalid = Convert.ToInt32(Session["idSucursal"]);
-            bool a = false;
+            bool a = true;
             IList<int> idmonedas = new List<int>() { 1, 2, 3, 4, 5, 6 };
+            IEnumerable<Tventas> lst1 = new List<Tventas>();
 
-            List<Tventas> lst1 = new List<Tventas>();
+            var idint = db.Tb_Taxas.Where(e => e.Bol_Tipo == a).Max(e => e.Int_IdGrupo);
+            int grupo = Convert.ToInt32(idint);
+
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
                 lst1 = (from d in dr.Tb_Taxas
                         join da in dr.Ct_Moneda on d.Int_IdMoneda equals da.Int_IdMoneda
                         join db in dr.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
-                        where d.Bol_Tipo == a && idmonedas.Contains((int)d.Int_IdMoneda) && db.Lng_IdSucursal == sucursalid
+                        where d.Bol_Tipo == a && idmonedas.Contains((int)d.Int_IdMoneda) && db.Lng_IdSucursal == sucursalid && d.Int_IdGrupo == grupo
                         select new Tventas
                         {
                             Moneda = da.Txt_Moneda,

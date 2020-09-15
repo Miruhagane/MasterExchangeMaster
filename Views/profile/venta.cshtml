@@ -55,11 +55,11 @@
                         @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
                     </div>
 
-                    <select id="hijo" name="hijo" style="display: none" >
+                    <select id="hijo" name="hijo" style="display: none">
                     </select>
                 </div>
 
-                <div style=" display : none;">
+                <div id="especial" style="display : none;">
                     <div class="form-group col-sm-8">
                         <label for="inputAddress2">Especial</label>
                         <div>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
 
-                   <div class="form-group col-sm-8">
+                <div class="form-group col-sm-8">
                     <label for="inputAddress2">Cantidad a Comprar</label>
 
                     @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad", @oninput = "compras_cantidad()" } })
@@ -98,10 +98,23 @@
                 </div>
 
 
+                <div id="especialdiv" style=" display : none;">
+                    <div class="form-group col-sm-8">
+                        <label for="inputAddress2">Especial</label>
+                        <div>
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.Bol_Especial, new { @class = "form-control " })
+                                @Html.ValidationMessageFor(model => model.Bol_Especial, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="form-group col-sm-8">
 
                     <label for="inputState">Divisa a Vender</label>
-                    @Html.DropDownList("Datos", venta, "selecciona la divisa",  new { @type = "number", @class = "form-control", @id = "Madre" })
+                    @Html.DropDownList("Datos", venta, "selecciona la divisa", new { @type = "number", @class = "form-control", @id = "Madre" })
 
                     <div style="display: none">
                         @Html.EditorFor(model => model.Int_IdMonVenta, new { htmlAttributes = new { @class = "form-control", @id = "monid", @readonly = true } })
@@ -122,11 +135,6 @@
                         @Html.ValidationMessageFor(model => model.Dbl_TipoCambioven, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-
-             
-
-
 
                 <div class="form-group col-sm-8 ">
                     <label> Total a pagar </label>
@@ -171,18 +179,6 @@
                 @*no visibles*@
 
 
-
-                <div style=" display : none;">
-                    <div class="form-group col-sm-8">
-                        <label for="inputAddress2">Especial</label>
-                        <div>
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.Bol_Especial, new { @class = "form-control " })
-                                @Html.ValidationMessageFor(model => model.Bol_Especial, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="form-group col-sm-8" style="display : none;">
                     <label> Tipo de Cobro</label>
@@ -962,6 +958,7 @@
             //administrativo
             case "1":
                 console.log("administrativo");
+                document.getElementById("especialdiv").style.display = "";
                 break;
 
             // cajero

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<WebApplication2.Models.Tb_EntradaSuc>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Dbl_SaldoEntrada)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fec_Ini)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fec_Fin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Int_Sucursal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Int_IdMoneda)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bol_Activo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dbl_SaldoEntrada)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fec_Ini)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fec_Fin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Int_Sucursal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Int_IdMoneda)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bol_Activo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Lng_IdEntrada }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Lng_IdEntrada }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Lng_IdEntrada })
+        </td>
+    </tr>
+}
+
+</table>

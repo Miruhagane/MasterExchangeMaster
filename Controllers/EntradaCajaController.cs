@@ -62,7 +62,7 @@ namespace WebApplication2.Controllers
             bool a = true;
             int idsucursal = 1;
           
-            IList<int> idmonedas = new List<int>() {1,2,3,4,5,6};
+   
 
             List<inventario> querty = new List<inventario>();
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
@@ -79,31 +79,6 @@ namespace WebApplication2.Controllers
                           }).ToList();
             }
             return View(querty);
-        }
-
-        public JsonResult invets()
-        {
-            bool a = true;
-            int idsucursal = 1;
-
-            IList<int> idmonedas = new List<int>() { 1, 2, 3, 4, 5, 6 };
-
-            List<inventario> querty = new List<inventario>();
-            using (MasterExchangeEntities dr = new MasterExchangeEntities())
-            {
-                querty = (from c in dr.Tb_EntradaSuc
-                          join ca in dr.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
-                          join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
-                          where c.Int_Sucursal == idsucursal && c.Bol_Activo == a
-                          select new inventario()
-                          {
-                              Int_IdMoneda = cb.Int_IdMoneda,
-                              Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
-                              Txt_Moneda = cb.Txt_Moneda
-                          }).ToList();
-
-                return Json(querty, JsonRequestBehavior.AllowGet);
-            }
         }
 
 
@@ -130,7 +105,9 @@ namespace WebApplication2.Controllers
 
                 tb_EntEmp.Lng_IdEntrada = tb_EntradaSuc.Lng_IdEntrada;
 
-                SqlDataAdapter caja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_EntEmp] ([Lng_IdEntrada], [Int_IdUsuario], [Int_IdTurno]) VALUES (" + tb_EntEmp.Lng_IdEntrada + " ," + User.Identity.Name + " , 1 )", con);
+                Session["identrada"] = tb_EntradaSuc.Lng_IdEntrada;
+
+                SqlDataAdapter caja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_EntEmp] ([Lng_IdEntrada], [Int_IdUsuario], [Int_IdTurno], [Fec_Ini], [Fec_Fin]) VALUES (" + tb_EntEmp.Lng_IdEntrada + " ," + User.Identity.Name + " , 1 , GETDATE() , ' ')", con);
                 DataSet a = new DataSet();
                 caja.Fill(a);
                 a.Reset();
@@ -141,7 +118,41 @@ namespace WebApplication2.Controllers
             return View(tb_EntradaSuc);
         }
 
- 
+        public async Task<ActionResult> actualizar(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Tb_EntradaSuc tb_EntradaSuc = await db.Tb_EntradaSuc.FindAsync(id);
+            if (tb_EntradaSuc == null)
+            {
+                return HttpNotFound();
+            }
+            return View(tb_EntradaSuc);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> actualizar([Bind(Include = "Lng_IdEntrada,Dbl_SaldoEntrada,Fec_Ini,Fec_Fin,Int_Sucursal,Int_IdMoneda,Bol_Activo, Dbl_SaldoSalido")] Tb_EntradaSuc tb_EntradaSuc)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(tb_EntradaSuc).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+
+                SqlDataAdapter caja = new SqlDataAdapter("UPDATE [dbo].[Tb_EntEmp] SET Fec_Fin = GETDATE() WHERE Lng_IdEntEmp = "+Session["identrada"]+"", con);
+                DataSet a = new DataSet();
+                caja.Fill(a);
+                a.Reset();
+
+                
+
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

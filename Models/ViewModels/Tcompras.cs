@@ -13,5 +13,6 @@ namespace WebApplication2.Models.ViewModels
         public Nullable<System.DateTime> Dia { get; set; }
         public int Lng_IdTaxa { get; set; }
         public int Int_IdMoneda { get; set; }
+        public int Int_IdGrupo { get; set; }
     }
 }

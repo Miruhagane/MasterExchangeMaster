@@ -18,5 +18,7 @@ namespace WebApplication2.Models
         public Nullable<int> Lng_IdEntrada { get; set; }
         public Nullable<int> Int_IdUsuario { get; set; }
         public Nullable<int> Int_IdTurno { get; set; }
+        public Nullable<System.DateTime> Fec_Ini { get; set; }
+        public Nullable<System.DateTime> Fec_Fin { get; set; }
     }
 }
