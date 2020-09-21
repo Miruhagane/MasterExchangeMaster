@@ -12,13 +12,9 @@ namespace WebApplication2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Tb_EntradaSuc
+    public partial class Ct_Denominaciones
     {
-        public int Lng_IdEntrada { get; set; }
-        public Nullable<decimal> Dbl_SaldoEntrada { get; set; }
-        public Nullable<System.DateTime> Fec_Ini { get; set; }
-        public Nullable<int> Int_Sucursal { get; set; }
-        public Nullable<int> Int_IdMoneda { get; set; }
-        public Nullable<bool> Bol_Activo { get; set; }
+        public int Int_IdDenominacion { get; set; }
+        public Nullable<decimal> Num_Denominacion { get; set; }
     }
 }

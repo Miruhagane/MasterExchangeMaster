@@ -1,134 +1,275 @@
-﻿@model WebApplication2.Models.Tb_EntradaSuc
+﻿@model WebApplication2.Models.ViewModels.inventario
 
 @{
     List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
     ViewBag.title = "Salda Inicial";
 }
-
-
-
-
-       <div class="col-sm-6 mt-5">
-           <div class="card shadow-lg rounded">
-               <div class="card-header bg-dark text-white">
-                   <h5>Ingresa Tu Saldo Inicial</h5>
-               </div>
-               <div class="card-body">
-                   @using (Html.BeginForm())
-                   {
-                       @Html.AntiForgeryToken()
-                       @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                       <form>
-                           <div class="form-row">
-
-
-                               <div class="col-sm-6 mb-2">
-                                   <label>Saldo Entrada</label>
-                                   <div class="col-md-10">
-                                       @Html.EditorFor(model => model.Dbl_SaldoEntrada, new { htmlAttributes = new { @class = "form-control" } })
-                                       @Html.ValidationMessageFor(model => model.Dbl_SaldoEntrada, "", new { @class = "text-danger" })
-                                   </div>
-                               </div>
-
-                               <div class="col-sm-6 mb-3">
-                                   <label>Moneda</label>
-
-                                   @Html.DropDownList("Datos", items, "selecciona la divisa", new { @type = "number", @class = "form-control", @id = "padre" })
-
-                                   <div class="" style="display: none">
-                                       @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "idmoneda", @readonly = true } })
-                                       @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
-                                   </div>
-                               </div>
-
-
-                               <div >
-                                   <label>Sucursal</label>
-
-                                   <div class="col-md-10">
-                                       <input class="form-control" disabled id="NomSucursal" value=@Session["sucursaledelusuario"] />
-
-                                       <div style="display: none">
-                                           <input id="IdSucursal" value="@Session["idSucursal"]" />
-                                           @Html.EditorFor(model => model.Int_Sucursal, new { htmlAttributes = new { @class = "form-control", @id = "intsucursal" } })
-                                           @Html.ValidationMessageFor(model => model.Int_Sucursal, "", new { @class = "text-danger" })
-                                       </div>
-
-                                       <div style="display: none">
-                                           @Html.EditorFor(Model => Model.Bol_Activo, new { AllowHtmlAttribute = new {@class = "form-control"} })
-                                           @Html.ValidationMessageFor(Model => Model.Bol_Activo, "", new { @class= "text-danger"})
-                                       </div>
-
-                                   </div>
-                               </div>
-
-                               <div class="col-sm-6 mb-3" >
-                                   <label>Fecha Entrada</label>
-                                   <div class="col-md-10">
-                                       @Html.TextBoxFor(model => model.Fec_Ini, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
-                                       @Html.ValidationMessageFor(model => model.Fec_Ini, "", new { @class = "text-danger" })
-                                   </div>
-                               </div>
-
-                               <div class="col-sm-6 mb-3" style="display: none">
-                                   <label>Fecha Salida</label>
-                                   <div class="col-md-10">
-                                       @Html.TextBoxFor(model => model.Fec_Fin, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
-                                       @Html.ValidationMessageFor(model => model.Fec_Fin, "", new { @class = "text-danger" })
-                                   </div>
-                               </div>
-
-                               <div class="col-sm-6 mt-4">
-                                   <button type="submit" class="btn btn-success">Ingresar </button>
-                               </div>
-
-
-                           </div>
-
-
-                       </form>
-
-                   }
-
-               </div>
-           </div>
-
-       </div> 
-
-       <div class="col-sm-6 mt-5">
-           <div class="card shadow-lg rounded" >
-               <div class="card-header bg-dark text-white">
-                   <h5>Saldo actual</h5>
-               </div>
-               <div class="card-body">
-                   @Html.Action("invet")
-               </div>
-           </div>
-
-       </div>
-       
   
+
+<div class="col-sm-6 mt-3">
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-dark text-white">
+            <h5>Saldo actual</h5>
+        </div>
+        <div class="card-body">
+            @Html.Action("invet")
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Entrada">
+                Ingresar
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="Entrada" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Ingresa Saldo De Entrada</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                @using (Ajax.BeginForm("Index", new AjaxOptions
+                {
+
+                    HttpMethod = "POST",
+
+                }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <form>
+                        <div class="form-row">
+
+
+                            <div class="col-sm-6 mb-2">
+                                <label>Saldo Entrada</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Dbl_SaldoEntrada, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Dbl_SaldoEntrada, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Moneda</label>
+
+                                @Html.DropDownList("Datos", items, "Selecciona la divisa", new { @type = "number", @class = "form-control", @id = "padre" })
+
+                                <div class="" style="">
+                                    @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "idmonedaEnt", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <label>Sucursal</label>
+
+                                <div class="col-md-10">
+                                    <input class="form-control" disabled id="NomSucursal" value=@Session["sucursaledelusuario"] />
+
+                                    <div style="display: none">
+                                        <input id="IdSucursal" value="@Session["idSucursal"]" />
+                                        @Html.EditorFor(model => model.Int_Sucursal, new { htmlAttributes = new { @class = "form-control", @id = "intsucursal", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.Int_Sucursal, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div style="display: none">
+                                        @Html.EditorFor(Model => Model.Bol_Activo, new { AllowHtmlAttribute = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(Model => Model.Bol_Activo, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Fecha Entrada</label>
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.Fec_Ini, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
+                                    @Html.ValidationMessageFor(model => model.Fec_Ini, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-sm-12 mt-4">
+                                <button type="submit" class="btn btn-success">Guardar </button>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                }
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+
+<div class="col-sm-6 mt-3">
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-dark text-white">
+            <h5>Saldo actual</h5>
+        </div>
+        <div class="card-body">
+            @Html.Action("final")
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Salida">
+                Ingresar
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="Salida" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Ingresa saldo de salida</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("Salida", new AjaxOptions
+                {
+
+                    HttpMethod = "POST",
+
+                 
+                }))
+                {
+                    @Html.AntiForgeryToken()
+                    <form>
+                        <div class="form-row">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Lng_IdEntrada)
+
+
+                            <div class="col-sm-6">
+                                <label>Saldo Final</label>
+                                <div class="">
+                                    @Html.EditorFor(model => model.Dbl_SaldoSalida, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Dbl_SaldoSalida, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Moneda</label>
+
+                                @Html.DropDownList("Datos", items, "Selecciona la divisa", new { @type = "number", @class = "form-control", @id = "madre" })
+
+                                <div class="" style="">
+                                    @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "idmonedaSal", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <label>Regristro Final</label>
+                                <div class="">
+                                    @Html.TextBoxFor(model => model.Fec_Fin, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
+                                    @Html.ValidationMessageFor(model => model.Fec_Fin, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div>
+                                <label>Sucursal</label>
+
+                                <div class="col-md-10">
+                                    <input class="form-control" disabled id="NomSucursal" value=@Session["sucursaledelusuario"] />
+
+                                    <div style="">
+                                        <input id="IdSuc" value="@Session["idSucursal"]" />
+                                        @Html.EditorFor(model => model.Int_Sucursal, new { htmlAttributes = new { @class = "form-control", @id = "IntSucSal", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.Int_Sucursal, "", new { @class = "text-danger" })
+                                    </div>
+
+                                  
+                                </div>
+                            </div>
+
+                          
+
+                            <div class="col-sm-12">
+
+
+                                <button type="submit" class="btn btn-danger">Guardar</button>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                }
+
+            </div>
+         
+        </div>
+    </div>
+</div>
+
 
 
 
 <script>
 
-    var moneda = document.getElementById("padre");
-    moneda.addEventListener("change", refresh);
+    var monedaEntrada = document.getElementById("padre");
+    monedaEntrada.addEventListener("change", refresh);
 
     refresh();
 
     function refresh() {
+
+        var mon = document.getElementById("padre").value;
+        document.getElementById("idmonedaEnt").value = mon;
+
+   
+
+
         var idsucursal = document.getElementById("IdSucursal").value;
 
         document.getElementById("intsucursal").value = idsucursal;
-        
 
-        var idpadremoneda = document.getElementById("padre").value;
-        document.getElementById("idmoneda").value = idpadremoneda;
 
-        document.getElementById("Bol_Activo").value="true";
+      
 
+        document.getElementById("Bol_Activo").value = "true";
+
+    }
+
+</script>
+
+
+
+<script>
+
+    var monedaSalida = document.getElementById("madre");
+    monedaSalida.addEventListener("change", refresh);
+
+    refresh();
+
+    function refresh() {
+        var idsucursal = document.getElementById("IdSuc").value;
+
+        document.getElementById("IntSucSal").value = idsucursal;
+
+
+        var idpadremoneda = document.getElementById("madre").value;
+        document.getElementById("idmonedaSal").value = idpadremoneda;
+
+ 
     }
 
 </script>

@@ -27,7 +27,7 @@
         </div>
 
         <div class="col-sm-12 row pl-5"> 
-              <div class="col-sm-6">
+              <div class="col-sm-5">
                 <asp:GridView ID="Tb_taxaVentas" runat="server" BackColor="White" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CellPadding="3" ForeColor="Black" GridLines="Vertical" OnSelectedIndexChanged="Page_Load" OnSorted="Page_Load" AutoGenerateColumns="False" DataKeyNames="Lng_IdTaxa,Int_IdMoneda">
                 <AlternatingRowStyle BackColor="#CCCCCC" />
                 <Columns>
@@ -57,6 +57,16 @@
             </div>
             
             <div class="col-sm-2 align-self-start">
+
+                <div class=" col-sm-12 row">
+                    <div class="col-sm-6">
+                        <asp:Button ID="Guardar" CssClass="btn btn-secondary btn-sm" runat="server" Text="Guardar" OnClick="Guardar_Click" />
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalsucursales">Buscar</button>
+                    </div>
+
+                </div>
                          <div class="form-check form-check-inline col-sm-12">
                              <span class="form-check-input" type="checkbox"><input id="Cancun" type="checkbox" name="Cancun" onclick="cancun();" /></span>
                              <label class="form-check-label" for="cancun">Cancun</label>
@@ -87,20 +97,12 @@
                              <label class="form-check-label" for="Leon1"> Leon</label>
                          </div>
 
-                <div class=" col-sm-12">
-                    <div class="col-sm-6">
-                        <asp:Button ID="Guardar" CssClass="btn btn-info" runat="server" Text="Guardar" OnClick="Guardar_Click" />
-                    </div>
-                    <div class="col-sm-6">
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalsucursales">Buscar sucursal</button>
-                    </div>
-
-                </div>
+              
 
 
             </div>
 
-            <div class="col-sm-4 form-group  ">
+               <div class="col-sm-4 form-group row ">
                            <div class="col-sm-6" id="listcancun" style="display:none">
                                <asp:CheckBoxList ID="CheckBoxcancun" runat="server" DataSourceID="suc_cancun" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
                                <asp:SqlDataSource ID="suc_cancun" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Txt_Sucursal], [Int_IdPlaza] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">

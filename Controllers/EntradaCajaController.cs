@@ -31,11 +31,11 @@ namespace WebApplication2.Controllers
             using (Models.MasterExchangeEntities dr = new Models.MasterExchangeEntities())
             {
                 lst = (
-                     from d in dr.Taxacompcombs
+                     from d in dr.Ct_Moneda
                      select new moneda
                      {
                          Int_IdMoneda = d.Int_IdMoneda,
-                         Moneda = d.Moneda
+                         Moneda = d.Txt_Moneda
 
                      }).ToList();
             }
@@ -60,21 +60,48 @@ namespace WebApplication2.Controllers
         public ActionResult invet()
         {
             bool a = true;
-            int idsucursal = 1;
-          
-   
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
 
-            List<inventario> querty = new List<inventario>();
+            var idlng = db.Tb_EntradaSuc.Max(e => (int?)e.Lng_IdEntrada) ?? 0;
+           
+           
+            IEnumerable<inventario> querty = new List<inventario>();
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
                 querty = (from c in dr.Tb_EntradaSuc
                           join ca in dr.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
                           join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
-                          where c.Int_Sucursal == idsucursal && c.Bol_Activo == a 
+                          where c.Int_Sucursal == sucursalid && c.Bol_Activo == a && c.Lng_IdEntrada == idlng
                           select new inventario()
                           { 
                               Int_IdMoneda = cb.Int_IdMoneda,
                               Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
+                              Txt_Moneda = cb.Txt_Moneda
+                          }).ToList();
+            }
+
+            return View(querty);
+        }
+
+        public ActionResult final()
+        {
+           
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
+
+            var idlng = db.Tb_SalidaSuc.Max(e => (int?)e.Lng_IdSalida) ?? 0;
+            
+
+            IEnumerable<inventario> querty = new List<inventario>();
+            using (MasterExchangeEntities dr = new MasterExchangeEntities())
+            {
+                querty = (from c in dr.Tb_SalidaSuc
+                          join ca in dr.Tb_EntEmp on c.Lng_IdSalida equals ca.Lng_IdSalida
+                          join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
+                          where c.int_IdSucursal == sucursalid  && c.Lng_IdSalida == idlng
+                          select new inventario()
+                          {
+                              Int_IdMoneda = cb.Int_IdMoneda,
+                              Dbl_SaldoSalido = c.Dbl_SaldoSalida,
                               Txt_Moneda = cb.Txt_Moneda
                           }).ToList();
             }
@@ -118,40 +145,28 @@ namespace WebApplication2.Controllers
             return View(tb_EntradaSuc);
         }
 
-        public async Task<ActionResult> actualizar(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Tb_EntradaSuc tb_EntradaSuc = await db.Tb_EntradaSuc.FindAsync(id);
-            if (tb_EntradaSuc == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tb_EntradaSuc);
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> actualizar([Bind(Include = "Lng_IdEntrada,Dbl_SaldoEntrada,Fec_Ini,Fec_Fin,Int_Sucursal,Int_IdMoneda,Bol_Activo, Dbl_SaldoSalido")] Tb_EntradaSuc tb_EntradaSuc)
+        public async Task<ActionResult> Salida([Bind(Include = "Lng_Salida,Dbl_SaldoSalida,Fec_Fin,Int_IdMoneda,int_IdSucursal")] Tb_SalidaSuc tb_SalidaSuc)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tb_EntradaSuc).State = EntityState.Modified;
+                db.Tb_SalidaSuc.Add(tb_SalidaSuc);
                 await db.SaveChangesAsync();
 
-                SqlDataAdapter caja = new SqlDataAdapter("UPDATE [dbo].[Tb_EntEmp] SET Fec_Fin = GETDATE() WHERE Lng_IdEntEmp = "+Session["identrada"]+"", con);
+                SqlDataAdapter caja = new SqlDataAdapter("UPDATE [dbo].[Tb_EntEmp] SET Fec_Fin = GETDATE() WHERE Lng_IdEntEmp = " + Session["identrada"] + "", con);
                 DataSet a = new DataSet();
                 caja.Fill(a);
                 a.Reset();
 
-                
-
                 return RedirectToAction("Index");
             }
+
             return View();
         }
+
+   
 
         protected override void Dispose(bool disposing)
         {

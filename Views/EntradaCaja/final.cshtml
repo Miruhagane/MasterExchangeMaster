@@ -1,0 +1,35 @@
+﻿@model IEnumerable<WebApplication2.Models.ViewModels.inventario>
+
+@{
+    Layout = null;
+}
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">
+                Saldo Salida
+            </th>
+
+            <th scope="col">
+                Moneda
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dbl_SaldoSalido)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Txt_Moneda)
+                </td>
+            </tr>
+        </tbody>
+    }
+
+</table>

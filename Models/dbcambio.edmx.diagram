@@ -20,9 +20,12 @@
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_Sucursal" Width="1.5" PointX="3.375" PointY="11.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_Usuarios" Width="1.5" PointX="5.375" PointY="9.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Taxacompcomb" Width="1.5" PointX="7.375" PointY="11.75" />
-        <EntityTypeShape EntityType="dbcasa_cambio.Tb_EntradaSuc" Width="1.5" PointX="11.375" PointY="9.75" />
-        <EntityTypeShape EntityType="dbcasa_cambio.Tb_EntEmp" Width="1.5" PointX="11.375" PointY="6.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_TaxSuc" Width="1.5" PointX="0.75" PointY="12.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_EntradaSuc" Width="1.5" PointX="11.375" PointY="9.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_EntEmp" Width="1.5" PointX="9.375" PointY="12.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Ct_Denominaciones" Width="1.5" PointX="11.375" PointY="6.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_SalidaSuc" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Cierre" Width="1.5" PointX="11.375" PointY="12.75" />
 
       </Diagram>
     </edmx:Diagrams>

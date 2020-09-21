@@ -69,7 +69,7 @@
 
                 <div class="btn-group  d-block text-light p-1 border-0">
                     <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="usuarios" onclick="btndropdown()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Administracion
+                        Control De Usuarios
                     </button>
                     <div class="dropdown-menu bg-dark">
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Create", "Usuarios")'">Crear Usuario </button>
@@ -80,23 +80,31 @@
                 <div class="d-block text-light  border-0">
                     <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "EntradaCaja")'">Entrada de Caja</button>
                 </div>
-                <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("actualizar", "EntradaCaja", new { id = Session["identrada"]})'">Cierre de Caja</button>
-                </div>
-                
-                <div class="d-block text-light border-0">
-                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Taxacompras", "Administracion")'">Tazas de compra</button>
+
+                <div class="btn-group  d-block text-light p-1 border-0">
+                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="arqueo" onclick="arqueo()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Administracion
+                    </button>
+                    <div class="dropdown-menu bg-dark">
+                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "Arqueo")'">Arqueo Inicial</button>
+                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("cerrararqueo", "Arqueo")'">Arqueo Final</button>
+                    </div>
                 </div>
 
-                <div class="d-block text-light border-0">
-                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("TazasVentas", "Administracion")'">Tazas de Venta</button>
+                <div class="btn-group  d-block text-light p-1 border-0">
+                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="tazas" onclick="tazas()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tazas
+                    </button>
+                    <div class="dropdown-menu bg-dark">
+                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Taxacompras", "Administracion")'">Tazas de compra</button>
+                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("TazasVentas", "Administracion")'">Tazas de venta</button>
+                    </div>
                 </div>
 
-
-                <a href="#" class="d-block text-light p-3 border-0">
-                    <i class="icon ion-md-settings lead mr-2"></i>
-                    Personalizacion
-                </a>
+                @*<a href="#" class="d-block text-light p-3 border-0">
+            <i class="icon ion-md-settings lead mr-2"></i>
+            Personalizacion
+        </a>*@
             </div>
 
             </div>
@@ -198,6 +206,8 @@
                 case "2":
                     console.log("cajero");
                     document.getElementById("usuarios").style.display = "none";
+                    document.getElementById("tazas").style.display = "none";
+                    
                     break;
 
                 // tipo de usuario no detectado
@@ -213,6 +223,17 @@
             $('#usuarios').dropdown('toggle')
             
         }
+
+        function arqueo() {
+            $('#arqueo').dropdown('toggle')
+
+        }
+
+        function tazas() {
+            $('#tazas').dropdown('toggle')
+
+        }
+
 
         function Profile() {
             $('#Profile').dropdown('toggle')

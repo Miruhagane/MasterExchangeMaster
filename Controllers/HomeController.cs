@@ -8,13 +8,16 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Ajax.Utilities;
 using System.Web;
 using Microsoft.AspNetCore.Http;
-
+using System.Data.SqlClient;
+using System.Data;
+using System;
 
 namespace WebApplication2.Controllers
 {
     public class HomeController : Controller
     {
-   
+        string con = System.Configuration.ConfigurationManager.ConnectionStrings["server2"].ConnectionString;
+
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -33,15 +36,18 @@ namespace WebApplication2.Controllers
         [HttpPost]
         public ActionResult Index(string usuario, string Pass)
         {
-            
+           
             if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(Pass))
             {
                        //validacion de usuario
                MasterExchangeEntities db = new MasterExchangeEntities();
                 var userv = db.Tb_Usuarios.FirstOrDefault(e => e.Txt_NomCorto == usuario && e.Txt_Password == Pass);
-               
+
+
+
                 if (userv != null)
                 {
+                    // sesion de usuario 
                     Session["idSucursal"] = userv.Lng_IdSucursal;
                     //obtener los valores del usuario
                     string id = userv.Int_Idusuario.ToString();
@@ -69,15 +75,54 @@ namespace WebApplication2.Controllers
                     Session["area"] = areausuario;
                     Session["intareadeusurio"] = tipo;
                     Session["sucursaledelusuario"] = Sucursalusuario;
-                    
                     Session["plazadelusuaio"] = plazadelusuario;
-                    
 
-                 
-                     // creacion de cookie de usuario 
                     FormsAuthentication.SetAuthCookie(id, true);
-                    
-                    return RedirectToAction("Index", "Profile");
+
+
+                    bool activo = false;
+                    var dbturno = db.Tb_Cierre.FirstOrDefault(c => c.Int_IdUsuario == userv.Int_Idusuario && c.Int_IdStatus == 1 && c.Int_IdSucursal == userv.Lng_IdSucursal && c.Bol_Congelar == activo);
+
+                    var denominacion = db.Ct_Denominaciones.Max(c => c.Int_IdDenominacion);
+                    int iddeno = Convert.ToInt32(denominacion); 
+
+                    if (userv.Int_IdArea == 1)
+                    {
+                        return RedirectToAction("Index", "Profile");
+                    }
+
+
+
+                    else if (dbturno == null)
+                    {
+                        int valor = 1;
+
+                        for (int i = 0; i < iddeno; i++)
+                        {
+                            SqlDataAdapter caja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_Cierre] ([Int_IdDenomicacion],[Dbl_Cantidad] ,[Fec_Cierre] ,[Int_IdMoneda] ,[Int_IdStatus],[Int_IdTurno],[Int_IdSucursal],[Int_IdUsuario], [Bol_Congelar])  VALUES(" + valor+",0, GETDATE(),7,1,1," + userv.Lng_IdSucursal + "," + userv.Int_Idusuario + ", 0)", con);
+                            DataSet a = new DataSet();
+                            caja.Fill(a);
+                            a.Reset();
+
+                            valor = valor + 1;
+                        }
+                        
+
+                        return RedirectToAction("Index", "arqueo");
+
+                    }
+
+                    else if (dbturno.Int_IdStatus == 1 && dbturno.Int_IdSucursal != userv.Lng_IdSucursal)
+                    {
+
+                        return RedirectToAction("Index", new { Message = "Este usuario no se Puede logear 2 veces en diferentes Sucursales" });
+                    }
+                  
+
+
+                    return RedirectToAction("Index", new { Message = "Hubo un error" });
+
+
 
 
                 }

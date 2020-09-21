@@ -43,9 +43,12 @@ namespace WebApplication2.Models
         public virtual DbSet<Tb_Sucursal> Tb_Sucursal { get; set; }
         public virtual DbSet<Tb_Usuarios> Tb_Usuarios { get; set; }
         public virtual DbSet<Taxacompcomb> Taxacompcombs { get; set; }
+        public virtual DbSet<Tb_TaxSuc> Tb_TaxSuc { get; set; }
         public virtual DbSet<Tb_EntradaSuc> Tb_EntradaSuc { get; set; }
         public virtual DbSet<Tb_EntEmp> Tb_EntEmp { get; set; }
-        public virtual DbSet<Tb_TaxSuc> Tb_TaxSuc { get; set; }
+        public virtual DbSet<Ct_Denominaciones> Ct_Denominaciones { get; set; }
+        public virtual DbSet<Tb_SalidaSuc> Tb_SalidaSuc { get; set; }
+        public virtual DbSet<Tb_Cierre> Tb_Cierre { get; set; }
     
         public virtual ObjectResult<buscar_Result1> buscar(string numero)
         {
@@ -79,22 +82,13 @@ namespace WebApplication2.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Tb_Clientes>("buscar1", mergeOption, numeroParameter);
         }
     
-        public virtual ObjectResult<Tb_EntradaSuc> inven_sucursal(Nullable<int> sucursal)
+        public virtual int inven_sucursal(Nullable<int> sucursal)
         {
             var sucursalParameter = sucursal.HasValue ?
                 new ObjectParameter("sucursal", sucursal) :
                 new ObjectParameter("sucursal", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Tb_EntradaSuc>("inven_sucursal", sucursalParameter);
-        }
-    
-        public virtual ObjectResult<Tb_EntradaSuc> inven_sucursal(Nullable<int> sucursal, MergeOption mergeOption)
-        {
-            var sucursalParameter = sucursal.HasValue ?
-                new ObjectParameter("sucursal", sucursal) :
-                new ObjectParameter("sucursal", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Tb_EntradaSuc>("inven_sucursal", mergeOption, sucursalParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("inven_sucursal", sucursalParameter);
         }
     }
 }

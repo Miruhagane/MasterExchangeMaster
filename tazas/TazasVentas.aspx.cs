@@ -27,8 +27,8 @@ namespace WebApplication2.tazas
 
         private void obtndivisa()
         {
-            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
-            SqlDataAdapter compras = new SqlDataAdapter("SELECT DISTINCT a.Int_IdMoneda AS IdTaxa, b.Txt_Moneda AS Moneda, a.dbl_Valor AS Valor, a.Fec_Dia AS Dia, a.Lng_IdTaxa, b.Int_IdMoneda FROM dbo.Tb_Taxas AS a INNER JOIN dbo.Ct_Moneda AS b ON a.Int_IdMoneda = b.Int_IdMoneda inner join dbo.Tb_TaxSuc as c on a.Lng_IdTaxa = c.Lng_IdTaxSuc WHERE (a.Bol_Tipo = 1) AND (a.Int_IdMoneda IN (1, 2, 3, 4, 5, 6)) AND (a.Int_IdGrupo = (SELECT MAX(Int_IdGrupo) AS Expr1 FROM dbo.Tb_Taxas AS x WHERE (Bol_Tipo = 1))) and c.Lng_IdSucursal = "+sucursalid+"", con);
+            int sucursalid = Convert.ToInt32(sucursalselect.SelectedValue);
+            SqlDataAdapter compras = new SqlDataAdapter("SELECT DISTINCT a.Int_IdMoneda AS IdTaxa, b.Txt_Moneda AS Moneda, a.dbl_Valor AS Valor, CONVERT (char(10), a.Fec_Dia, 103) as Dia,  a.Lng_IdTaxa, b.Int_IdMoneda FROM dbo.Tb_Taxas AS a INNER JOIN dbo.Ct_Moneda AS b ON a.Int_IdMoneda = b.Int_IdMoneda inner join dbo.Tb_TaxSuc AS c On a.Lng_IdTaxa = c.Lng_IdTaxSuc WHERE(a.Bol_Tipo = 1) AND(a.Int_IdGrupo = (SELECT MAX(Int_IdGrupo) AS Expr1 FROM dbo.Tb_Taxas AS x WHERE(Bol_Tipo = 1))) AND(a.Int_IdMoneda IN(1, 2, 3, 4, 5, 6)) and c.Lng_IdSucursal = " + sucursalid + "", con);
             DataTable tabla = new DataTable();
             compras.Fill(tabla);
             this.Tb_taxaVentas.DataSource = (tabla);

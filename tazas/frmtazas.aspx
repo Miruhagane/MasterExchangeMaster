@@ -64,6 +64,15 @@
            
 
                <div class="col-sm-2 pt-5"> 
+                   <div class="col-sm-12 row">
+                       <div class="col-sm-6 ">
+                           <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalsucursales">Buscar</button>
+                       </div>
+
+                       <div class="col-sm-6 ">
+                           <asp:Button ID="Guardar" CssClass="btn btn-secondary btn-sm" runat="server" Text="Guardar" OnClick="Guardar_Click" />
+                       </div>
+                   </div>
                              <div class="form-check form-check-inline col-sm-12">
                              <span class="form-check-input" type="checkbox"><input id="Cancun" type="checkbox" name="Cancun" onclick="cancun();" /></span>
                              <label class="form-check-label" for="cancun">Cancun</label>
@@ -94,13 +103,7 @@
                              <label class="form-check-label" for="Leon1"> Leon</label>
                          </div>
 
-                         <div class="col-sm-12 pt-2">
-                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalsucursales">Buscar sucursal</button>
-                         </div>
-
-                         <div class="col-sm-12 pt-2">
-                              <asp:Button ID="Guardar" CssClass="btn btn-info" runat="server" Text="Guardar" OnClick="Guardar_Click" />
-                         </div>
+                         
 
                     </div>
 

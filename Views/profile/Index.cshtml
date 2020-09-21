@@ -87,7 +87,7 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text">$</div>
                         </div>
-                        @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @type = "number", @class = "form-control ", @readonly = true, @id = "valor", @name = "valor" } })
+                        @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @type = "number", @class = "form-control ", @readonly = true,  @id = "valor", @name = "valor" } })
                         @Html.ValidationMessageFor(model => model.Dbl_TipoCambio, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                 <div class="form-group col-sm-8">
                     <label for="inputAddress2">Cantidad</label>
 
-                    @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad", @oninput = "compras_cantidad()" } })
+                    @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad", @maxlength = "8", @oninput = "compras_cantidad()" } })
                     @Html.ValidationMessageFor(model => model.Dbl_MontoRecibir, "", new { @class = "text-danger" })
                 </div>
 
@@ -624,6 +624,22 @@
     }
 </script>
 
+
+@*imitadores de1 carracteres*@
+
+<script>
+
+    a.addEventListener('input', function ()
+    {
+        if (this.value.length > 6)
+            this.value = this.value(0, 12);
+    })
+    b.addEventListener('input', function () {
+        if (this.value.length > 6)
+            this.value = this.value(0, 12);
+    })
+
+</script>
 
 @*operaciones*@
 
