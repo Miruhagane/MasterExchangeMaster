@@ -3,31 +3,30 @@
 @{
 
     Layout = null;
- }
+}
 
-    <div class="table-responsive-sm">
-        <table class="table table-sm">
+<div class="table-responsive-sm">
+    <table class="table table-sm">
+        <tr>
+            <th class="col-sm-1">
+                Moneda
+            </th>
+            <th class="col-sm-1">
+                Valor
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
             <tr>
-                <th class="col-sm-1">
-                    Moneda
-                </th>
-                <th class="col-sm-1">
-                    Valor
-                </th>
+                <td>
+                    @item.Moneda
+                </td>
+                <td>
+                    $@string.Format("{0:#,0.00}", item.Valor)
+                </td>
             </tr>
+        }
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @item.Moneda
-                    </td>
-                    <td>
-                        @item.Valor
-                    </td>
-                </tr>
-            }
-
-        </table>
-    </div>
-    
+    </table>
+</div>

@@ -11,7 +11,8 @@ namespace WebApplication2.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Tb_Clientes
     {
         public int Lng_IdCliente { get; set; }
@@ -21,6 +22,9 @@ namespace WebApplication2.Models
         public string Txt_Identificacion { get; set; }
         public string Txt_Telefono { get; set; }
         public string Txt_Email { get; set; }
-        public Nullable<System.DateTime> Fec_Alta { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public System.DateTime Fec_Alta { get; set; }
+        public string File_Nombre { get; set; }
+        public byte[] Doc_cliente { get; set; }
     }
 }

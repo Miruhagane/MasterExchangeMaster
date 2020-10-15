@@ -12,17 +12,16 @@ namespace WebApplication2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Tb_Cierre
+    public partial class Tb_HistorialEntySal
     {
-        public int Lng_IdCierre { get; set; }
-        public Nullable<int> Int_IdDenomicacion { get; set; }
-        public Nullable<decimal> Dbl_Cantidad { get; set; }
-        public Nullable<System.DateTime> Fec_Cierre { get; set; }
+        public int Lng_IdHistorialEntySal { get; set; }
+        public Nullable<int> Lng_IdEntrada { get; set; }
+        public Nullable<int> Lng_IdSalida { get; set; }
         public Nullable<int> Int_IdMoneda { get; set; }
-        public Nullable<int> Int_IdStatus { get; set; }
-        public Nullable<int> Int_IdTurno { get; set; }
-        public Nullable<int> Int_IdSucursal { get; set; }
+        public Nullable<int> Int_Sucursal { get; set; }
+        public Nullable<int> Int_Estatus { get; set; }
+        public Nullable<System.DateTime> Fec_Creacion { get; set; }
         public Nullable<int> Int_IdUsuario { get; set; }
-        public Nullable<bool> Bol_Congelar { get; set; }
+        public Nullable<int> Int_IdTurno { get; set; }
     }
 }

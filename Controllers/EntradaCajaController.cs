@@ -17,6 +17,7 @@ using System.Data.EntityClient;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     public class EntradaCajaController : Controller
     {
 
@@ -61,52 +62,55 @@ namespace WebApplication2.Controllers
         {
             bool a = true;
             int sucursalid = Convert.ToInt32(Session["idSucursal"]);
-
-            var idlng = db.Tb_EntradaSuc.Max(e => (int?)e.Lng_IdEntrada) ?? 0;
-           
-           
-            IEnumerable<inventario> querty = new List<inventario>();
+            int turno = Convert.ToInt32(Session["turno"]);
+            int usuario = Convert.ToInt32(User.Identity.Name);
+            List<inventario> querty = new List<inventario>();
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
                 querty = (from c in dr.Tb_EntradaSuc
                           join ca in dr.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
                           join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
-                          where c.Int_Sucursal == sucursalid && c.Bol_Activo == a && c.Lng_IdEntrada == idlng
-                          select new inventario()
-                          { 
-                              Int_IdMoneda = cb.Int_IdMoneda,
+                          where c.Int_Sucursal == sucursalid && c.Bol_Activo == a && ca.Int_IdTurno == turno && ca.Int_IdUsuario == usuario
+                          select new inventario
+                          {
                               Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
                               Txt_Moneda = cb.Txt_Moneda
                           }).ToList();
             }
 
+
             return View(querty);
         }
 
-        public ActionResult final()
+        
+        public JsonResult estatus()
         {
            
+            bool a = true;
             int sucursalid = Convert.ToInt32(Session["idSucursal"]);
-
-            var idlng = db.Tb_SalidaSuc.Max(e => (int?)e.Lng_IdSalida) ?? 0;
-            
-
-            IEnumerable<inventario> querty = new List<inventario>();
+            int turno = Convert.ToInt32(Session["turno"]);
+            int usuario = Convert.ToInt32(User.Identity.Name);
+            List<inventario> querty;
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
-                querty = (from c in dr.Tb_SalidaSuc
-                          join ca in dr.Tb_EntEmp on c.Lng_IdSalida equals ca.Lng_IdSalida
+                querty = (from c in dr.Tb_EntradaSuc
+                          join ca in dr.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
                           join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
-                          where c.int_IdSucursal == sucursalid  && c.Lng_IdSalida == idlng
-                          select new inventario()
+                          where c.Int_Sucursal == sucursalid && c.Bol_Activo == a && ca.Int_IdTurno == turno && ca.Int_IdUsuario == usuario
+                          select new inventario
                           {
-                              Int_IdMoneda = cb.Int_IdMoneda,
-                              Dbl_SaldoSalido = c.Dbl_SaldoSalida,
-                              Txt_Moneda = cb.Txt_Moneda
+                              Lng_IdEntrada = c.Lng_IdEntrada,
+                              Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
+                              Txt_Moneda = cb.Txt_Moneda,
+                              Int_Estatus = c.Int_Estatus
                           }).ToList();
             }
-            return View(querty);
+
+
+            return Json(querty, JsonRequestBehavior.AllowGet);
         }
+
+
 
 
         // GET: EntradaCaja
@@ -122,8 +126,9 @@ namespace WebApplication2.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index([Bind(Include = "Lng_IdEntrada,Dbl_SaldoEntrada,Fec_Ini,Fec_Fin,Int_Sucursal,Int_IdMoneda,Bol_Activo")] Tb_EntradaSuc tb_EntradaSuc, Tb_EntEmp tb_EntEmp)
+        public async Task<ActionResult> Index([Bind(Include = "Lng_IdEntrada,Dbl_SaldoEntrada,Fec_Ini,Fec_Fin,Int_Sucursal,Int_IdMoneda,Bol_Activo,Int_Estatus")] Tb_EntradaSuc tb_EntradaSuc, Tb_EntEmp tb_EntEmp)
         {
+            int idturno = Convert.ToInt32(Session["turno"]);
             modulodivisas();
             if (ModelState.IsValid)
             {
@@ -132,36 +137,82 @@ namespace WebApplication2.Controllers
 
                 tb_EntEmp.Lng_IdEntrada = tb_EntradaSuc.Lng_IdEntrada;
 
-                Session["identrada"] = tb_EntradaSuc.Lng_IdEntrada;
+                
 
-                SqlDataAdapter caja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_EntEmp] ([Lng_IdEntrada], [Int_IdUsuario], [Int_IdTurno], [Fec_Ini], [Fec_Fin]) VALUES (" + tb_EntEmp.Lng_IdEntrada + " ," + User.Identity.Name + " , 1 , GETDATE() , ' ')", con);
+                SqlDataAdapter caja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_EntEmp] ([Lng_IdEntrada], [Int_IdUsuario], [Int_IdTurno], [Fec_Ini], [Fec_Fin]) VALUES (" + tb_EntEmp.Lng_IdEntrada + " ," + User.Identity.Name + " , "+ idturno + ", GETDATE() , ' ')", con);
                 DataSet a = new DataSet();
                 caja.Fill(a);
                 a.Reset();
 
-                return RedirectToAction("Index");
+                SqlDataAdapter historial = new SqlDataAdapter("INSERT INTO [dbo].[Tb_HistorialEntySal] ([Lng_IdEntrada], [Lng_IdSalida], [Int_Sucursal],[Int_Estatus], [Fec_Creacion], [Int_IdUsuario], [Int_IdTurno]) VALUES (" + tb_EntradaSuc.Lng_IdEntrada + ",' ' , " + tb_EntradaSuc.Int_Sucursal + ", " + tb_EntradaSuc.Int_Estatus + " ,GETDATE()," + User.Identity.Name + " , " + idturno + ")", con);
+                DataSet h = new DataSet();
+                historial.Fill(h);
+                h.Reset();
+
+                return RedirectToAction("Index", "Profile");
+
             }
             modulodivisas();
-            return View(tb_EntradaSuc);
+            return RedirectToAction("Index", "Profile");
         }
 
+        public ActionResult actualizar()
+        {
+            modulodivisas();
+            return View();
+
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Salida([Bind(Include = "Lng_Salida,Dbl_SaldoSalida,Fec_Fin,Int_IdMoneda,int_IdSucursal")] Tb_SalidaSuc tb_SalidaSuc)
+        public async Task<ActionResult> actualizar([Bind(Include = "Lng_IdEntrada,Dbl_SaldoEntrada,Fec_Ini,Fec_Fin,Int_Sucursal,Int_IdMoneda,Bol_Activo, Int_Estatus")] Tb_EntradaSuc tb_EntradaSuc, Tb_EntEmp tb_EntEmp)
         {
+            int idturno = Convert.ToInt32(Session["turno"]);
+            modulodivisas();
             if (ModelState.IsValid)
             {
-                db.Tb_SalidaSuc.Add(tb_SalidaSuc);
+                db.Tb_EntradaSuc.Add(tb_EntradaSuc);
                 await db.SaveChangesAsync();
 
-                SqlDataAdapter caja = new SqlDataAdapter("UPDATE [dbo].[Tb_EntEmp] SET Fec_Fin = GETDATE() WHERE Lng_IdEntEmp = " + Session["identrada"] + "", con);
+                tb_EntEmp.Lng_IdEntrada = tb_EntradaSuc.Lng_IdEntrada;
+
+
+
+                SqlDataAdapter caja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_EntEmp] ([Lng_IdEntrada], [Int_IdUsuario], [Int_IdTurno], [Fec_Ini], [Fec_Fin]) VALUES (" + tb_EntEmp.Lng_IdEntrada + " ," + User.Identity.Name + " , " + idturno + ", GETDATE() , ' ')", con);
                 DataSet a = new DataSet();
                 caja.Fill(a);
                 a.Reset();
 
-                return RedirectToAction("Index");
+                SqlDataAdapter historial = new SqlDataAdapter("INSERT INTO [dbo].[Tb_HistorialEntySal] ([Lng_IdEntrada], [Lng_IdSalida], [Int_Sucursal],[Int_Estatus], [Fec_Creacion], [Int_IdUsuario], [Int_IdTurno]) VALUES (" + tb_EntradaSuc.Lng_IdEntrada + ", ' ' ,  " + tb_EntradaSuc.Int_Sucursal + ", "+tb_EntradaSuc.Int_Estatus+" , GETDATE()," + User.Identity.Name + " , " + idturno + ")", con);
+                DataSet h = new DataSet();
+                historial.Fill(h);
+                h.Reset();
+
+                return RedirectToAction("actualizar");
             }
+            modulodivisas();
+
+            return RedirectToAction("actualizar");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult status( int idregistro, string mtc, int estatus)
+        {
+            int idturno = Convert.ToInt32(Session["turno"]); 
+            int sucursal = Convert.ToInt32(Session["idSucursal"]);
+
+
+            SqlDataAdapter caja = new SqlDataAdapter("UPDATE [dbo].[Tb_EntradaSuc] SET [Int_Estatus] = "+ estatus + " ,[Txt_ Motivo] = ' "+mtc+" ' where  Lng_IdEntrada = " + idregistro + " ", con);
+            DataSet a = new DataSet();
+            caja.Fill(a);
+            a.Reset();
+
+            SqlDataAdapter historial = new SqlDataAdapter("INSERT INTO [dbo].[Tb_HistorialEntySal] ([Lng_IdEntrada], [Lng_IdSalida], [Int_Sucursal],[Int_Estatus], [Fec_Creacion], [Int_IdUsuario], [Int_IdTurno]) VALUES (" + idregistro + ",' ' ,  " + sucursal + ", " + estatus + " ,GETDATE()," + User.Identity.Name + " , " + idturno + ")", con);
+            DataSet h = new DataSet();
+            historial.Fill(h);
+            h.Reset();
+
 
             return View();
         }

@@ -1,275 +1,197 @@
-﻿@model WebApplication2.Models.ViewModels.inventario
+﻿@model WebApplication2.Models.Tb_EntradaSuc
 
 @{
+
+    Layout = null;
     List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
-    ViewBag.title = "Salda Inicial";
+    ViewBag.title = "Saldo Inicial";
+
 }
-  
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<div class="col-sm-6 mt-3">
-    <div class="card shadow-lg rounded">
-        <div class="card-header bg-dark text-white">
-            <h5>Saldo actual</h5>
-        </div>
-        <div class="card-body">
-            @Html.Action("invet")
-        </div>
-        <div class="card-footer">
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Entrada">
-                Ingresar
-            </button>
-        </div>
-    </div>
+    <title>@ViewBag.Title - Master Exchance</title>
+    <link href="~/Content/sidebar.css" rel="stylesheet" />
+    <!-- sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
-</div>
 
-<div class="modal fade" id="Entrada" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Ingresa Saldo De Entrada</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+    <!-- bootstrap 4 -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <!-- Ionic icons -->
+    <script src="https://kit.fontawesome.com/30fa52b14d.js" crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/secion.js"></script>
+
+    <!-- Print.js-->
+    <script src="  https://printjs-4de6.kxcdn.com/print.min.js"></script>
+    <link href="~/Content/Usuarios.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+
+    <div class="col-sm-6 mt-3">
+        <div class="card shadow-lg rounded">
+            <div class="card-header bg-dark text-white">
+                <h5>Saldo actual</h5>
+            </div>
+            <div class="card-body">
+                @Html.Action("invet")
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Entrada">
+                    Ingresar 
                 </button>
             </div>
-            <div class="modal-body">
-
-                @using (Ajax.BeginForm("Index", new AjaxOptions
-                {
-
-                    HttpMethod = "POST",
-
-                }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <form>
-                        <div class="form-row">
-
-
-                            <div class="col-sm-6 mb-2">
-                                <label>Saldo Entrada</label>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Dbl_SaldoEntrada, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Dbl_SaldoEntrada, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6 mb-3">
-                                <label>Moneda</label>
-
-                                @Html.DropDownList("Datos", items, "Selecciona la divisa", new { @type = "number", @class = "form-control", @id = "padre" })
-
-                                <div class="" style="">
-                                    @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "idmonedaEnt", @readonly = true } })
-                                    @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
-                            <div>
-                                <label>Sucursal</label>
-
-                                <div class="col-md-10">
-                                    <input class="form-control" disabled id="NomSucursal" value=@Session["sucursaledelusuario"] />
-
-                                    <div style="display: none">
-                                        <input id="IdSucursal" value="@Session["idSucursal"]" />
-                                        @Html.EditorFor(model => model.Int_Sucursal, new { htmlAttributes = new { @class = "form-control", @id = "intsucursal", @readonly = true } })
-                                        @Html.ValidationMessageFor(model => model.Int_Sucursal, "", new { @class = "text-danger" })
-                                    </div>
-
-                                    <div style="display: none">
-                                        @Html.EditorFor(Model => Model.Bol_Activo, new { AllowHtmlAttribute = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(Model => Model.Bol_Activo, "", new { @class = "text-danger" })
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6 mb-3">
-                                <label>Fecha Entrada</label>
-                                <div class="col-md-10">
-                                    @Html.TextBoxFor(model => model.Fec_Ini, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
-                                    @Html.ValidationMessageFor(model => model.Fec_Ini, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
-
-                            <div class="col-sm-12 mt-4">
-                                <button type="submit" class="btn btn-success">Guardar </button>
-                            </div>
-
-                        </div>
-
-                    </form>
-
-                }
-            </div>
-           
         </div>
-    </div>
-</div>
 
-
-<div class="col-sm-6 mt-3">
-    <div class="card shadow-lg rounded">
-        <div class="card-header bg-dark text-white">
-            <h5>Saldo actual</h5>
-        </div>
-        <div class="card-body">
-            @Html.Action("final")
-        </div>
-        <div class="card-footer">
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Salida">
-                Ingresar
-            </button>
-        </div>
     </div>
 
-</div>
+    <div class="modal fade" id="Entrada" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Ingresa Saldo De Entrada</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
-<div class="modal fade" id="Salida" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Ingresa saldo de salida</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @using (Ajax.BeginForm("Salida", new AjaxOptions
-                {
-
-                    HttpMethod = "POST",
-
-                 
-                }))
-                {
-                    @Html.AntiForgeryToken()
-                    <form>
-                        <div class="form-row">
-
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            @Html.HiddenFor(model => model.Lng_IdEntrada)
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <form>
+                            <div class="form-row">
 
 
-                            <div class="col-sm-6">
-                                <label>Saldo Final</label>
-                                <div class="">
-                                    @Html.EditorFor(model => model.Dbl_SaldoSalida, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Dbl_SaldoSalida, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6 mb-3">
-                                <label>Moneda</label>
-
-                                @Html.DropDownList("Datos", items, "Selecciona la divisa", new { @type = "number", @class = "form-control", @id = "madre" })
-
-                                <div class="" style="">
-                                    @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "idmonedaSal", @readonly = true } })
-                                    @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-6">
-                                <label>Regristro Final</label>
-                                <div class="">
-                                    @Html.TextBoxFor(model => model.Fec_Fin, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
-                                    @Html.ValidationMessageFor(model => model.Fec_Fin, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div>
-                                <label>Sucursal</label>
-
-                                <div class="col-md-10">
-                                    <input class="form-control" disabled id="NomSucursal" value=@Session["sucursaledelusuario"] />
-
-                                    <div style="">
-                                        <input id="IdSuc" value="@Session["idSucursal"]" />
-                                        @Html.EditorFor(model => model.Int_Sucursal, new { htmlAttributes = new { @class = "form-control", @id = "IntSucSal", @readonly = true } })
-                                        @Html.ValidationMessageFor(model => model.Int_Sucursal, "", new { @class = "text-danger" })
+                                <div class="col-sm-6 mb-2">
+                                    <label>Saldo Entrada</label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Dbl_SaldoEntrada, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Dbl_SaldoEntrada, "", new { @class = "text-danger" })
                                     </div>
-
-                                  
                                 </div>
+
+                                <div class="col-sm-6 mb-3">
+                                    <label>Moneda</label>
+
+                                    @Html.DropDownList("Datos", items, "Selecciona la divisa", new { @type = "number", @class = "form-control", @id = "padre" })
+
+                                    <div class="" style="display: none">
+                                        @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "idmonedaEnt", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    <label>Sucursal</label>
+
+                                    <div class="col-md-10">
+                                        <input class="form-control" disabled id="NomSucursal" value=@Session["sucursaledelusuario"] />
+
+                                        <div style="display: none">
+                                            <input id="IdSucursal" value="@Session["idSucursal"]" />
+                                            @Html.EditorFor(model => model.Int_Sucursal, new { htmlAttributes = new { @class = "form-control", @id = "intsucursal", @readonly = true } })
+                                            @Html.ValidationMessageFor(model => model.Int_Sucursal, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div style="display: none">
+                                            @Html.EditorFor(Model => Model.Bol_Activo, new { AllowHtmlAttribute = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(Model => Model.Bol_Activo, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div style="display: none">
+                                            @Html.EditorFor(model => model.Int_Estatus, new { htmlAttributes = new { @class = "form-control", @id = "intstatus", @readonly = true } })
+                                            @Html.ValidationMessageFor(model => model.Int_Estatus, "", new { @class = "text-danger" })
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 mb-3">
+                                    <label>Fecha Entrada</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(model => model.Fec_Ini, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
+                                        @Html.ValidationMessageFor(model => model.Fec_Ini, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-sm-12 mt-4">
+                                    <button type="submit" class="btn btn-success">Guardar </button>
+                                </div>
+
                             </div>
 
-                          
+                        </form>
 
-                            <div class="col-sm-12">
+                        <script>
+                            function completado() {
 
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Actulizado',
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
 
-                                <button type="submit" class="btn btn-danger">Guardar</button>
+                                location.reload();
+                            }
+                        </script>
 
-                            </div>
-                        </div>
-
-                    </form>
-
-                }
+                    }
+                </div>
 
             </div>
-         
         </div>
     </div>
-</div>
 
 
+    <script>
+
+        var monedaEntrada = document.getElementById("padre");
+        monedaEntrada.addEventListener("change", refresh);
+
+        refresh();
+
+        function refresh() {
+
+            var mon = document.getElementById("padre").value;
+            document.getElementById("idmonedaEnt").value = mon;
+
+            var idsucursal = document.getElementById("IdSucursal").value;
+
+            document.getElementById("intsucursal").value = idsucursal;
+
+            document.getElementById("Bol_Activo").value = "true";
+
+            var estatus = 1;
+            document.getElementById("intstatus").value = estatus;
+
+        }
+
+    </script>
 
 
-<script>
-
-    var monedaEntrada = document.getElementById("padre");
-    monedaEntrada.addEventListener("change", refresh);
-
-    refresh();
-
-    function refresh() {
-
-        var mon = document.getElementById("padre").value;
-        document.getElementById("idmonedaEnt").value = mon;
-
-   
-
-
-        var idsucursal = document.getElementById("IdSucursal").value;
-
-        document.getElementById("intsucursal").value = idsucursal;
-
-
-      
-
-        document.getElementById("Bol_Activo").value = "true";
-
-    }
-
-</script>
-
-
-
-<script>
-
-    var monedaSalida = document.getElementById("madre");
-    monedaSalida.addEventListener("change", refresh);
-
-    refresh();
-
-    function refresh() {
-        var idsucursal = document.getElementById("IdSuc").value;
-
-        document.getElementById("IntSucSal").value = idsucursal;
-
-
-        var idpadremoneda = document.getElementById("madre").value;
-        document.getElementById("idmonedaSal").value = idpadremoneda;
-
- 
-    }
-
-</script>
+</body>
+</html>

@@ -11,7 +11,8 @@ namespace WebApplication2.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Tb_Registros
     {
         public int Lng_IdRegistro { get; set; }
@@ -23,10 +24,12 @@ namespace WebApplication2.Models
         public Nullable<decimal> Dbl_TipoCambio { get; set; }
         public Nullable<decimal> Dbl_TipoCambioven { get; set; }
         public Nullable<decimal> Dbl_TipoCambioEsp { get; set; }
-        public Nullable<bool> Bol_Especial { get; set; }
+        public Nullable<bool> Bol_Cancelar { get; set; }
         public Nullable<decimal> Dbl_Entregar { get; set; }
         public Nullable<decimal> Dbl_Cambio { get; set; }
         public Nullable<int> Int_IdTpv { get; set; }
-        public Nullable<System.DateTime> Fec_Fecha { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public System.DateTime Fec_Fecha { get; set; }
+        public Nullable<bool> Bol_multimoneda { get; set; }
     }
 }

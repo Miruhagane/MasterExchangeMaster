@@ -31,7 +31,7 @@
 
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-           
+
                 <div style="display: none">
                     <div>
                         <input id="cliente" name="idcliente" class="form-control" value="0" />
@@ -46,6 +46,10 @@
                         @Html.EditorFor(model => model.Int_IdTipoTran, new { htmlAttributes = new { @class = "form-control", @id = "tipodetrans", @readonly = true } })
                         @Html.ValidationMessageFor(model => model.Int_IdTipoTran, "", new { @class = "text-danger" })
 
+                        @Html.EditorFor(Model => Model.Bol_Cancelar, new { AllowHtmlAttribute = new { @class = "form-control"} })
+                        @Html.ValidationMessageFor(Model => Model.Bol_Cancelar, "", new { @class = "text-danger" })
+
+
                     </div>
 
                 </div>
@@ -53,7 +57,7 @@
 
                 <div class="form-group col-sm-8">
 
-                    
+
                     <label for="inputState">Divisa</label>
                     @Html.DropDownList("Datos", items, "selecciona la divisa", new { @type = "number", @class = "form-control", id = "padre" })
 
@@ -67,27 +71,14 @@
                 </div>
 
 
-                <div>
-                    <div id="especialdiv" class="form-group col-sm-8">
-                        <label for="inputAddress2">Especial</label>
-                        <div>
-
-                            <div class="checkbox">
-
-                                @Html.EditorFor(model => model.Bol_Especial, new {AllowHtmlAttribute = new { @class = "form-control", @id = "especial" } })
-                                @Html.ValidationMessageFor(model => model.Bol_Especial, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+              
                 <div class="form-group col-sm-8">
                     <label>Tipo de Cambio</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">$</div>
                         </div>
-                        @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @type = "number", @class = "form-control ", @readonly = true,  @id = "valor", @name = "valor" } })
+                        @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @type = "number", @class = "form-control ", @readonly = true, @id = "valor", @name = "valor" } })
                         @Html.ValidationMessageFor(model => model.Dbl_TipoCambio, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -96,7 +87,7 @@
                 <div class="form-group col-sm-8">
                     <label for="inputAddress2">Cantidad</label>
 
-                    @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad", @maxlength = "8", @oninput = "compras_cantidad()" } })
+                    @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad", @oninput = "compras_cantidad()" } })
                     @Html.ValidationMessageFor(model => model.Dbl_MontoRecibir, "", new { @class = "text-danger" })
                 </div>
 
@@ -141,6 +132,13 @@
                     </div>
                 </div>
 
+                <div id="idclientenombre" style="display: none" class="form-group col-sm-8">
+                    <label for="inputAddress2">Nombre De Cliente</label>
+                    <div>
+                        <input type="text" id="nombredecliente" readonly class="form-control form-control-sm" value="" />
+                    </div>
+                </div>
+
                 <div class="form-group col-sm-8" style="display : none;">
                     <label> Tipo de Cobro</label>
 
@@ -167,7 +165,10 @@
 
                 <button type="button" onclick="crt()" id="modal1" class="btn btn-warning"> Comprar </button>
 
-                @*<button type="button" class="btn btn-primary" data-target="#ticket" data-toggle="modal">verificar cliente </button>*@
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cotizacion">Cotizacion</button>
+                    @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalclientes"> usuarios agregar </button>*@
+                @*<button type="button" class="btn btn-primary" onclick="impresionticket()" data-target="#ticket" data-toggle="modal">verificar cliente </button>*@
+             
                 <script>
                     function success() {
 
@@ -211,8 +212,8 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Buscar cliente </h5>
                 @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>*@
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
             </div>
             <div class="modal-body">
                 <div>
@@ -229,7 +230,8 @@
                 <table class="table table-sm table-bordered">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">Id </th>
+                            <th scope="col"></th>
+                            <th></th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Correo</th>
                             <th scope="col">direccion</th>
@@ -238,22 +240,7 @@
 
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td id="Id"> </td>
-
-                            <td id="Nombre"></td>
-
-                            <td id="correo"></td>
-
-                            <td id="direccion"></td>
-
-                            <td id="identificacion"></td>
-
-                            <td id="telefono"> </td>
-
-                        </tr>
-
+                    <tbody id="cuerpo">
                     </tbody>
                 </table>
 
@@ -261,7 +248,7 @@
 
             <div class="modal-footer">
 
-                <button type="button" data-dismiss="modal" class="btn btn-primary">Guardar Cambios</button>
+                <button type="button" onclick="cancelar()" class="btn btn-danger"> cancelar </button>
             </div>
 
         </div>
@@ -275,17 +262,18 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Agregar Cliente</h5>
                 @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>*@
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
             </div>
             <div class="modal-body">
-                @using (Ajax.BeginForm("Clientes", new AjaxOptions
+                @using (Ajax.BeginForm("Clientes", null, new AjaxOptions
                 {
-
                     HttpMethod = "POST",
-
                     OnComplete = "buscar()"
-                }))
+
+
+
+                }, new { enctype = "multipart/form-data" }))
                 {
 
 
@@ -305,7 +293,7 @@
                                     <label>Codigo cliente</label>
                                     <div class="col-md-10">
 
-                                        <input type="text" class="form-control" name="numcliente" />
+                                        <input type="text" class="form-control form-control-sm" name="numcliente" />
 
                                     </div>
                                 </div>
@@ -313,7 +301,7 @@
                                 <div class="form-group">
                                     <label>Nombre de Cliente</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control is-invalid" name="nombre" required />
+                                        <input id="nombreform" type="text" class="form-control form-control-sm is-invalid" name="nombre" required />
                                         <div class="invalid-feedback">
                                             Por favor Escribe Su nombre Completo
                                         </div>
@@ -325,19 +313,50 @@
                                     <label>Nacionalidad</label>
                                     <div class="col-md-10">
 
-                                        <input type="text" class="form-control" name="dirreccion" />
+                                        <input type="text" class="form-control form-control-sm" name="dirreccion" />
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Numero de Identificacion</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control is-invalid" id="identificador" name="identificacion" required />
+                                        <input type="text" class="form-control form-control-sm is-invalid" id="identificador" name="identificacion" required />
 
                                         <div class="invalid-feedback">
                                             INE, Licencia de conducir o Pasaporte
                                         </div>
 
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Documento de Identifacion</label>
+                                    <div class="col-sm-10">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input form-control-sm" name="archivo" id="archivo" required>
+                                            <label class="custom-file-label" for="archivo">Agrega un archivo</label>
+                                            <div class="invalid-feedback">Es Obligatorio Colocar un documento de identificacion</div>
+                                        </div>
+
+
+                                        <div>
+                                            <input readonly style="display:none" type="text" class="form-control form-control-sm" id="nombrearchivo" name="nombrearchivo" value="" />
+                                        </div>
+
+                                        <script>
+                                            $("input[type=file]").change(function () {
+                                                var fieldVal = $(this).val();
+                                                if (fieldVal != undefined || fieldVal != "") {
+                                                    $(this).next(".custom-file-label").text(fieldVal);
+                                                }
+                                            });
+
+                                            document.getElementById("archivo").onchange = function () {
+                                                var rt = document.getElementById("archivo").files[0].name;
+                                                console.log(rt);
+                                                document.getElementById("nombrearchivo").value = rt;
+                                            }
+                                        </script>
                                     </div>
                                 </div>
 
@@ -354,25 +373,24 @@
                                 <div class="form-group">
                                     <label>Numero de Telefono</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" name="telefono" />
+                                        <input type="text" class="form-control form-control-sm" name="telefono" />
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Correo de Electronico</label>
                                     <div class="col-md-10">
-                                        <input type="email" class="form-control is-invalid" name="mail" required />
-                                        <label class="form-check-label" for="invalidCheck3">
-                                            Escribe su Correo Electronico
-                                        </label>
+                                        <input type="email" id="email" class="form-control form-control-sm" name="mail" />
+
                                     </div>
                                 </div>
 
                             </div>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-success">Agregar</button>
+                    <button type="submit" onclick="validacionform()" class="btn btn-success">Agregar</button>
+                    <button type="submit" id="agregar" style="display: none" onclick="setTimeout(agregarbuscar, 2000);" class="btn btn-success"></button>
+                    <button type="button" onclick="cancelar()" class="btn btn-danger"> cancelar </button>
 
                 }
             </div>
@@ -423,23 +441,23 @@
 
                         <tr>
                             <th scope="row"><small>Moneda</small></th>
-                            <td id="moneda" ></td>
+                            <td id="moneda"></td>
                         </tr>
 
                         <tr>
                             <th scope="row"><small>Monto</small></th>
-                            <td id="monto"></td>
+                            <td><span>$</span><span id="monto"></span></td>
                         </tr>
 
                         <tr>
                             <th scope="row"><small>Tipo De Cambio</small></th>
-                            <td id="cambio"></td>
+                            <td><span>$</span><span id="cambio"></span></td>
 
                         </tr>
 
                         <tr>
                             <th scope="row"><small>Total a Pagar:</small></th>
-                            <td id="pago"></td>
+                            <td><span>$</span><span id="pago"></span> </td>
 
                         </tr>
 
@@ -469,12 +487,75 @@
     </div>
 </div>
 
+@*modulo cotizacion Normal*@
+
+<div class="modal fade " id="cotizacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel"> <strong>Detalles de Compra</strong> </h6>
+            </div>
+            <div id="ticketecoti" class="modal-body text-center">
+                <table class="table table-sm table-bordered margin1">
+                   
+                    <tbody>
+                        <tr>
+                            <th scope="row"><small>Fecha</small></th>
+                            <td id="fechajs"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Cajero</small></th>
+                            <td>@Session["usuario"] @Session["apellido"]</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Sucursal</small></th>
+                            <td>@Session["sucursaledelusuario"]</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Moneda</small></th>
+                            <td id="monedacotizacion"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Monto</small></th>
+                            <td><span>$</span><span id="montocotizacion"></span></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Tipo De Cambio</small></th>
+                            <td><span>$</span><span id="cambiocotizacion"></span></td>
+
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Total a Pagar:</small></th>
+                            <td><span>$</span><span id="pagocotizacion"></span> </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button onclick="printJS('ticketecoti', 'html')" type="button" data-target="#cotizacion" class="btn btn-primary">Imprimir</button>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
 @*obtener divisa usd*@
 
 <script>
     (function () {
         usdaler();
-       
+
     })();
 
     function usdaler() {
@@ -557,9 +638,11 @@
                     var cantidades = document.getElementById("cantidad").value;
 
 
-                    let t_pagar = cantidades * valoress;
+                    let t_pagar = cantidades / valoress;
                     document.getElementById("total_pago").value = t_pagar;
                     document.getElementById("mtotal").value = t_pagar.toFixed(2);
+
+                    document.getElementById("Bol_Cancelar").value = "true";
 
 
                 })
@@ -624,160 +707,171 @@
     }
 </script>
 
-
-@*imitadores de1 carracteres*@
-
-<script>
-
-    a.addEventListener('input', function ()
-    {
-        if (this.value.length > 6)
-            this.value = this.value(0, 12);
-    })
-    b.addEventListener('input', function () {
-        if (this.value.length > 6)
-            this.value = this.value(0, 12);
-    })
-
-</script>
-
 @*operaciones*@
 
 <script src="~/Scripts/secion.js"></script>
 
-@*Buscar Cliente*@
+@* Script Buscar Cliente*@
 <script>
 
     function buscar() {
-
         var cbo = document.getElementById("intento").value;
+        fetch("/profile/buscar" + "?numero=" + cbo)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+
+                }
+
+            })
+            .then(function (pjson) {
+                if (pjson == 0) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'El cliente no existe, Registrelo para continuar',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+
+                else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Cliente Encontrado',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+
+                var cuerpo = document.getElementById("cuerpo");
+                cuerpo.innerHTML = "";
+                let valor = 0;
+                for (let item of pjson) {
+                    cuerpo.innerHTML += `
+                    <tr>    <td>  <button type="button" data-dismiss="modal" onclick="obtid(${valor})" class="btn btn-info">seleccionar</button> </td>
+                            <td> <input id="idclientes${valor}" style="display: none" type="text" class="form-control form-control-sm" name="numcliente" value="${item.Lng_IdCliente}" /> </td>
+
+                            <td><input id="Nombre${valor}" type="text" readonly class="form-control form-control-sm"  name="numcliente" value="${item.Txt_Cliente}" /></td>
+
+                            <td id="correo">${item.Txt_Email}</td>
+
+                            <td id="direccion">${item.Txt_Direccion}</td>
+
+                            <td id="identificacion">${item.Txt_Identificacion}</td>
+
+                            <td id="telefono">${item.Txt_Telefono}</td>
+
+                        </tr>
+                    `
+
+                    valor = valor + 1;
+                }
+            })
+
+    }
+
+
+
+    function agregarbuscar() {
         var obr = document.getElementById("identificador").value;
 
-        if (cbo == "" || cbo == "0") {
+        $('#modalclientes').modal('hide');
 
-            $('#modalclientes').modal('hide');
+        $('#modalshow').modal('show');
 
-            $('#modalshow').modal('show');
+        fetch("/profile/buscar" + "?numero=" + obr)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
 
-            fetch("/profile/buscar" + "?numero=" + obr)
-                .then(function (result) {
-                    if (result.ok) {
-                        return result.json();
+                }
+            })
+            .then(function (pjson) {
+                if (pjson == 0) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'El cliente no existe, Registrelo para continuar',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
 
-                    }
-                })
+                else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Cliente Encontrado',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
 
-                .then(function (pjson) {
+                var cuerpo = document.getElementById("cuerpo");
+                cuerpo.innerHTML = "";
+                let valor = 0;
+                for (let item of pjson) {
+                    cuerpo.innerHTML += `
+                    <tr>    <td>  <button type="button" onclick="obtid(${valor})" class="btn btn-info">seleccionar</button> </td>
+                            <td> <input id="idclientes${valor}" style="display: none" type="text" class="form-control form-control-sm" name="numcliente" value="${item.Lng_IdCliente}" /> </td>
 
-                    let id = "";
-                    let Nombre = "";
-                    let telefono = "";
-                    let correo = "";
-                    let identificacion = "";
-                    let direccion = "";
+                            <td> <input id="Nombre${valor}" type="text" readonly class="form-control form-control-sm" name="numcliente" value="${item.Txt_Cliente}" />  </td>
 
-                    for (let i = 0; i < pjson.length; i++) {
-                        id += pjson[i].Lng_IdCliente
-                        Nombre += pjson[i].Txt_Cliente
-                        telefono += pjson[i].Txt_Telefono
-                        correo += pjson[i].Txt_Email
-                        identificacion += pjson[i].Txt_Identificacion
-                        direccion += pjson[i].Txt_Direccion
-                    }
-                    document.getElementById("Id").innerHTML = id;
-                    document.getElementById("Nombre").innerHTML = Nombre;
-                    document.getElementById("telefono").innerHTML = telefono;
-                    document.getElementById("correo").innerHTML = correo;
-                    document.getElementById("identificacion").innerHTML = identificacion;
-                    document.getElementById("direccion").innerHTML = direccion;
+                            <td id="correo">${item.Txt_Email}</td>
 
-                    document.getElementById("cliente").value = id;
+                            <td id="direccion">${item.Txt_Direccion}</td>
 
-                    if (id == "") {
+                            <td id="identificacion">${item.Txt_Identificacion}</td>
 
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Cliente no registrado, Por favor agreguelo',
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                    }
-                    else {
+                            <td id="telefono">${item.Txt_Telefono}</td>
 
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Cliente Encontrado y/o Encontrado',
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                    }
+                        </tr>            
+                    `
 
-                })
+                    valor = valor + 1;
+                }
+            })
+
+
+
+    }
+    function obtid(idnucli) {
+
+      
+        var id = document.getElementById("idclientes" + idnucli).value;
+        var nombreuser = document.getElementById("Nombre" + idnucli).value;
+
+        document.getElementById("cliente").value = id;
+        document.getElementById("nombredecliente").value = nombreuser;
+
+        $('#modalshow').modal('hide');
+        if (cliente.value != 0) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Cliente asignado correctamente',
+                showConfirmButton: false,
+                timer: 3000
+            })
+
         }
-
         else {
-
-
-            fetch("/profile/buscar" + "?numero=" + cbo)
-                .then(function (result) {
-                    if (result.ok) {
-                        return result.json();
-
-                    }
-                })
-
-                .then(function (pjson) {
-
-                    let id = "";
-                    let Nombre = "";
-                    let telefono = "";
-                    let correo = "";
-                    let identificacion = "";
-                    let direccion = "";
-
-                    for (let i = 0; i < pjson.length; i++) {
-                        id += pjson[i].Lng_IdCliente
-                        Nombre += pjson[i].Txt_Cliente
-                        telefono += pjson[i].Txt_Telefono
-                        correo += pjson[i].Txt_Email
-                        identificacion += pjson[i].Txt_Identificacion
-                        direccion += pjson[i].Txt_Direccion
-                    }
-                    document.getElementById("Id").innerHTML = id;
-                    document.getElementById("Nombre").innerHTML = Nombre;
-                    document.getElementById("telefono").innerHTML = telefono;
-                    document.getElementById("correo").innerHTML = correo;
-                    document.getElementById("identificacion").innerHTML = identificacion;
-                    document.getElementById("direccion").innerHTML = direccion;
-
-                    document.getElementById("cliente").value = id;
-
-                    if (id == "") {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Cliente no registrado, Por favor agreguelo',
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                    }
-                    else {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Cliente Encontrado y/o Encontrado',
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                    }
-
-                })
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Huno un error al asignar al cliente',
+                showConfirmButton: false,
+                timer: 3000
+            })
 
         }
+
+        if (nombredecliente.value != "") {
+            document.getElementById("idclientenombre").style.display = "";
+        }
+
 
     }
 
@@ -787,8 +881,9 @@
 
         $('#modalclientes').modal('show');
 
-
     }
+
+
 
 </script>
 
@@ -804,6 +899,7 @@
     (function () {
         llamadarticket();
     })();
+
     function llamadarticket() {
         if (idregistroticket.value == "" || idregistroticket.value == "0") {
             console.log("funciona");
@@ -828,8 +924,10 @@
 
         $('#ticket').modal('show');
 
-        var mir = document.getElementById("idregistroticket").value
-        fetch("/profile/returnticket" + "?registro=" + mir)
+      
+        var dr = document.getElementById("idregistroticket").value;
+
+        fetch("/profile/returnticket" + "?registro=" + dr)
             .then(function (result) {
                 if (result.ok != null) {
 
@@ -855,21 +953,102 @@
 
                 }
 
-              
+
+                var b = new Intl.NumberFormat().format(monto);
+                var c = new Intl.NumberFormat().format(cambio);
+                var d = new Intl.NumberFormat().format(importe);
+
+
 
                 document.getElementById("Idticket").innerHTML = Idticket;
                 document.getElementById("fecha").innerHTML = getDateIfDate(fecha);
                 document.getElementById("moneda").innerHTML = moneda;
-                document.getElementById("monto").innerHTML = monto;
-                document.getElementById("cambio").innerHTML = cambio;
-                document.getElementById("pago").innerHTML = importe;
+                document.getElementById("monto").innerHTML = b;
+                document.getElementById("cambio").innerHTML = c;
+                document.getElementById("pago").innerHTML = d;
 
-                
+
             })
 
-       
-       
+
+
 
 
     }
+</script>
+
+@*cancelacion de procesos*@
+<script>
+    function cancelar() {
+        Swal.fire({
+            title: '¿Estas Seguro?',
+            text: "El proceso se cancelara y no se guardara",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si Estoy Seguro'
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'entendido',
+                        'Proceso Cancelado',
+                        'success'
+                    )
+
+                    location.reload();
+                }
+            })
+
+    }
+
+</script>
+
+@*validacion de archivos*@
+<script>
+    function validacionform() {
+        var a = document.getElementById("nombreform").value;
+        var b = document.getElementById("identificador").value;
+        var c = document.getElementById("archivo").value;
+
+        if (a == "" && b == "" && c == "") {
+
+
+
+        }
+        else if (a != "" && b != "" && c != "") {
+
+            document.getElementById("agregar").click();
+
+
+        }
+
+    }
+</script>
+
+@*necesario para ajaxdocumentos*@
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+        if (form.getAttribute("enctype") === "multipart/form-data") {
+            if (form.dataset.ajax) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (form.dataset.ajaxUpdate) {
+                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                            if (updateTarget) {
+                                updateTarget.innerHTML = xhr.responseText;
+                            }
+                        }
+                    }
+                };
+                xhr.send(new FormData(form));
+            }
+        }
+    }, true);
 </script>

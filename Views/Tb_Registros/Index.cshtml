@@ -1,0 +1,112 @@
+﻿@model IEnumerable<WebApplication2.Models.Tb_Registros>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Int_IdTipoTran)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Int_IdMoneda)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Int_IdMonVenta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dbl_MontoRecibir)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dbl_MontoPagar)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dbl_TipoCambio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dbl_TipoCambioven)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dbl_TipoCambioEsp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bol_Especial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dbl_Entregar)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dbl_Cambio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Int_IdTpv)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fec_Fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bol_multimoneda)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Int_IdTipoTran)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Int_IdMoneda)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Int_IdMonVenta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dbl_MontoRecibir)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dbl_MontoPagar)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dbl_TipoCambio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dbl_TipoCambioven)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dbl_TipoCambioEsp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bol_Especial)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dbl_Entregar)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dbl_Cambio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Int_IdTpv)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fec_Fecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bol_multimoneda)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Lng_IdRegistro }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Lng_IdRegistro }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Lng_IdRegistro })
+        </td>
+    </tr>
+}
+
+</table>

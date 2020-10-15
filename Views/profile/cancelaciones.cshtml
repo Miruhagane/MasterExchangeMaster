@@ -1,0 +1,109 @@
+﻿@model IEnumerable<WebApplication2.Models.ViewModels.registrosall>
+
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+
+                <table class="table table-sm">
+
+                    <thead class="thead-dark">
+                        <tr>
+
+                            <th>
+                                <small>Tipo</small>
+                            </th>
+                            <th>
+                                <small>Moneda Compra</small>
+                            </th>
+                            <th>
+                                <small>Tipo cambio</small>
+                            </th>
+                            <th>
+                                <small>Recibido</small>
+                            </th>
+
+                            <th>
+                                <small>moneda venta</small>
+                            </th>
+
+                            <th>
+                                <small>Tipo cambio</small>
+                            </th>
+
+                            <th>
+                                <small>Pagaste</small>
+                            </th>
+                            <th>
+                                <small>Entregaste</small>
+                            </th>
+
+                            <th>
+                                <small>Cambio pesos</small>
+                            </th>
+                            <th>
+                                <small>Fecha</small>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+
+                    @foreach (var item in Model)
+                    {
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    <small>@item.Txt_TipoTran</small>
+                                </td>
+                                <td>
+                                    <small>@item.Moneda</small>
+                                </td>
+                                <td>
+                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_TipoCambio)</small>
+
+                                </td>
+                                <td>
+                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_MontoRecibir)</small>
+                                </td>
+
+                                <td>
+                                    <small>@item.Monedaven</small>
+                                </td>
+
+                                <td>
+                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_TipoCambioven)</small>
+                                </td>
+
+                                <td>
+                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_MontoPagar)</small>
+                                </td>
+                                <td>
+                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_Entregar)</small>
+
+                                </td>
+
+                                <td>
+                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_Cambio)</small>
+                                </td>
+
+                                <td>
+                                    <small>@item.Fec_Fecha.ToString("dd/MM/yyyy")</small>
+                                </td>
+
+                                <td>
+                                    <button type="button" data-toggle="tooltip" data-placement="top" title="Archivo Pdf" class="btn btn-info btn-sm" target="_blank" onclick="window.open('@Url.Action("actualizar", "profile" , new { registro = item.Lng_IdRegistro })')"> <i class="fas fa-strikethrough"></i></button>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+

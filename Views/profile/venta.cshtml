@@ -1,5 +1,4 @@
-﻿
-@model WebApplication2.Models.Tb_Registros
+﻿@model WebApplication2.Models.Tb_Registros
 
 
 @{
@@ -15,218 +14,417 @@
 
 <div class="col-sm-5 pt-5">
     <div class="card shadow-lg bg-white rounded">
-        <div class="card-header bg-dark text-white">
-            Venta en: @Session["sucursaledelusuario"]
+        <div class="card-header bg-dark row text-white">
+            <div class="col-sm-6">
+                Venta en: @Session["sucursaledelusuario"]
+            </div>
+            <div class="col-sm-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" onclick="multi()" id="multimoneda">
+                    <label class="form-check-label" for="multimoneda">
+                        MultiMoneda
+                    </label>
+                </div>
+            </div>
+
         </div>
-        <div class="card-body">
+        @*formulario venta multimoneda*@
+    <div class="card-body" id="multimonedaform" style="display: none">
 
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+
+            <div style="display: none">
+                <div class="form-group col-sm-8">
+                    <div>
+                        <div>
+                            <input id="cliente" name="idcliente" class="form-control" value="0" />
+                            <input id="idregistroticket" value="@ViewBag.id" />
+                            <input id="idtipodeusuario" value="@Session["intareadeusurio"]" />
+
+                        </div>
+                    </div>
+
+                    @Html.EditorFor(model => model.Int_IdTipoTran, new { htmlAttributes = new { @class = "form-control", @id = "tipodetrans", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.Int_IdTipoTran, "", new { @class = "text-danger" })
+
+                    @Html.EditorFor(Model => Model.Bol_Cancelar, new { AllowHtmlAttribute = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(Model => Model.Bol_Cancelar, "", new { @class = "text-danger" })
+
+                </div>
+
+            </div>
+
+            <div class="form-group col-sm-8">
+
+                <label for="inputState">Divisa a Comprar</label>
+                @Html.DropDownList("Datos", items, "selecciona la divisa", new { @type = "number", @class = "form-control", @id = "padre" })
+
+                <div style="display: none;">
+                    @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "monedaid", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
+                </div>
+
+                <select id="hijo" name="hijo" style="display: none">
+                </select>
+            </div>
+
+            <div id="especial" style="display : none;">
+                <div class="form-group col-sm-8">
+                    <label for="inputAddress2">mUltimoneda</label>
+                    <div>
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.Bol_multimoneda, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.Bol_multimoneda, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: none">
+                <select id="usd1" name="usd1">
+                </select>
+
+                <input type="text" id="usd" />
+
+            </div>
+
+            <div class="form-group col-sm-8" id="valorCompra" style="display: none">
+                <label>Tipo de Cambio Compra</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @type = "text", @class = "form-control disabled", @readonly = true, @id = "valor", @name = "valor" } })
+                    @Html.ValidationMessageFor(model => model.Dbl_TipoCambio, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8">
+                <label for="inputAddress2">Cantidad a Comprar</label>
+
+                @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad", @oninput = "compras_cantidad()" } })
+                @Html.ValidationMessageFor(model => model.Dbl_MontoRecibir, "", new { @class = "text-danger" })
+            </div>
+
+
+
+            <div class="form-group col-sm-8">
+
+                <label for="inputState">Divisa a Vender</label>
+                @Html.DropDownList("Datos", venta, "selecciona la divisa", new { @type = "number", @class = "form-control", @id = "Madre" })
 
                 <div style="display: none">
-                    <div class="form-group col-sm-8">
-                        <div>
-                            <div>
-                                <input id="cliente" name="idcliente" class="form-control" value="0" />
-                                <input id="idregistroticket" value="@ViewBag.id" />
-                                <input id="idtipodeusuario" value="@Session["intareadeusurio"]" />
+                    @Html.EditorFor(model => model.Int_IdMonVenta, new { htmlAttributes = new { @class = "form-control", @id = "monid", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.Int_IdMonVenta, "", new { @class = "text-danger" })
+                </div>
 
-                            </div>
-                        </div>
+                <select id="hija" name="hija" style="display: none">
+                </select>
+            </div>
 
-                        @Html.EditorFor(model => model.Int_IdTipoTran, new { htmlAttributes = new { @class = "form-control", @id = "tipodetrans", @readonly = true } })
-                        @Html.ValidationMessageFor(model => model.Int_IdTipoTran, "", new { @class = "text-danger" })
-
+            <div class="form-group col-sm-8" id="cambioventa" style="display: none">
+                <label>Tipo de Cambio venta</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
                     </div>
-
+                    @Html.EditorFor(model => model.Dbl_TipoCambioven, new { htmlAttributes = new { @type = "text", @class = "form-control disabled", @readonly = true, @id = "valor2", @name = "valor2" } })
+                    @Html.ValidationMessageFor(model => model.Dbl_TipoCambioven, "", new { @class = "text-danger" })
                 </div>
+            </div>
 
-                <div class="form-group col-sm-8">
-
-                    <label for="inputState">Divisa a Comprar</label>
-                    @Html.DropDownList("Datos", items, "selecciona la divisa", new { @type = "number", @class = "form-control", @id = "padre" })
-
-                    <div style="display: none;">
-                        @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "monedaid", @readonly = true } })
-                        @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
+            <div class="form-group col-sm-8 ">
+                <label> Total a pagar </label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
                     </div>
-
-                    <select id="hijo" name="hijo" style="display: none">
-                    </select>
-                </div>
-
-                <div id="especial" style="display : none;">
-                    <div class="form-group col-sm-8">
-                        <label for="inputAddress2">Especial</label>
-                        <div>
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.Bol_Especial, new { @class = "form-control " })
-                                @Html.ValidationMessageFor(model => model.Bol_Especial, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="display: none">
-                    <select id="usd1" name="usd1">
-                    </select>
-
-                    <input type="text" id="usd" />
-
-                </div>
-
-                <div class="form-group col-sm-8" id="valorCompra" style="display: none">
-                    <label>Tipo de Cambio Compra</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">$</div>
-                        </div>
-                        @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @type = "text", @class = "form-control disabled", @readonly = true, @id = "valor", @name = "valor" } })
-                        @Html.ValidationMessageFor(model => model.Dbl_TipoCambio, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group col-sm-8">
-                    <label for="inputAddress2">Cantidad a Comprar</label>
-
-                    @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad", @oninput = "compras_cantidad()" } })
-                    @Html.ValidationMessageFor(model => model.Dbl_MontoRecibir, "", new { @class = "text-danger" })
-                </div>
-
-
-                <div id="especialdiv" style=" display : none;">
-                    <div class="form-group col-sm-8">
-                        <label for="inputAddress2">Especial</label>
-                        <div>
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.Bol_Especial, new { @class = "form-control " })
-                                @Html.ValidationMessageFor(model => model.Bol_Especial, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="form-group col-sm-8">
-
-                    <label for="inputState">Divisa a Vender</label>
-                    @Html.DropDownList("Datos", venta, "selecciona la divisa", new { @type = "number", @class = "form-control", @id = "Madre" })
-
+                    <input class="form-control" disabled id="totalpagar" />
                     <div style="display: none">
-                        @Html.EditorFor(model => model.Int_IdMonVenta, new { htmlAttributes = new { @class = "form-control", @id = "monid", @readonly = true } })
-                        @Html.ValidationMessageFor(model => model.Int_IdMonVenta, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Dbl_MontoPagar, new { htmlAttributes = new { @type = "number", @step = "0.01", @class = "form-control disabled", @readonly = true, @placeholder = "Total a Pagar", @id = "total_pago" } })
+
+                        @Html.ValidationMessageFor(model => model.Dbl_MontoPagar, "", new { @class = "text-danger" })
                     </div>
 
-                    <select id="hija" name="hija" style="display: none">
-                    </select>
                 </div>
+            </div>
 
-                <div class="form-group col-sm-8" id="cambioventa" style="display: none">
-                    <label>Tipo de Cambio venta</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">$</div>
-                        </div>
-                        @Html.EditorFor(model => model.Dbl_TipoCambioven, new { htmlAttributes = new { @type = "text", @class = "form-control disabled", @readonly = true, @id = "valor2", @name = "valor2" } })
-                        @Html.ValidationMessageFor(model => model.Dbl_TipoCambioven, "", new { @class = "text-danger" })
+            <div class="form-group col-sm-8 ">
+                <label>Cantidad entregada</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
                     </div>
+                    @Html.EditorFor(model => model.Dbl_Entregar, new { htmlAttributes = new { @type = "number", @class = "form-control", @id = "entregado", @oninput = "compras_cantidad()" } })
+                    @Html.ValidationMessageFor(model => model.Dbl_Entregar, "", new { @class = "text-danger" })
+
                 </div>
+            </div>
 
-                <div class="form-group col-sm-8 ">
-                    <label> Total a pagar </label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">$</div>
-                        </div>
-                        <input class="form-control" disabled id="totalpagar" />
-                        <div style="display: none">
-                            @Html.EditorFor(model => model.Dbl_MontoPagar, new { htmlAttributes = new { @type = "number", @step = "0.01", @class = "form-control disabled", @readonly = true, @placeholder = "Total a Pagar", @id = "total_pago" } })
 
-                            @Html.ValidationMessageFor(model => model.Dbl_MontoPagar, "", new { @class = "text-danger" })
-                        </div>
-
+            <div class="form-group col-sm-8 ">
+                <label>Cambio en pesos</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
                     </div>
+                    @Html.EditorFor(model => model.Dbl_Cambio, new { htmlAttributes = new { @type = "number", @step = "0.01", @class = "form-control disabled", @readonly = true, @id = "cambio" } })
+                    @Html.ValidationMessageFor(model => model.Dbl_Cambio, "", new { @class = "text-danger" })
+
                 </div>
+            </div>
 
-                <div class="form-group col-sm-8 ">
-                    <label>Cantidad entregada</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">$</div>
-                        </div>
-                        @Html.EditorFor(model => model.Dbl_Entregar, new { htmlAttributes = new { @type = "number", @class = "form-control", @id = "entregado", @oninput = "compras_cantidad()" } })
-                        @Html.ValidationMessageFor(model => model.Dbl_Entregar, "", new { @class = "text-danger" })
-
-                    </div>
+            <div id="idclientenombre" style="display: none" class="form-group col-sm-8">
+                <label for="inputAddress2">Nombre De Cliente</label>
+                <div>
+                    <input type="text" id="nombredecliente" readonly class="form-control form-control-sm" value="" />
                 </div>
+            </div>
 
-
-                <div class="form-group col-sm-8 ">
-                    <label>Cambio en pesos</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">$</div>
-                        </div>
-                        @Html.EditorFor(model => model.Dbl_Cambio, new { htmlAttributes = new { @type = "number", @step = "0.01", @class = "form-control disabled", @readonly = true, @id = "cambio" } })
-                        @Html.ValidationMessageFor(model => model.Dbl_Cambio, "", new { @class = "text-danger" })
-
-                    </div>
-                </div>
-                @*no visibles*@
+            @*no visibles*@
 
 
 
-                <div class="form-group col-sm-8" style="display : none;">
-                    <label> Tipo de Cobro</label>
+            <div class="form-group col-sm-8" style="display : none;">
+                <label> Tipo de Cobro</label>
+
+                <div>
 
                     <div>
+                        @Html.EditorFor(model => model.Int_IdTpv, new { htmlAttributes = new { @class = "form-control", @id = "obj" } })
+                        @Html.ValidationMessageFor(model => model.Int_IdTpv, "", new { @class = "text-danger" })
+                    </div>
 
-                        <div>
-                            @Html.EditorFor(model => model.Int_IdTpv, new { htmlAttributes = new { @class = "form-control", @id = "obj" } })
-                            @Html.ValidationMessageFor(model => model.Int_IdTpv, "", new { @class = "text-danger" })
-                        </div>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8" style="display:none">
+                <label for="inputAddress2">Fecha de Registro</label>
+
+
+                @Html.TextBoxFor(model => model.Fec_Fecha, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
+                @Html.ValidationMessageFor(model => model.Fec_Fecha, "", new { @class = "text-danger" })
+
+            </div>
+
+
+            <button type="submit" onclick="success()" id="btn1" class="btn btn-success" style="display:none"> vender </button>
+
+            <button type="button" onclick="crt()" id="modal1" class="btn btn-warning"> vender </button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cotizacionmulti">Cotizacion</button>
+
+
+
+
+
+            <script>
+                function success() {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Venta Realizada Correctamente',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+            </script>
+        }
+
+
+    </div>
+
+        @*formulario venta normal*@
+    <div class="card-body" id="venta">
+        @using (Html.BeginForm())
+
+        {
+            @Html.AntiForgeryToken()
+
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div  style="display: none">
+                <div>
+                    <div>
+                        <input id="cliente" name="idcliente" class="form-control" value="0" />
+                        <input id="idventa" value="@ViewBag.idventa" />
+                        <input id="idtipodeusuario" value="@Session["intareadeusurio"]" />
 
                     </div>
-                </div>
 
-                <div class="form-group col-sm-8" style="display:none">
-                    <label for="inputAddress2">Fecha de Registro</label>
-
-
-                    @Html.TextBoxFor(model => model.Fec_Fecha, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
-                    @Html.ValidationMessageFor(model => model.Fec_Fecha, "", new { @class = "text-danger" })
 
                 </div>
 
-
-                <button type="submit" onclick="success()" id="btn1" class="btn btn-success" style="display:none"> Comprar </button>
-
-                <button type="button" onclick="crt()" id="modal1" class="btn btn-warning"> Comprar </button>
-
-                @*<button type="button" class="btn btn-primary" data-target="#ticket" data-toggle="modal">verificar cliente </button>*@
-
-                <script>
-                    function success() {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Venta Realizada Correctamente',
-                            showConfirmButton: false,
-                            timer: 3000
-
-                        })
-
-                    }
-                </script>
-            }
+                <div class="form-group col-sm-8">
 
 
-        </div>
+
+                    @Html.EditorFor(model => model.Int_IdTipoTran, new { htmlAttributes = new { @class = "form-control", @id = "trans" } })
+                    @Html.ValidationMessageFor(model => model.Int_IdTipoTran, "", new { @class = "text-danger" })
+
+                    @Html.EditorFor(Model => Model.Bol_Cancelar, new { AllowHtmlAttribute = new { @class = "form-control", @id = "cancelacion" } })
+                    @Html.ValidationMessageFor(Model => Model.Bol_Cancelar, "", new { @class = "text-danger" })
+
+
+                    <script>
+                        (function () {
+                            d();
+                        })();
+                        function d() {
+                            document.getElementById("trans").value = 2;
+                        }
+
+                    </script>
+                </div>
+
+            </div>
+
+
+            <div class="form-group col-sm-8">
+
+
+                <label for="inputState">Divisa</label>
+                @Html.DropDownList("Datos", venta, "selecciona la divisa", new { @type = "number", @class = "form-control", id = "padre1" })
+
+                <div style="display: none;">
+                    @Html.EditorFor(model => model.Int_IdMonVenta, new { htmlAttributes = new { @class = "form-control", @id = "monedaid1", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.Int_IdMonVenta, "", new { @class = "text-danger" })
+                </div>
+
+                <select id="hijo1" name="hijo1" style=" display : none;">
+                </select>
+            </div>
+
+
+
+
+            <div class="form-group col-sm-8">
+                <label>Tipo de Cambio</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    @Html.EditorFor(model => model.Dbl_TipoCambioven, new { htmlAttributes = new { @type = "number", @class = "form-control ", @readonly = true, @id = "valor1", @name = "valor1" } })
+                    @Html.ValidationMessageFor(model => model.Dbl_TipoCambioven, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group col-sm-8">
+                <label for="inputAddress2">Cantidad En MXN</label>
+
+                @Html.EditorFor(model => model.Dbl_MontoRecibir, new { htmlAttributes = new { @type = "number", @class = "form-control ", @id = "cantidad1", @oninput = "compras_cantidad1()" } })
+                @Html.ValidationMessageFor(model => model.Dbl_MontoRecibir, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-sm-8 ">
+                <label> Total a pagar </label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+
+                    <input id="mtotal" class="form-control" disabled />
+
+                </div>
+
+                <div style="display: none">
+                    @Html.EditorFor(model => model.Dbl_MontoPagar, new { htmlAttributes = new { @type = "number", @step = "0.01", @class = "form-control disabled", @readonly = true, @placeholder = "Total a Pagar", @id = "total_pago1" } })
+
+                    @Html.ValidationMessageFor(model => model.Dbl_MontoPagar, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8">
+                <label for="inputAddress2">Entregado</label>
+                <div>
+                    @Html.EditorFor(model => model.Dbl_Entregar, new { htmlAttributes = new { @type = "Text", id= "entregadov", @oninput = "cambiopesos()", @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Dbl_Entregar, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group col-sm-8 ">
+                <label>Cambio en pesos</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    @Html.EditorFor(model => model.Dbl_Cambio, new { htmlAttributes = new { @type = "number", @step = "0.01", @class = "form-control disabled", @readonly = true, @id = "cambiov" } })
+                    @Html.ValidationMessageFor(model => model.Dbl_Cambio, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+
+            <div id="idclientenombre" style="display: none" class="form-group col-sm-8">
+                <label for="inputAddress2">Nombre De Cliente</label>
+                <div>
+                    <input type="text" id="nombredecliente" readonly class="form-control form-control-sm" value="" />
+                </div>
+            </div>
+
+
+            @*no visibles*@
+
+
+
+
+            <div class="form-group col-sm-8" style="display : none;">
+                <label> Tipo de Cobro</label>
+
+                <div>
+
+                    <div>
+                        @Html.EditorFor(model => model.Int_IdTpv, new { htmlAttributes = new { @class = "form-control", @id = "obj" } })
+                        @Html.ValidationMessageFor(model => model.Int_IdTpv, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8" style="display:none">
+                <label for="inputAddress2">Fecha de Registro</label>
+
+                @Html.TextBoxFor(model => model.Fec_Fecha, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
+                @Html.ValidationMessageFor(model => model.Fec_Fecha, "", new { @class = "text-danger" })
+
+            </div>
+
+
+            <button type="submit" onclick="success()" id="btn2" class="btn btn-success" style="display:none"> Vender </button>
+
+            <button type="button" onclick="validacion()" id="modal2" class="btn btn-warning"> Vender </button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cotizacion">Cotizacion</button>
+
+
+            @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalshow"> usuarios buscar </button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalclientes"> usuarios agregar </button>*@
+            <script>
+                function success() {
+
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Compra realizada Correctamente',
+                        showConfirmButton: false,
+                        timer: 3000
+
+                    })
+
+                }
+            </script>
+
+
+        }
+
+
+    </div>
     </div>
 </div>
 <div class="col-sm-6 pt-5">
@@ -240,13 +438,158 @@
     </div>
 </div>
 
+@*modulo cotizar venta norma*@
+<div class="modal fade " id="cotizacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel"> <strong>Detalles de Venta</strong> </h6>
+            </div>
+            <div id="tickete" class="modal-body text-center">
+                <table class="table table-sm table-bordered margin1">
 
-@*Modulo Ticker*@
+                    <tbody>
+                        <tr>
+                            <th scope="row"><small>Fecha</small></th>
+                            <td id="fechajs"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Cajero</small></th>
+                            <td>@Session["usuario"] @Session["apellido"]</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Sucursal</small></th>
+                            <td>@Session["sucursaledelusuario"]</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Moneda</small></th>
+                            <td id="monedacotizacion"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Monto</small></th>
+                            <td><span>$</span><span id="montocotizacion"></span></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Tipo De Cambio</small></th>
+                            <td><span>$</span><span id="cambiocotizacion"></span></td>
+
+                        </tr>
+
+
+                        <tr id="mventa" style="display: none">
+                            <th scope="row"><small>Moneda de venta</small></th>
+                            <td id="monedaVenta"></td>
+                        </tr>
+
+                        <tr id="cventa" style="display: none">
+                            <th scope="row"><small>Tipo De Cambio Venta</small></th>
+                            <td><span>$</span><span id="rt2"></span></td>
+
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Total a Pagar:</small></th>
+                            <td><span>$</span><span id="pagocotizacion"></span> </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <button onclick="printJS('cotizacion', 'html')" type="button" data-target="#cotizacion" class="btn btn-primary">Imprimir</button>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@*modulo coticion multimoneda*@
+<div class="modal fade " id="cotizacionmulti" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel"> <strong>Detalles de multimoneda</strong> </h6>
+            </div>
+            <div id="ticketecotic" class="modal-body text-center">
+                <table class="table table-sm table-bordered margin1">
+
+                    <tbody>
+                        <tr>
+                            <th scope="row"><small>Fecha</small></th>
+                            <td id="fechajs"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Cajero</small></th>
+                            <td>@Session["usuario"] @Session["apellido"]</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Sucursal</small></th>
+                            <td>@Session["sucursaledelusuario"]</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Moneda</small></th>
+                            <td id="monedacotizacion1"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Monto</small></th>
+                            <td><span>$</span><span id="montocotizacion1"></span></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Tipo De Cambio</small></th>
+                            <td><span>$</span><span id="cambiocotizacion1"></span></td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row"><small>Moneda venta</small></th>
+                            <td id="monedacotizacion2"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Tipo De Cambio venta</small></th>
+                            <td><span>$</span><span id="cambiocotizacion2"></span></td>
+
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Total a Pagar:</small></th>
+                            <td><span>$</span><span id="pagocotizacion1"></span> </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button onclick="printJS('ticketecotic', 'html')" type="button" data-target="#cotizacion" class="btn btn-primary">Imprimir</button>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+@*Modulo Ticket Venta*@
 <div class="modal fade " id="ticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel"> <strong>Detalles de Compra</strong> </h6>
+                <h6 class="modal-title" id="exampleModalLabel"> <strong>Detalles de Venta</strong> </h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -283,23 +626,35 @@
 
                         <tr>
                             <th scope="row"><small>Moneda</small></th>
-                            <td id="moneda" ></td>
+                            <td id="moneda"></td>
                         </tr>
 
                         <tr>
                             <th scope="row"><small>Monto</small></th>
-                            <td id="monto"> </td>
+                            <td><span>$</span><span id="monto"></span> </td>
                         </tr>
 
                         <tr>
                             <th scope="row"><small>Tipo De Cambio</small></th>
-                            <td id="cambio"></td>
+                            <td><span>$</span><span id="rt"></span></td>
 
                         </tr>
 
+                        <tr id="mv" style="display: none">
+                            <th scope="row"><small>Moneda de Venta</small></th>
+                            <td id="monedav"></td>
+                        </tr>
+
+                        <tr id="cv" style="display: none">
+                            <th scope="row"><small>Tipo De Cambio Venta</small></th>
+                            <td><span>$</span><span id="rtv"></span></td>
+
+                        </tr>
+
+
                         <tr>
                             <th scope="row"><small>Total a Pagar:</small></th>
-                            <td id="pago"></td>
+                            <td> <span>$</span><span id="pago"></span></td>
 
                         </tr>
 
@@ -329,36 +684,29 @@
     </div>
 </div>
 
+
 @*obtener usdventa*@
 <script>
     (function () {
         aler();
     })();
-
     function aler(){
         fetch("@Url.Content("~/Profile/usdventa")")
             .then(function (result) {
                 if (result.ok) {
                     return result.json();
                 }
-
             }).then(function (data) {
                 data.forEach(function (Elementos) {
                     let usd = document.getElementById("usd1");
                     let otp = document.createElement("option");;
                     otp.appendChild(document.createTextNode(Elementos.Text));
                     otp.value = Elementos.value;
-
                     console.log(usd);
                     usd.appendChild(otp);
-
                     var usd1 = document.getElementById("usd1").textContent;
-
-
                     var usd3 = parseFloat(usd1);
-
                     document.getElementById("usd").value = usd3;
-
                 })
             })
     }
@@ -389,7 +737,8 @@
                 <table class="table table-sm table-bordered">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">Id </th>
+                            <th scope="col"></th>
+                            <th></th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Correo</th>
                             <th scope="col">direccion</th>
@@ -398,22 +747,7 @@
 
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td id="Id"> </td>
-
-                            <td id="Nombre"></td>
-
-                            <td id="correo"></td>
-
-                            <td id="direccion"></td>
-
-                            <td id="identificacion"></td>
-
-                            <td id="telefono"> </td>
-
-                        </tr>
-
+                    <tbody id="cuerpo">
                     </tbody>
                 </table>
 
@@ -422,6 +756,7 @@
             <div class="modal-footer">
 
                 <button type="button" data-dismiss="modal" class="btn btn-primary">Guardar Cambios</button>
+                <button type="button" onclick="cancelar()" class="btn btn-danger"> cancelar </button>
             </div>
 
         </div>
@@ -440,14 +775,14 @@
             </div>
             <div class="modal-body">
 
-                @using (Ajax.BeginForm("Clientes", new AjaxOptions
+                @using (Ajax.BeginForm("Clientes", null, new AjaxOptions
                 {
 
                     HttpMethod = "POST",
 
                     UpdateTargetId = "mensaje",
                     OnComplete = "buscar()"
-                }))
+                }, new { enctype = "multipart/form-data" }))
                 {
 
 
@@ -503,6 +838,38 @@
                                     </div>
                                 </div>
 
+
+                                <div class="form-group">
+                                    <label>Documento de Identifacion</label>
+                                    <div class="col-sm-10">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input form-control-sm" name="archivo" id="archivo" required>
+                                            <label class="custom-file-label" for="archivo">Agrega un archivo</label>
+                                            <div class="invalid-feedback">Es Obligatorio Colocar un documento de identificacion</div>
+                                        </div>
+
+
+                                        <div>
+                                            <input readonly style="display:none" type="text" class="form-control form-control-sm" id="nombrearchivo" name="nombrearchivo" value="" />
+                                        </div>
+
+                                        <script>
+                                            $("input[type=file]").change(function () {
+                                                var fieldVal = $(this).val();
+                                                if (fieldVal != undefined || fieldVal != "") {
+                                                    $(this).next(".custom-file-label").text(fieldVal);
+                                                }
+                                            });
+
+                                            document.getElementById("archivo").onchange = function () {
+                                                var rt = document.getElementById("archivo").files[0].name;
+                                                console.log(rt);
+                                                document.getElementById("nombrearchivo").value = rt;
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -523,7 +890,7 @@
                                 <div class="form-group">
                                     <label>Correo de Electronico</label>
                                     <div class="col-md-10">
-                                        <input type="email" class="form-control is-invalid" name="mail" required />
+                                        <input type="email" class="form-control is-invalid" name="mail" />
                                         <label class="form-check-label" for="invalidCheck3">
                                             Escribe su Correo Electronico
                                         </label>
@@ -533,9 +900,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-success">Agregar</button>
-
+                    <button type="submit" onclick="validacionform()" class="btn btn-success">Agregar</button>
+                    <button type="submit" data-dismiss="modal" style="display:none" onclick="setTimeout(buscarcliente, 2000);" class="btn btn-success">Agregar</button>
+                    <button type="button" onclick="cancelar()" class="btn btn-danger"> cancelar </button>
                 }
             </div>
 
@@ -546,46 +913,32 @@
 @*script obtener divisas compra*@
 <script>
     var cbo = document.getElementById("padre");
-
-
     cbo.addEventListener("change", refresh);
-
-
     refresh();
-
     function refresh() {
-
         fetch("@Url.Content("~/Profile/valores_compra")" + "?idmoneda=" + cbo.value)
             .then(function (result) {
                 if (result.ok) {
                     return result.json();
-
                 }
             })
             .then(function (data) {
                 data.forEach(function (Elementos) {
-
                     let cbopadre = document.getElementById("hijo");
                     let opt = document.createElement("option");
-
                     opt.appendChild(document.createTextNode(Elementos.Text));
-                    
+
                     opt.value = Elementos.value;
-                    
+
                     cbopadre.appendChild(opt);
                         var a = document.getElementById("hijo").textContent;
                         var b = document.getElementById("hijo").value;
-
                     var c = parseFloat(a);
-                 
+
                         document.getElementById("monedaid").value = b;
-
                         document.getElementById("valor").value = c;
-
                         document.getElementById("hijo").textContent = "";
-
                     var tipo = 2;
-
                     if (padre.value != 7) {
                         document.getElementById("valorCompra").style.display = "";
                     }
@@ -593,84 +946,51 @@
                     {
                         document.getElementById("valorCompra").style.display = "none";
                     }
-
                     document.getElementById("tipodetrans").value = tipo;
-
                     document.getElementById("obj").value = tipo;
                     var valoress = document.getElementById("valor").value;
                     var cantidades = document.getElementById("cantidad").value;
                     var valor2 = document.getElementById("valor2").value;
                     var valor3 = document.getElementById("entregado").value;
-
-
-
                     let multi = cantidades * valoress;
-
-
                     let t_pagar = multi / valor2;
-
                     document.getElementById("total_pago").value = t_pagar.toFixed(2);
-
                     console.log("entregado",entregado);
                     let total2 = entregado * valor2;
-
                     document.getElementById("cambio").value = total2.toFixed(0);
-
-
-
+                    document.getElementById("Bol_multimoneda").value = "true";
+                    document.getElementById("Bol_Cancelar").value = "true";
                 })
-
             })
-
-
-
     }
 </script>
 
 @*script obtener divisas venta*@
 <script>
     var cbo1 = document.getElementById("Madre");
-
-
     cbo1.addEventListener("change", refresh);
-
-
     refresh();
-
     function refresh() {
-
         fetch("@Url.Content("~/Profile/valores2")" + "?idmoneda=" + cbo1.value)
             .then(function (result) {
                 if (result.ok) {
                     return result.json();
-
                 }
             })
             .then(function (data) {
                 data.forEach(function (Elementos) {
-
                     console.log(Elementos);
-
-
                     let cbomadre = document.getElementById("hija");
                     let opt = document.createElement("option");
-
                     opt.appendChild(document.createTextNode(Elementos.Text));
-
                     opt.value = Elementos.value;
-
                     cbomadre.appendChild(opt);
-
                     var a = document.getElementById("hija").textContent;
                     var b = document.getElementById("hija").value;
                     var c = parseFloat(a);
-
                     document.getElementById("monid").value = b;
-
                     document.getElementById("valor2").value = c;
-
                     document.getElementById("hija").textContent = "";
-
                     if (Madre.value != 7) {
                         document.getElementById("cambioventa").style.display = "";
                     }
@@ -678,33 +998,74 @@
                     {
                         document.getElementById("cambioventa").style.display = "none";
                     }
-
                     var valoress = document.getElementById("valor").value;
                     var cantidades = document.getElementById("cantidad").value;
                     var valor2 = document.getElementById("valor2").value;
                     var valor3 = document.getElementById("entregado").value;
-                   
+
                     let multi = cantidades * valoress;
-
-
                     let t_pagar = multi / valor2;
-
                     document.getElementById("total_pago").value = t_pagar.toFixed(2);
                     let entregado = t_pagar - valor3;
-
                     let total2 = entregado * valor2;
-
                     document.getElementById("cambio").value = total2.toFixed(1);
-
-
                 })
-
             })
 
-
-
+        var f = new Date();
+        document.getElementById("fechajs").innerHTML = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
     }
 </script>
+
+
+@*script obtener divisas venta normal*@
+<script>
+    var cba = document.getElementById("padre1");
+    cba.addEventListener("change", refresh);
+    refresh();
+    function refresh() {
+        fetch("@Url.Content("~/Profile/valores2")" + "?idmoneda=" + cba.value)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then(function (data) {
+                data.forEach(function (Elementos) {
+                    console.log(Elementos);
+                    let cbapadre = document.getElementById("hijo1");
+
+                    let opt = document.createElement("option");
+                    opt.appendChild(document.createTextNode(Elementos.Text));
+                    opt.value = Elementos.value;
+                    cbapadre.appendChild(opt);
+                    var a = document.getElementById("hijo1").textContent;
+                    var b = document.getElementById("hijo1").value;
+                    var c = parseFloat(a);
+
+                    document.getElementById("monedaid1").value = b;
+                    document.getElementById("valor1").value = c;
+                    document.getElementById("hijo1").textContent = "";
+
+
+                    var valoress = document.getElementById("valor1").value;
+                    var cantidades = document.getElementById("cantidad1").value;
+
+                 
+
+                    let t_pagar = cantidades / valoress;
+
+
+
+                    document.getElementById("total_pago1").value = t_pagar.toFixed;
+
+                    document.getElementById("mtotal").value = t_pagar.toFixed(2);
+                })
+            })
+    }
+</script>
+
+
 
 @*script compras*@
 <script src="~/Scripts/multimoneda.js"></script>
@@ -714,233 +1075,168 @@
 <script>
 
     function buscar() {
-
-
-
         var cbo = document.getElementById("intento").value;
-        var obr = document.getElementById("identificador").value;
-        var tel = document.getElementById("telefono").value;
-
-        if (cbo == "" || cbo =="0")
-        {
-
-
-            $('#modalclientes').modal('hide');
-
-
-            $('#modalshow').modal('show');
-
-
-            fetch("@Url.Content("~/profile/buscar")" + "?numero=" + obr)
+        fetch("/profile/buscar" + "?numero=" + cbo)
             .then(function (result) {
                 if (result.ok) {
                     return result.json();
 
                 }
+
             })
-
-                .then(function (pjson) {
-
-
-
-                    let id = "";
-                    let Nombre = "";
-                    let telefono = "";
-                    let correo = "";
-                    let identificacion = "";
-                    let direccion = "";
-
-                    for (let i = 0; i < pjson.length; i++) {
-                        id += pjson[i].Lng_IdCliente
-                        Nombre += pjson[i].Txt_Cliente
-                        telefono += pjson[i].Txt_Telefono
-                        correo += pjson[i].Txt_Email
-                        identificacion += pjson[i].Txt_Identificacion
-                        direccion += pjson[i].Txt_Direccion
-                    }
-                    document.getElementById("Id").innerHTML = id;
-                    document.getElementById("Nombre").innerHTML = Nombre;
-                    document.getElementById("telefono").innerHTML = telefono;
-                    document.getElementById("correo").innerHTML = correo;
-                    document.getElementById("identificacion").innerHTML = identificacion;
-                    document.getElementById("direccion").innerHTML = direccion;
-
-                    document.getElementById("cliente").value = id;
-
-                    if (id == "") {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Cliente no registrado, Por favor agreguelo',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }
-                    else {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Cliente Encontrado y/o Encontrado',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }
-
-                })
-        }
-
-        else if ( tel == "" || tel == "0")
-        {
-
-             $('#modalclientes').modal('hide');
-
-
-            $('#modalshow').modal('show');
-
-
-            fetch("@Url.Content("~/profile/buscar")" + "?numero=" + tel)
-            .then(function (result) {
-                if (result.ok) {
-                    return result.json();
-
-                }
-            })
-
-                .then(function (pjson) {
-
-
-
-                    let id = "";
-                    let Nombre = "";
-                    let telefono = "";
-                    let correo = "";
-                    let identificacion = "";
-                    let direccion = "";
-
-                    for (let i = 0; i < pjson.length; i++) {
-                        id += pjson[i].Lng_IdCliente
-                        Nombre += pjson[i].Txt_Cliente
-                        telefono += pjson[i].Txt_Telefono
-                        correo += pjson[i].Txt_Email
-                        identificacion += pjson[i].Txt_Identificacion
-                        direccion += pjson[i].Txt_Direccion
-                    }
-                    document.getElementById("Id").innerHTML = id;
-                    document.getElementById("Nombre").innerHTML = Nombre;
-                    document.getElementById("telefono").innerHTML = telefono;
-                    document.getElementById("correo").innerHTML = correo;
-                    document.getElementById("identificacion").innerHTML = identificacion;
-                    document.getElementById("direccion").innerHTML = direccion;
-
-                    document.getElementById("cliente").value = id;
-
-                    if (id == "") {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Cliente no registrado, Por favor agreguelo',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }
-                    else {
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Cliente Encontrado y/o Encontrado',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }
-
-                })
-        }
-        else
-        {
-
-
-              fetch("@Url.Content("~/profile/buscar")" + "?numero=" + cbo)
-                 .then(function (result) {
-                     if (result.ok != null) {
-
-                    return result.json();
-
-                }
-            }).then(function (pjson) {
-
-
-
-                let id = "";
-                let Nombre = "";
-                let telefono = "";
-                let correo = "";
-                let identificacion = "";
-                let direccion = "";
-
-
-
-                for (let i = 0; i < pjson.length; i++)
-                {
-                    id += pjson[i].Lng_IdCliente
-                    Nombre += pjson[i].Txt_Cliente
-                    telefono +=  pjson[i].Txt_Telefono
-                    correo +=  pjson[i].Txt_Email
-                    identificacion += pjson[i].Txt_Identificacion
-                    direccion +=  pjson[i].Txt_Direccion
-                }
-                document.getElementById("Id").innerHTML = id;
-                document.getElementById("Nombre").innerHTML = Nombre;
-                document.getElementById("telefono").innerHTML = telefono;
-                document.getElementById("correo").innerHTML = correo;
-                document.getElementById("identificacion").innerHTML = identificacion;
-                document.getElementById("direccion").innerHTML = direccion;
-                document.getElementById("cliente").value = id;
-
-                if (id == "")
-                {
-
+            .then(function (pjson) {
+                if (pjson == 0) {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'error',
-                        title: 'Cliente no registrado, Por favor agreguelo',
+                        title: 'El cliente no existe, Registrelo para continuar',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 3000
                     })
                 }
-                else
-                {
 
+                else {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
                         title: 'Cliente Encontrado',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 3000
                     })
                 }
 
+                var cuerpo = document.getElementById("cuerpo");
+                cuerpo.innerHTML = "";
+                let valor = 0;
+                for (let item of pjson) {
+                    cuerpo.innerHTML += `
+                    <tr>    <td>  <button type="button" data-dismiss="modal" onclick="obtid(${valor})" class="btn btn-info">seleccionar</button> </td>
+                            <td> <input id="idclientes${valor}" style="display: none" type="text" class="form-control form-control-sm" name="numcliente" value="${item.Lng_IdCliente}" /> </td>
 
+                            <td><input id="Nombre${valor}" type="text" readonly class="form-control form-control-sm"  name="numcliente" value="${item.Txt_Cliente}" /></td>
+
+                            <td id="correo">${item.Txt_Email}</td>
+
+                            <td id="direccion">${item.Txt_Direccion}</td>
+
+                            <td id="identificacion">${item.Txt_Identificacion}</td>
+
+                            <td id="telefono">${item.Txt_Telefono}</td>
+
+                        </tr>
+                    `
+
+                    valor = valor + 1;
+                }
+            })
+
+    }
+
+
+
+    function buscarcliente() {
+        var obr = document.getElementById("identificador").value;
+
+        $('#modalclientes').modal('hide');
+
+        $('#modalshow').modal('show');
+
+        fetch("/profile/buscar" + "?numero=" + obr)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+
+                }
+            })
+            .then(function (pjson) {
+                if (pjson == 0) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'El cliente no existe, Registrelo para continuar',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+
+                else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Cliente Encontrado',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+
+                var cuerpo = document.getElementById("cuerpo");
+                cuerpo.innerHTML = "";
+                let valor = 0;
+                for (let item of pjson) {
+                    cuerpo.innerHTML += `
+                    <tr>    <td>  <button type="button" onclick="obtid(${valor})" class="btn btn-info">seleccionar</button> </td>
+                            <td> <input id="idclientes${valor}" style="display: none" type="text" class="form-control form-control-sm" name="numcliente" value="${item.Lng_IdCliente}" /> </td>
+
+                            <td> <input id="Nombre${valor}" type="text" readonly class="form-control form-control-sm" name="numcliente" value="${item.Txt_Cliente}" />  </td>
+
+                            <td id="correo">${item.Txt_Email}</td>
+
+                            <td id="direccion">${item.Txt_Direccion}</td>
+
+                            <td id="identificacion">${item.Txt_Identificacion}</td>
+
+                            <td id="telefono">${item.Txt_Telefono}</td>
+
+                        </tr>
+                    `
+
+                    valor = valor + 1;
+                }
             })
 
 
+
+    }
+    function obtid(idnucli) {
+
+        var id = document.getElementById("idclientes" + idnucli).value;
+        var nombreuser = document.getElementById("Nombre" + idnucli).value;
+
+        document.getElementById("cliente").value = id;
+        document.getElementById("nombredecliente").value = nombreuser;
+
+
+        if (cliente.value != 0) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Cliente asignado correctamente',
+                showConfirmButton: false,
+                timer: 3000
+            })
+
+        }
+        else {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Huno un error al asignar al cliente',
+                showConfirmButton: false,
+                timer: 3000
+            })
+
+        }
+
+        if (nombredecliente.value != "") {
+            document.getElementById("idclientenombre").style.display = "";
         }
 
 
     }
-
     function buscar1() {
         $('#modalshow').modal('hide');
-
         $('#modalclientes').modal('show');
-
     }
-
-
-
 </script>
 
 @*Tipo de usuario*@
@@ -948,11 +1244,9 @@
     (function () {
         obtenertipousuario();
     })();
-
     //validacion de usuarios
     function obtenertipousuario() {
         var tipousuario = document.getElementById("idtipodeusuario").value;
-
         // comprar tipo de usuario
         switch (tipousuario) {
             //administrativo
@@ -960,62 +1254,48 @@
                 console.log("administrativo");
                 document.getElementById("especialdiv").style.display = "";
                 break;
-
             // cajero
             case "2":
                 console.log("cajero");
                 document.getElementById("especialdiv").style.display = "none";
                 break;
-
             // tipo de usuario no detectado
             default:
                 console.log("no detectado");
                 break;
         }
     }
-
-
     //obtener tipo especial
     var esp = document.getElementById("Bol_Especial");
-
     esp.addEventListener("change", refresh);
-
-
     refresh();
-
     function refresh() {
         var especial = Bol_Especial.value;
         console.log(especial);
         if (especial == "false" || especial == "") {
-
         }
         else {
             console.log("funcion remove readonly corriendo");
             var cambiodesabilitado = document.getElementById("valor");
             cambiodesabilitado.removeAttribute("readonly");
-
             var cambiodesabilitado = document.getElementById("valor2");
             cambiodesabilitado.removeAttribute("readonly");
         }
     }
-
 </script>
 
 
-@*impresion de ticket*@
+@*JS impresion de ticket*@
 
 <script>
     function getDateIfDate(d) {
         var m = d.match(/\/Date\((\d+)\)\//);
         return m ? (new Date(+m[1])).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : d;
     }
-
-
     (function () {
         llamadarticket();
-    
-    })();
 
+    })();
     function llamadarticket() {
         if (idregistroticket.value == "" || idregistroticket.value == "0") {
             console.log("funciona");
@@ -1035,57 +1315,305 @@
             })
         }
     }
-
     function impresionticket() {
-
         $('#ticket').modal('show');
-
-        var mir = document.getElementById("idregistroticket").value
-        fetch("/profile/returnticket" + "?registro=" + mir)
+        var mir = document.getElementById("idregistroticket").value;
+        fetch("/profile/returnticketventa" + "?alt=" + mir)
             .then(function (result) {
                 if (result.ok != null) {
-
                     return result.json();
-
                 }
             }).then(function (Tjson) {
-
                 let Idticket = "";
                 let fecha = "";
                 let moneda = "";
                 let monto = "";
                 let cambio = "";
+                let cambioventa = "";
+                let monedaventa = "";
                 let importe = "";
 
                 for (let i = 0; i < Tjson.length; i++) {
+
                     Idticket += Tjson[i].Lng_IdRegistro
                     fecha += Tjson[i].Fec_Fecha
                     moneda += Tjson[i].Moneda
                     monto += Tjson[i].Dbl_MontoRecibir
                     cambio += Tjson[i].Dbl_TipoCambio
+                    monedaventa += Tjson[i].Monedaventa
+                    cambioventa += Tjson[i].Dbl_TipoCambioven
                     importe += Tjson[i].Dbl_MontoPagar
-
                 }
 
+
+                var a = new Intl.NumberFormat().format(monto);
+                var b = new Intl.NumberFormat().format(importe);
 
 
                 document.getElementById("Idticket").innerHTML = Idticket;
                 document.getElementById("fecha").innerHTML = getDateIfDate(fecha);
                 document.getElementById("moneda").innerHTML = moneda;
-                document.getElementById("monto").innerHTML = monto;
-                document.getElementById("cambio").innerHTML = cambio;
-                document.getElementById("pago").innerHTML = importe;
+                document.getElementById("monto").innerHTML = a;
+                document.getElementById("pago").innerHTML = b;
+                document.getElementById("rt").innerHTML = cambio;
 
+                var a = cambioventa;
+                if (a != "") {
+                    document.getElementById("mv").style.display = "";
+                    document.getElementById("cv").style.display = "";
+                }
+                else {
+                    document.getElementById("mv").style.display = "none";
+                    document.getElementById("cv").style.display = "none";
+                }
+
+                document.getElementById("monedav").innerHTML = monedaventa;
+                document.getElementById("rtv").innerHTML = cambioventa;
 
             })
+    }
+</script>
+
+@*script formulas venta Normal*@
+<script>
+    function compras_cantidad1() {
+
+     
+        var valoress = document.getElementById("valor1").value;
+        var cantidades = document.getElementById("cantidad1").value;
+                                                  
+        let t_pagar = cantidades / valoress;
 
 
 
+        document.getElementById("total_pago1").value = t_pagar;
 
+        document.getElementById("mtotal").value = t_pagar.toFixed(2);
+
+        var moneda = document.getElementById("padre1");
+        var a = moneda.options[moneda.selectedIndex].text;
+        var monto = document.getElementById("cantidad1").value;
+        var cambio = document.getElementById("valor1").value;
+        var total = document.getElementById("total_pago1").value;
+
+        document.getElementById("monedacotizacion").innerHTML = a;
+        document.getElementById("montocotizacion").innerHTML = monto;
+        document.getElementById("cambiocotizacion").innerHTML = cambio;
+        document.getElementById("pagocotizacion").innerHTML = total;
+
+        var monedapadre = document.getElementById("padre");
+        var apadre = monedapadre.options[monedapadre.selectedIndex].text;
+        var montopadre = document.getElementById("cantidad").value;
+        var cambiopadre = document.getElementById("valor").value;
+
+        var monedamadre = document.getElementById("Madre");
+        var amadre = monedamadre.options[monedamadre.selectedIndex].text;
+        var cambiomadre = document.getElementById("valor2").value;
+
+        var total = document.getElementById("total_pago").value;
+
+
+        document.getElementById("monedacotizacion1").innerHTML = apadre;
+        document.getElementById("montocotizacion1").innerHTML = montopadre;
+        document.getElementById("cambiocotizacion1").innerHTML = cambiopadre;
+
+        document.getElementById("monedacotizacion2").innerHTML = amadre;
+        document.getElementById("cambiocotizacion2").innerHTML = cambiomadre;
+
+        document.getElementById("pagocotizacion1").innerHTML = total;
+
+    }
+
+
+
+    function validacion() {
+        var totalp = document.getElementById("total_pago1").value;
+        var t = document.getElementById("cantidad1").value;
+
+        console.log(totalp);
+        var valoress = document.getElementById("valor1").value;
+        var cantidades = document.getElementById("cantidad1").value;
+
+        var usddiv = document.getElementById("usd").value;
+        var usdmax = usddiv * 1000;
+
+        let multi = cantidades * valoress;
+
+
+        if (multi >= usdmax) {
+
+            document.getElementById("btn2").style.display = "";
+            document.getElementById("modal2").classList.add("invisible");
+
+
+            Swal.fire({
+                title: 'Espera',
+                text: 'El Total A Pagar Es Mayor A 1000 USD, Por Favor Verifica O Registra Al CLiente',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Entendido'
+
+            }).then((result) => {
+                if (result.value) {
+                    $('#modalshow').modal('show');
+                }
+            })
+
+        }
+        else if (totalp == "" || totalp == "0" || t == "" || t == "0") {
+
+
+            Swal.fire({
+                title: "Espera",
+                text: "Tienes Que Llenar El Formulario",
+                icon: 'error'
+            });
+
+        }
+
+        else {
+
+
+            Swal.fire({
+                title: "Verificacion Completa",
+                text: "¿Quieres Registrar o Verificar Al Cliente?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'SI',
+                cancelButtonText: 'no'
+
+            }).then((result) => {
+
+                if (result.value) {
+                    $('#modalshow').modal('show');
+                }
+            })
+            document.getElementById("btn2").style.display = "";
+            document.getElementById("modal2").classList.add("invisible");
+
+        }
+
+    }
+</script>
+  
+<script>
+    function cambiopesos() {
+        var total = document.getElementById("mtotal").value;
+
+        var valor3 = document.getElementById("entregadov").value;
+
+        var cambiomadre = document.getElementById("valor1").value;
+
+        var a = total - valor3 ;
+        var b = a * cambiomadre;
+   
+
+        document.getElementById("cambiov").value = b.toFixed(2);
+
+        document.getElementById("Bol_Cancelar").value = "true";
+
+       
 
     }
 </script>
 
+@*mostrar multimoneda*@
+<script>
+    function multi() {
+        var carmen = document.getElementById('multimoneda');
+        //muestra lista playa
+        if (carmen.checked == true) {
+
+            document.getElementById("multimonedaform").style.display = "";
+            document.getElementById("venta").style.display = "none";
+
+            var f = new Date();
+            document.getElementById("fechajs").innerHTML = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
+        }
+        else {
+
+            document.getElementById("multimonedaform").style.display = "none";
+            document.getElementById("venta").style.display = "";
+
+            var f = new Date();
+            document.getElementById("fechajs").innerHTML = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
+        }
+    }
+</script>
+@*necesario para hacer post de documentos en ajax(formulario agregar cliente)*@
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+        if (form.getAttribute("enctype") === "multipart/form-data") {
+            if (form.dataset.ajax) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (form.dataset.ajaxUpdate) {
+                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                            if (updateTarget) {
+                                updateTarget.innerHTML = xhr.responseText;
+                            }
+                        }
+                    }
+                };
+                xhr.send(new FormData(form));
+            }
+        }
+    }, true);
+</script>
+
+@*proceso de cancelacion*@
+
+<script>
+    function cancelar() {
+        Swal.fire({
+            title: '¿Estas Seguro?',
+            text: "El proceso se cancelara y no se guardara",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si Estoy Seguro'
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'entendido',
+                        'Proceso Cancelado',
+                        'success'
+                    )
+
+                    location.reload();
+                }
+            })
+
+    }
+
+</script>
+<script>
+    function validacionform() {
+        var a = document.getElementById("nombreform").value;
+        var b = document.getElementById("identificador").value;
+        var c = document.getElementById("archivo").value;
+
+        if (a == "" && b == "" && c == "") {
 
 
+
+        }
+        else if (a != "" && b != "" && c != "") {
+
+            document.getElementById("agregar").click();
+
+
+        }
+
+    }
+</script>
 

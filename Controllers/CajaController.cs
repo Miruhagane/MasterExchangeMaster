@@ -12,6 +12,7 @@ using EntityState = System.Data.Entity.EntityState;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     public class CajaController : Controller
     {
         private MasterExchangeEntities db = new MasterExchangeEntities();

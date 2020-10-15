@@ -43,7 +43,36 @@ function compras_cantidad() {
 
     }
 
+
+    var monedapadre = document.getElementById("padre");
+    var apadre = monedapadre.options[monedapadre.selectedIndex].text;
+    var montopadre = document.getElementById("cantidad").value;
+    var cambiopadre = document.getElementById("valor").value;
+
+    var monedamadre = document.getElementById("Madre");
+    var amadre = monedamadre.options[monedamadre.selectedIndex].text;
+    var cambiomadre = document.getElementById("valor2").value;
+
+    var total = document.getElementById("total_pago").value;
+
+
+    document.getElementById("monedacotizacion1").innerHTML = apadre;
+    document.getElementById("montocotizacion1").innerHTML = montopadre;
+    document.getElementById("cambiocotizacion1").innerHTML = cambiopadre;
+
+    document.getElementById("monedacotizacion2").innerHTML = amadre;
+    document.getElementById("cambiocotizacion2").innerHTML = cambiomadre;
+
+    document.getElementById("pagocotizacion1").innerHTML = total;
+
+    var f = new Date();
+    document.getElementById("fechajs").innerHTML = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
+
+   
+
 }
+
+
 
 // Operaciones de compra
 function crt() {
@@ -143,7 +172,7 @@ function obtenertipousuario() {
         // cajero
         case "2":
             console.log("cajero");
-            document.getElementById("especialdiv").style.display = "none";
+    
             break;
 
         // tipo de usuario no detectado

@@ -32,7 +32,7 @@
 
         <div class="col-sm-12 row pl-5">
             <div class="col-sm-6">
-                    <asp:GridView ID="Tb_taxaCompras" runat="server" BackColor="White" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CellPadding="3" ForeColor="Black" GridLines="Vertical" OnSelectedIndexChanged="Page_Load" OnSorted="Page_Load" AutoGenerateColumns="False" DataKeyNames="Lng_IdTaxa,Int_IdMoneda">
+                    <asp:GridView ID="Tb_taxaCompras" runat="server" BackColor="White" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CellPadding="0" ForeColor="Black" GridLines="Vertical" OnSelectedIndexChanged="Page_Load" OnSorted="Page_Load" AutoGenerateColumns="False" DataKeyNames="Lng_IdTaxa,Int_IdMoneda" Height="214px" HorizontalAlign="Left" Width="40px">
                 <AlternatingRowStyle BackColor="#CCCCCC" />
                 <Columns>
                     <asp:BoundField DataField="IdTaxa" HeaderText="IdTaxa" SortExpression="IdTaxa" />
@@ -43,7 +43,7 @@
                              </ItemTemplate>
                     </asp:TemplateField>
 
-                    <asp:BoundField DataField="Dia" HeaderText="Dia" SortExpression="Dia" />
+                    <asp:BoundField DataField="Dia" HeaderText="Dia" SortExpression="Dia" ApplyFormatInEditMode="True" DataFormatString="{0:d}" />
                     <asp:BoundField DataField="Moneda" HeaderText="Moneda" SortExpression="Moneda" />
                     <asp:TemplateField HeaderText="Lng_IdTaxa" ShowHeader="False" SortExpression="Lng_IdTaxa" Visible="False">
                         <ItemTemplate>

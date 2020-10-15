@@ -17,14 +17,29 @@
 
     }
 
+    var moneda = document.getElementById("padre");
+    var a = moneda.options[moneda.selectedIndex].text;
+    var monto = document.getElementById("cantidad").value;
+    var cambio = document.getElementById("valor").value;
+    var total = document.getElementById("total_pago").value;
+ 
+
+    document.getElementById("monedacotizacion").innerHTML = a;
+    document.getElementById("montocotizacion").innerHTML = monto;
+    document.getElementById("cambiocotizacion").innerHTML = cambio;
+    document.getElementById("pagocotizacion").innerHTML = total;
+    var f = new Date();
+    document.getElementById("fechajs").innerHTML = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
+
 }
 
 function crt() {
 
     var usddiv = document.getElementById("usd").value;
+    var cantidades = document.getElementById("cantidad").value;
     var usdmax = usddiv * 1000;
 
-    console.log(usddiv);
+    
     var totalp = document.getElementById("total_pago").value;
     var t = document.getElementById("cantidad").value;
     if (totalp >= usdmax) {
@@ -55,6 +70,24 @@ function crt() {
             text: "Tienes Que Llenar El Formulario",
             icon: 'error'
         });
+
+    }
+
+    else if (cantidades >= 100000)
+    {
+        Swal.fire({
+            title: 'Error',
+            text: 'la cantidad no puede superar el Millon',
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Entendido'
+
+        }).then((result) => {
+            if (result.value) {
+                document.getElementById("cantidad").value = "";
+     
+            }
+        })
 
     }
 

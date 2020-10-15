@@ -18,6 +18,8 @@ function compras_cantidad() {
 
     }
 
+    
+
 }
 
 function crt() {

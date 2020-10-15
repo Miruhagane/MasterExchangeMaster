@@ -14,6 +14,7 @@ using System;
 
 namespace WebApplication2.Controllers
 {
+  
     public class HomeController : Controller
     {
         string con = System.Configuration.ConfigurationManager.ConnectionStrings["server2"].ConnectionString;
@@ -34,7 +35,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(string usuario, string Pass)
+        public ActionResult Index(string usuario, string Pass, string turno)
         {
            
             if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(Pass))
@@ -79,18 +80,28 @@ namespace WebApplication2.Controllers
 
                     FormsAuthentication.SetAuthCookie(id, true);
 
+                    Session["turno"] = turno;
 
                     bool activo = false;
-                    var dbturno = db.Tb_Cierre.FirstOrDefault(c => c.Int_IdUsuario == userv.Int_Idusuario && c.Int_IdStatus == 1 && c.Int_IdSucursal == userv.Lng_IdSucursal && c.Bol_Congelar == activo);
+                    bool status = true;
 
-                    var denominacion = db.Ct_Denominaciones.Max(c => c.Int_IdDenominacion);
-                    int iddeno = Convert.ToInt32(denominacion); 
+                    int idturno = Convert.ToInt32(turno);
+                    var dbturno = db.Tb_Arqueo.FirstOrDefault(c => c.Int_IdUsuario == userv.Int_Idusuario && c.Int_IdStatus == 1 && c.Int_IdSucursal == userv.Lng_IdSucursal && c.Bol_Congelar == activo);
+
+                    var userval = (from c in db.Tb_EntradaSuc
+                                   join ca in db.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
+                                   where c.Int_Sucursal == Sucursal && c.Bol_Activo == status && ca.Int_IdTurno == idturno && ca.Int_IdUsuario == userv.Int_Idusuario
+                                   select c
+                                   ).FirstOrDefault();
+
+
+                        var denominacion = db.Ct_Denominaciones.Max(c => c.Int_IdDenominacion);
+                    int iddeno = Convert.ToInt32(denominacion);
 
                     if (userv.Int_IdArea == 1)
                     {
                         return RedirectToAction("Index", "Profile");
                     }
-
 
 
                     else if (dbturno == null)
@@ -99,29 +110,54 @@ namespace WebApplication2.Controllers
 
                         for (int i = 0; i < iddeno; i++)
                         {
-                            SqlDataAdapter caja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_Cierre] ([Int_IdDenomicacion],[Dbl_Cantidad] ,[Fec_Cierre] ,[Int_IdMoneda] ,[Int_IdStatus],[Int_IdTurno],[Int_IdSucursal],[Int_IdUsuario], [Bol_Congelar])  VALUES(" + valor+",0, GETDATE(),7,1,1," + userv.Lng_IdSucursal + "," + userv.Int_Idusuario + ", 0)", con);
+                            SqlDataAdapter caja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_Arqueo] ([Int_IdDenomicacion],[Dbl_Cantidad] ,[Fec_Cierre] ,[Int_IdMoneda] ,[Int_IdStatus],[Int_IdTurno],[Int_IdSucursal],[Int_IdUsuario], [Bol_Congelar])  VALUES(" + valor + ",0, GETDATE(),7,1," + turno + "," + userv.Lng_IdSucursal + "," + userv.Int_Idusuario + ", 0)", con);
                             DataSet a = new DataSet();
                             caja.Fill(a);
                             a.Reset();
 
                             valor = valor + 1;
                         }
-                        
+                        valor = 1;
 
-                        return RedirectToAction("Index", "arqueo");
+                        for (int i = 0; i < 6; i++)
+                        {
+                            SqlDataAdapter arqdiv = new SqlDataAdapter("INSERT INTO [dbo].[Tb_ArqueoMoneda] ([Int_IdMoneda] ,[Dbl_Valor] ,[Fec_Cierre] ,[Int_IdStatus] ,[Int_IdTurno] ,[Int_IdSucursal] ,[Int_IdUsuario] ,[Bol_Congelar])VALUES (" + valor + ",0,GETDATE(),1," + turno + "," + userv.Lng_IdSucursal + "," + userv.Int_Idusuario + ",0)", con);
+                            DataSet a = new DataSet();
+                            arqdiv.Fill(a);
+                            a.Reset();
+
+                            valor = valor + 1;
+                        }
+
+
+                        if (userval == null)
+                        {
+
+                            return RedirectToAction("Index", "EntradaCaja");
+
+
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "EntradaCaja");
+                        }
+
+
 
                     }
 
-                    else if (dbturno.Int_IdStatus == 1 && dbturno.Int_IdSucursal != userv.Lng_IdSucursal)
+                    else if (userval == null)
                     {
-
-                        return RedirectToAction("Index", new { Message = "Este usuario no se Puede logear 2 veces en diferentes Sucursales" });
+                        return RedirectToAction("Index", "EntradaCaja");
                     }
-                  
+                    else if (userval.Bol_Activo == status)
+                    {
+                        return RedirectToAction("Index", "Profile");
+                    }
 
 
-                    return RedirectToAction("Index", new { Message = "Hubo un error" });
 
+                    return RedirectToAction("Index", new { Message = "error" });
 
 
 

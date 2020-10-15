@@ -11,14 +11,18 @@ namespace WebApplication2.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Tb_EntradaSuc
     {
         public int Lng_IdEntrada { get; set; }
         public Nullable<decimal> Dbl_SaldoEntrada { get; set; }
-        public Nullable<System.DateTime> Fec_Ini { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public System.DateTime Fec_Ini { get; set; }
         public Nullable<int> Int_Sucursal { get; set; }
         public Nullable<int> Int_IdMoneda { get; set; }
         public Nullable<bool> Bol_Activo { get; set; }
+        public Nullable<int> Int_Estatus { get; set; }
+        public string Txt__Motivo { get; set; }
     }
 }

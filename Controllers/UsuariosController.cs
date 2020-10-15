@@ -38,6 +38,7 @@ using System.Drawing.Imaging;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     public class UsuariosController : Controller
     {
         private MasterExchangeEntities db = new MasterExchangeEntities();

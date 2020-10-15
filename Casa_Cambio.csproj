@@ -279,19 +279,16 @@
     <Compile Include="Arqueos\arqueocierre.aspx.designer.cs">
       <DependentUpon>arqueocierre.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Arqueos\ArqueoInicial.aspx.cs">
-      <DependentUpon>ArqueoInicial.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Arqueos\ArqueoInicial.aspx.designer.cs">
-      <DependentUpon>ArqueoInicial.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\AdministracionController.cs" />
     <Compile Include="Controllers\arqueoController.cs" />
     <Compile Include="Controllers\CajaController.cs" />
+    <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\EntradaCajaController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\SalidaSucController.cs" />
+    <Compile Include="Controllers\Tb_RegistrosController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
+    <Compile Include="Controllers\ValesController.cs" />
     <Compile Include="Models\buscar_Result.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
@@ -325,7 +322,13 @@
     <Compile Include="Models\TaxaVenta.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Tb_Cierre.cs">
+    <Compile Include="Models\Tb_Arqueo.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tb_ArqueoMoneda.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tb_Cancelaciones.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tb_Clientes.cs">
@@ -337,6 +340,9 @@
     <Compile Include="Models\Tb_EntradaSuc.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Tb_HistorialEntySal.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tb_PlazasApli.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
@@ -344,6 +350,9 @@
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tb_Registros.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tb_RegistrosBanca.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tb_RegistrosHistorico.cs">
@@ -367,7 +376,11 @@
     <Compile Include="Models\Tb_Usuarios.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Tb_Vales.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ViewModels\Areas.cs" />
+    <Compile Include="Models\ViewModels\Clientes.cs" />
     <Compile Include="Models\ViewModels\inventario.cs" />
     <Compile Include="Models\ViewModels\Plazas.cs" />
     <Compile Include="Models\ViewModels\reegistro.cs" />
@@ -431,7 +444,6 @@
   <ItemGroup>
     <Content Include="admiinistrativo\VentasUser.aspx" />
     <Content Include="Arqueos\arqueocierre.aspx" />
-    <Content Include="Arqueos\ArqueoInicial.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -444,6 +456,7 @@
     <Content Include="Content\img\estilo-de-semitonos.jpg" />
     <Content Include="Content\img\fondo-proyecto-creativo.jpg" />
     <Content Include="Content\img\Fondo_Cuser.jpg" />
+    <Content Include="Content\img\loading.gif" />
     <Content Include="Content\Usuarios.css" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -646,8 +659,25 @@
     <Content Include="Views\EntradaCaja\actualizar.cshtml" />
     <Content Include="Views\EntradaCaja\invet.cshtml" />
     <Content Include="Views\EntradaCaja\final.cshtml" />
-    <Content Include="Views\Arqueo\Index.cshtml" />
     <Content Include="Views\Arqueo\cerrararqueo.cshtml" />
+    <Content Include="Views\Clientes\Index.cshtml" />
+    <Content Include="Views\Vales\Create.cshtml" />
+    <Content Include="Views\Vales\Delete.cshtml" />
+    <Content Include="Views\Vales\Details.cshtml" />
+    <Content Include="Views\Vales\Edit.cshtml" />
+    <Content Include="Views\Vales\Index.cshtml" />
+    <Content Include="Views\Vales\vales.cshtml" />
+    <Content Include="Views\profile\cancelaciones.cshtml" />
+    <Content Include="Views\SalidaSuc\Index.cshtml" />
+    <Content Include="Views\SalidaSuc\tsalida.cshtml" />
+    <Content Include="Views\profile\actualizar.cshtml" />
+    <Content Include="Views\Tb_Registros\Create.cshtml" />
+    <Content Include="Views\Tb_Registros\Delete.cshtml" />
+    <Content Include="Views\Tb_Registros\Details.cshtml" />
+    <Content Include="Views\Tb_Registros\Edit.cshtml" />
+    <Content Include="Views\Tb_Registros\Index.cshtml" />
+    <Content Include="Views\profile\returnticketventa.cshtml" />
+    <Content Include="Views\EntradaCaja\estatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

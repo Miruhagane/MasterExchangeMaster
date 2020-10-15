@@ -61,9 +61,23 @@
 
                 </div>
 
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-warning menubtn" onclick="location.href='@Url.Action("cancelaciones", "Profile")'">Cancelación</button>
+                </div>
+
                 <div class="d-block text-light p-1 border-0">
                     <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "Administracion")'">
                         Panel De Control
+                    </button>
+                </div>
+
+
+
+
+
+                <div class="d-block text-light p-1 border-0">
+                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "Clientes")'">
+                        Clientes
                     </button>
                 </div>
 
@@ -78,7 +92,10 @@
                 </div>
 
                 <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "EntradaCaja")'">Entrada de Caja</button>
+                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("actualizar", "EntradaCaja")'">Entrada de Caja</button>
+                </div>
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "SalidaSuc")'">Salida de Caja</button>
                 </div>
 
                 <div class="btn-group  d-block text-light p-1 border-0">
@@ -86,18 +103,18 @@
                         Administracion
                     </button>
                     <div class="dropdown-menu bg-dark">
-                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "Arqueo")'">Arqueo Inicial</button>
+
                         <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("cerrararqueo", "Arqueo")'">Arqueo Final</button>
                     </div>
                 </div>
 
                 <div class="btn-group  d-block text-light p-1 border-0">
                     <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="tazas" onclick="tazas()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Tazas
+                        Tasas
                     </button>
                     <div class="dropdown-menu bg-dark">
-                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Taxacompras", "Administracion")'">Tazas de compra</button>
-                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("TazasVentas", "Administracion")'">Tazas de venta</button>
+                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Taxacompras", "Administracion")'">Tasas de Compra</button>
+                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("TazasVentas", "Administracion")'">Tasas de Venta</button>
                     </div>
                 </div>
 
@@ -199,7 +216,7 @@
             switch (userside) {
                 //administrativo
                 case "1":
-                    console.log("administrativo");
+                    console.log("administrativo");              
                     break;
 
                 // cajero

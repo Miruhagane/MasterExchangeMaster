@@ -25,7 +25,6 @@
    
 
     <div class="container-fluid"">
-
         <div class="row">
             
             <div class="card">
@@ -34,7 +33,6 @@
   </div>
   <div class="card-body">
     <form id="form1" runat="server" class="form-group">
-
         <div style="display: none">
             <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
         </div>
@@ -63,14 +61,10 @@
        <%-- control administrativo--%>
         <div id="administrativo">
             <div class="form-row">
-
-
                             <div class="form-group col-md-3" >
-
                             <asp:Label ID="Label1" runat="server" Text="Cajero"></asp:Label>
                             <asp:DropDownList  class="custom-select" ID="Cajero1" runat="server" DataSourceID="SqlDataSource1" DataTextField="Txt_NomCorto" DataValueField="Int_Idusuario"></asp:DropDownList>
-
-                                <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString %>" SelectCommand="SELECT [Int_Idusuario], [Txt_NomCorto] FROM [Tb_Usuarios]"></asp:SqlDataSource>
+                                <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Int_Idusuario], [Txt_NomCorto] FROM [Tb_Usuarios]"></asp:SqlDataSource>
 
                             </div>
 
@@ -132,34 +126,26 @@
 
     <%--validacion tipo del usuario--%>
     <script type="text/javascript">
-
         var areadeusuario = document.getElementById('<%=TextBox3.ClientID%>').value;
-
-
-
-            // comprar tipo de usuario
+        // comprar tipo de usuario
         switch (areadeusuario) {
-                //administrativo
-                case "1":
+            //administrativo
+            case "1":
                 console.log("administrativo");
                 document.getElementById("cajero").style.display = "none";
-               
-                    break;
 
-                // cajero
-                case "2":
-                    console.log("cajero");
+                break;
+            // cajero
+            case "2":
+                console.log("cajero");
                 document.getElementById("administrativo").style.display = "none";
-                    break;
+                break;
+            // tipo de usuario no detectado
+            default:
+                console.log("no detectado");
+                break;
+        }
 
-                // tipo de usuario no detectado
-                default:
-                    console.log("no detectado");
-                    break;
-            }
-        
-
-    
 
     </script>
 </body>

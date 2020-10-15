@@ -6,26 +6,31 @@
     <edmx:Diagrams>
       <Diagram DiagramId="55937394423d4a6fbd0fcf6e8aae3a2c" Name="Diagram1" ZoomLevel="98" DisplayType="true">
         <EntityTypeShape EntityType="dbcasa_cambio.Ct_Moneda" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Clientes" Width="1.875" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_RegistrosHistorico" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_Taxas" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_RegCli" Width="1.5" PointX="6.75" PointY="6.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_PlazasApli" Width="1.5" PointX="8.75" PointY="8.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_RegUsu" Width="1.5" PointX="0.75" PointY="9.75" />
-        <EntityTypeShape EntityType="dbcasa_cambio.TaxaCompra" Width="1.5" PointX="5.375" PointY="0.75" />
-        <EntityTypeShape EntityType="dbcasa_cambio.TaxaVenta" Width="1.5" PointX="9.375" PointY="5.75" />
-        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Registros" Width="2.875" PointX="7.375" PointY="0.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Ct_Areas" Width="1.5" PointX="11.375" PointY="0.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Ct_TipoTran" Width="1.5" PointX="11.375" PointY="3.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_Sucursal" Width="1.5" PointX="3.375" PointY="11.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_Usuarios" Width="1.5" PointX="5.375" PointY="9.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Taxacompcomb" Width="1.5" PointX="7.375" PointY="11.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_TaxSuc" Width="1.5" PointX="0.75" PointY="12.75" />
-        <EntityTypeShape EntityType="dbcasa_cambio.Tb_EntradaSuc" Width="1.5" PointX="11.375" PointY="9.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_EntEmp" Width="1.5" PointX="9.375" PointY="12.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Ct_Denominaciones" Width="1.5" PointX="11.375" PointY="6.75" />
-        <EntityTypeShape EntityType="dbcasa_cambio.Tb_SalidaSuc" Width="1.5" PointX="13.375" PointY="0.75" />
-        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Cierre" Width="1.5" PointX="11.375" PointY="12.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Clientes" Width="3.125" PointX="13.375" PointY="3.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_RegistrosBanca" Width="1.5" PointX="13.375" PointY="11.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Vales" Width="1.5" PointX="0.75" PointY="15.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_ArqueoMoneda" Width="1.5" PointX="15.375" PointY="11.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Arqueo" Width="1.5" PointX="15.375" PointY="7.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Registros" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Cancelaciones" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_SalidaSuc" Width="1.5" PointX="11.375" PointY="15.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.TaxaCompra" Width="1.5" PointX="13.375" PointY="15.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.TaxaVenta" Width="1.5" PointX="15.375" PointY="15.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_EntradaSuc" Width="1.5" PointX="3.375" PointY="16.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_HistorialEntySal" Width="1.5" PointX="5.375" PointY="16.75" />
 
       </Diagram>
     </edmx:Diagrams>

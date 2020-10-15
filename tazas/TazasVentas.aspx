@@ -37,7 +37,7 @@
                                    <asp:TextBox ID="TextValor" runat="server" Text='<%#Bind("Valor") %>'></asp:TextBox>
                              </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="Dia" HeaderText="Dia" SortExpression="Dia" />
+                    <asp:BoundField DataField="Dia" HeaderText="Dia" SortExpression="Dia" DataFormatString="{0:d}" />
                     <asp:BoundField DataField="Moneda" HeaderText="Moneda" SortExpression="Moneda" />
                      <asp:TemplateField HeaderText="Lng_IdTaxa" ShowHeader="False" SortExpression="Lng_IdTaxa" Visible="False">
                         <ItemTemplate>

@@ -1,0 +1,77 @@
+﻿@model IEnumerable<WebApplication2.Models.Tb_Clientes>
+
+@{
+    ViewBag.Title = "Clientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-sm-11 pt-5 pl-5 table-responsive">
+    <table class="table table-bordered table-hover table-sm table-striped">
+        <thead class="thead-dark">
+            <tr>
+
+                <th scope="col">
+                    Nombre 
+                </th>
+                <th scope="col">
+                    Nacionalidad
+                </th>
+                <th scope="col">
+                    Identificacion
+                </th>
+                <th scope="col">
+                   Telefono
+                </th>
+                <th scope="col">
+                    E-Mail
+                </th>
+                <th scope="col">
+                    Fecha de Registro
+                </th>
+                <th scope="col">
+                    Documento
+                </th>
+
+                <th scope="col"></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tbody>
+                <tr class="table-secondary">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Txt_Cliente)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Txt_Direccion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Txt_Identificacion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Txt_Telefono)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Txt_Email)
+                    </td>
+                    <td>
+                        @item.Fec_Alta.ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.File_Nombre)
+                    </td>
+
+                    <td>
+                        <button type="button" data-toggle="tooltip" data-placement="top" title="Archivo Pdf" class="btn btn-info btn-sm" target="_blank" onclick="window.open('@Url.Action("PDF", "Clientes", new { cliente = item.Lng_IdCliente })')"> <i class="fas fa-file-pdf"></i></button>
+
+                        
+                    </td>
+                </tr>
+            </tbody>
+        }
+
+    </table>     
+</div>
+
+

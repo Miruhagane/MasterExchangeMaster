@@ -60,12 +60,39 @@ namespace WebApplication2.Arqueos
         protected global::System.Web.UI.WebControls.GridView Tb_arqueofinal;
 
         /// <summary>
-        /// Control btnguardar.
+        /// Control Tb_arqueoXmoenda.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnguardar;
+        protected global::System.Web.UI.WebControls.GridView Tb_arqueoXmoenda;
+
+        /// <summary>
+        /// Control cajero.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label cajero;
+
+        /// <summary>
+        /// Control fecha.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label fecha;
+
+        /// <summary>
+        /// Control impresion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button impresion;
     }
 }

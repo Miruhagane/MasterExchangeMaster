@@ -1,0 +1,31 @@
+﻿@model IEnumerable<WebApplication2.Models.Tb_Vales>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Concepto
+        </th>
+        <th>
+            Valor
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Txt_Concepto)
+            </td>
+            <td>
+
+                $@string.Format("{0:#,0.00}", item.Valor)
+            </td>
+
+
+        </tr>
+    }
+
+</table>

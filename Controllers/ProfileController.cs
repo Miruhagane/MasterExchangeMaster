@@ -30,26 +30,36 @@ using System.Globalization;
 using Microsoft.VisualBasic;
 using System.Data.Entity.Infrastructure;
 using System.Buffers.Text;
+using System.IO;
+using Microsoft.Win32;
+using System.Windows.Documents;
+using System.Collections;
+using EntityState = System.Data.Entity.EntityState;
 
 namespace WebApplication2.Controllers
 {
+
+
     [Authorize]
     public class profileController : Controller
     {
-      
+
         string con = System.Configuration.ConfigurationManager.ConnectionStrings["server2"].ConnectionString;
 
         public MasterExchangeEntities db = new MasterExchangeEntities();
-        
+
 
         [HttpGet]
         public JsonResult valores2(Nullable<decimal> idmoneda)
         {
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
             List<Elementos1> comp = new List<Elementos1>();
             using (Models.MasterExchangeEntities dbm = new Models.MasterExchangeEntities())
             {
                 comp = (from x in dbm.TaxaVentas
-                        where x.Int_IdMoneda == idmoneda
+                        join db in dbm.Tb_TaxSuc on x.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                        where x.Int_IdMoneda == idmoneda && db.Lng_IdSucursal == sucursalid
+                        orderby x.Int_IdMoneda
                         select new Elementos1
                         {
                             value = x.Int_IdMoneda,
@@ -71,12 +81,14 @@ namespace WebApplication2.Controllers
         [HttpGet]
         public JsonResult valores(Nullable<decimal> idmoneda)
         {
-            
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
             List<Elementos> lst = new List<Elementos>();
-           using (Models.MasterExchangeEntities dk = new Models.MasterExchangeEntities())
+            using (Models.MasterExchangeEntities dk = new Models.MasterExchangeEntities())
             {
                 lst = (from d in dk.TaxaCompras
-                       where d.Int_IdMoneda == idmoneda
+                       join db in dk.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                       where d.Int_IdMoneda == idmoneda && db.Lng_IdSucursal == sucursalid
+                       orderby d.Int_IdMoneda
                        select new Elementos
                        {
                            value = d.Int_IdMoneda,
@@ -93,12 +105,15 @@ namespace WebApplication2.Controllers
         [HttpGet]
         public JsonResult valores_compra(Nullable<decimal> idmoneda)
         {
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
 
             List<Elementos> lst = new List<Elementos>();
             using (Models.MasterExchangeEntities dk = new Models.MasterExchangeEntities())
             {
                 lst = (from d in dk.Taxacompcombs
-                       where d.Int_IdMoneda == idmoneda
+                       join db in dk.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                       where d.Int_IdMoneda == idmoneda && db.Lng_IdSucursal == sucursalid
+                       orderby d.Int_IdMoneda
                        select new Elementos
                        {
                            value = d.Int_IdMoneda,
@@ -115,11 +130,14 @@ namespace WebApplication2.Controllers
         [HttpGet]
         public JsonResult divisaventa(Nullable<decimal> idmoneda)
         {
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
             List<Elementos> lst = new List<Elementos>();
             using (Models.MasterExchangeEntities dk = new Models.MasterExchangeEntities())
             {
                 lst = (from d in dk.TaxaVentas
-                       where d.Int_IdMoneda == idmoneda
+                       join db in dk.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                       where d.Int_IdMoneda == idmoneda && db.Lng_IdSucursal == sucursalid
+                       orderby d.Int_IdMoneda
                        select new Elementos
                        {
                            value = d.Int_IdMoneda,
@@ -133,6 +151,8 @@ namespace WebApplication2.Controllers
 
         }
 
+
+        //buscar Clientes
         [HttpGet]
         public JsonResult buscar(string numero)
         {
@@ -141,7 +161,7 @@ namespace WebApplication2.Controllers
             using (Models.MasterExchangeEntities db = new Models.MasterExchangeEntities())
             {
                 ward = (from c in db.Tb_Clientes
-                        where c.Txt_Identificacion == numero || c.Txt_Email == numero || c.Txt_Telefono == numero
+                        where c.Txt_Identificacion.Contains(numero) || c.Txt_Email.Contains(numero) || c.Txt_Telefono.Contains(numero) || c.Txt_Cliente.Contains(numero)
                         select new listaclientes
                         {
                             Lng_IdCliente = c.Lng_IdCliente,
@@ -166,11 +186,14 @@ namespace WebApplication2.Controllers
         {
 
             List<moneda> lst = null;
-
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
             using (Models.MasterExchangeEntities dr = new Models.MasterExchangeEntities())
             {
                 lst = (
                      from d in dr.TaxaCompras
+                     join db in dr.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                     where db.Lng_IdSucursal == sucursalid
+                     orderby d.Int_IdMoneda
                      select new moneda
                      {
                          Int_IdMoneda = d.Int_IdMoneda,
@@ -189,7 +212,7 @@ namespace WebApplication2.Controllers
                     Selected = false
 
                 };
-                
+
             });
 
             ViewBag.items = items;
@@ -200,11 +223,14 @@ namespace WebApplication2.Controllers
         {
 
             List<moneda> lst = null;
-
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
             using (Models.MasterExchangeEntities dr = new Models.MasterExchangeEntities())
             {
                 lst = (
-                     from d in dr.Taxacompcombs
+                     from d in dr.TaxaCompras
+                     join db in dr.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                     where db.Lng_IdSucursal == sucursalid
+                     orderby d.Int_IdMoneda
                      select new moneda
                      {
                          Int_IdMoneda = d.Int_IdMoneda,
@@ -233,17 +259,19 @@ namespace WebApplication2.Controllers
         public void comboventa()
         {
             List<moneda> mls = null;
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
 
             using (Models.MasterExchangeEntities dr = new Models.MasterExchangeEntities())
             {
-                mls = (
-                     from d in dr.TaxaVentas
-                     select new moneda
-                     {
-                         Int_IdMoneda = d.Int_IdMoneda,
-                         Moneda = d.Moneda
+                mls = (from d in dr.TaxaVentas
+                       join db in dr.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                       where db.Lng_IdSucursal == sucursalid
+                       select new moneda
+                       {
+                           Int_IdMoneda = d.Int_IdMoneda,
+                           Moneda = d.Moneda
 
-                     }).ToList();
+                       }).ToList();
             }
 
             List<SelectListItem> venta = mls.ConvertAll(df =>
@@ -252,7 +280,7 @@ namespace WebApplication2.Controllers
                 {
                     Text = df.Moneda.ToString(),
                     Value = df.Int_IdMoneda.ToString(),
-                    
+
                 };
             });
 
@@ -262,11 +290,13 @@ namespace WebApplication2.Controllers
 
         public JsonResult usdcompra()
         {
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
             List<Elementos> usd = new List<Elementos>();
             using (MasterExchangeEntities fg = new MasterExchangeEntities())
             {
                 usd = (from dolar in fg.TaxaCompras
-                       where dolar.IdTaxa == 1
+                       join db in fg.Tb_TaxSuc on dolar.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                       where dolar.IdTaxa == 1 && db.Lng_IdSucursal == sucursalid
                        select new Elementos
                        {
                            value = dolar.IdTaxa,
@@ -280,11 +310,14 @@ namespace WebApplication2.Controllers
 
         public JsonResult usdventa()
         {
+            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
+
             List<Elementos> usd = new List<Elementos>();
             using (MasterExchangeEntities fg = new MasterExchangeEntities())
             {
                 usd = (from dolar in fg.TaxaVentas
-                       where dolar.IdTaxa == 1
+                       join db in fg.Tb_TaxSuc on dolar.Lng_IdTaxa equals db.Lng_IdTaxSuc
+                       where dolar.IdTaxa == 1 && db.Lng_IdSucursal == sucursalid
                        select new Elementos
                        {
                            value = dolar.IdTaxa,
@@ -298,34 +331,31 @@ namespace WebApplication2.Controllers
 
         public ActionResult Tcomprar()
         {
-            int sucursalid = Convert.ToInt32(Session["idSucursal"]);
-            
-            bool b = false;
-            IList<int> idmonedas = new List<int>(){ 1, 2, 3, 4, 5, 6 };
+            int sucursalid = Convert.ToInt32(Session["idsucursal"]);
 
-           
             IEnumerable<Tcompras> lst1 = new List<Tcompras>();
 
-            var idint = db.Tb_Taxas.Where(e => e.Bol_Tipo == b).Max(e => e.Int_IdGrupo);
-            int grupo = Convert.ToInt32(idint);
 
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
-                lst1 = (from d in dr.Tb_Taxas
-                        
-                        join da in dr.Ct_Moneda on d.Int_IdMoneda equals da.Int_IdMoneda
-                        join db in dr.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
-                        where  d.Bol_Tipo == b && idmonedas.Contains((int)d.Int_IdMoneda) && db.Lng_IdSucursal == sucursalid && d.Int_IdGrupo == grupo
+                lst1 = (from d in dr.TaxaCompras
+                        where d.Lng_IdSucursal == sucursalid
+                        orderby d.Int_IdMoneda
                         select new Tcompras
                         {
-                            Moneda = da.Txt_Moneda,
-                            Valor = d.dbl_Valor,
-
+                            Moneda = d.Moneda,
+                            Valor = d.Valor
 
                         }).ToList();
             }
 
+
+
+
+
             return View(lst1);
+
+
         }
 
 
@@ -333,23 +363,20 @@ namespace WebApplication2.Controllers
         public ActionResult Tventas()
         {
             int sucursalid = Convert.ToInt32(Session["idSucursal"]);
-            bool a = true;
-            IList<int> idmonedas = new List<int>() { 1, 2, 3, 4, 5, 6 };
+
             IEnumerable<Tventas> lst1 = new List<Tventas>();
 
-            var idint = db.Tb_Taxas.Where(e => e.Bol_Tipo == a).Max(e => e.Int_IdGrupo);
-            int grupo = Convert.ToInt32(idint);
 
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
-                lst1 = (from d in dr.Tb_Taxas
-                        join da in dr.Ct_Moneda on d.Int_IdMoneda equals da.Int_IdMoneda
-                        join db in dr.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
-                        where d.Bol_Tipo == a && idmonedas.Contains((int)d.Int_IdMoneda) && db.Lng_IdSucursal == sucursalid && d.Int_IdGrupo == grupo
+                lst1 = (from d in dr.TaxaVentas
+
+                        where d.Lng_IdSucursal == sucursalid
+                        orderby d.Int_IdMoneda
                         select new Tventas
                         {
-                            Moneda = da.Txt_Moneda,
-                            Valor = d.dbl_Valor
+                            Moneda = d.Moneda,
+                            Valor = d.Valor
                         }).ToList();
             }
 
@@ -363,12 +390,12 @@ namespace WebApplication2.Controllers
             return PartialView();
         }
 
-        
+
         public ActionResult Index(string idregistro)
         {
-            
+
             ViewBag.id = idregistro;
-  
+
             modulodivisas();
 
             return View();
@@ -378,7 +405,7 @@ namespace WebApplication2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
         {
-            
+
 
             if (ModelState.IsValid)
             {
@@ -387,19 +414,24 @@ namespace WebApplication2.Controllers
                 await db.SaveChangesAsync();
                 Tb_RegCli.Lng_IdRegistro = tb_Registros.Lng_IdRegistro;
                 int idregistro = tb_Registros.Lng_IdRegistro;
-               
 
-                SqlDataAdapter obja = new SqlDataAdapter("insert into Tb_RegCli(Lng_IdRegistro , Lng_IdCliente) values( "+Tb_RegCli.Lng_IdRegistro +" , "+ idcliente +" )", con);
+
+                SqlDataAdapter obja = new SqlDataAdapter("insert into Tb_RegCli(Lng_IdRegistro , Lng_IdCliente) values( " + Tb_RegCli.Lng_IdRegistro + " , " + idcliente + " )", con);
                 DataSet a = new DataSet();
                 obja.Fill(a);
                 a.Reset();
 
-                SqlDataAdapter otr = new SqlDataAdapter("insert into Tb_RegUsu(Int_IdUsuario , Lng_IdRegistro) values( " +User.Identity.Name+ " , " +Tb_RegCli.Lng_IdRegistro+ " )", con);
+                SqlDataAdapter otr = new SqlDataAdapter("insert into Tb_RegUsu(Int_IdUsuario , Lng_IdRegistro) values( " + User.Identity.Name + " , " + Tb_RegCli.Lng_IdRegistro + " )", con);
                 DataSet b = new DataSet();
                 otr.Fill(b);
                 b.Reset();
 
-                string idreg = Convert.ToString(idregistro); 
+                SqlDataAdapter historial = new SqlDataAdapter("UPDATE [dbo].[Tb_Registros] SET [Bol_Cancelar] = 0 where Lng_IdRegistro = " + tb_Registros.Lng_IdRegistro + "", con);
+                DataSet h = new DataSet();
+                historial.Fill(h);
+                h.Reset();
+
+                string idreg = Convert.ToString(idregistro);
 
                 return RedirectToAction("Index", new { idregistro = idreg });
             }
@@ -410,19 +442,19 @@ namespace WebApplication2.Controllers
             return View();
         }
 
-        public ActionResult Venta(string idregistro)
+        public ActionResult Venta(string idregistro, string idventa)
         {
             divisasCompra_venta();
             comboventa();
 
             ViewBag.id = idregistro;
-
+            ViewBag.idventa = idventa;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Venta([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,int_idmonventa,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
+        public async Task<ActionResult> Venta([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,int_idmonventa,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli, Bol_multimoneda")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
         {
             divisasCompra_venta();
 
@@ -447,9 +479,15 @@ namespace WebApplication2.Controllers
                 otr.Fill(b);
                 b.Reset();
 
-                string idreg = Convert.ToString(idregistro);
+                SqlDataAdapter historial = new SqlDataAdapter("UPDATE [dbo].[Tb_Registros] SET [Bol_Cancelar] = 0 where Lng_IdRegistro = " + tb_Registros.Lng_IdRegistro + "", con);
+                DataSet h = new DataSet();
+                historial.Fill(h);
+                h.Reset();
 
-                return RedirectToAction("Multimoneda", new { idregistro = idreg });
+                string idreg = Convert.ToString(idregistro);
+                string idventa = "0";
+
+                return RedirectToAction("Venta", new { idregistro = idreg, idventa });
 
 
             }
@@ -462,62 +500,71 @@ namespace WebApplication2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Clientes(string nombre, string numcliente, string dirreccion, string identificacion, string telefono, string mail)
+        public ActionResult Clientes(string nombre, string numcliente, string dirreccion, string identificacion, HttpPostedFileBase archivo, string nombrearchivo, string telefono, string mail)
         {
-            
             using (Models.MasterExchangeEntities mir1 = new Models.MasterExchangeEntities())
             {
 
-                var userv = mir1.Tb_Clientes.FirstOrDefault(e => e.Txt_Identificacion == identificacion || e.Txt_Telefono == telefono);
+
+                var userv = mir1.Tb_Clientes.FirstOrDefault(e => e.Txt_Identificacion == identificacion);
 
                 if (userv == null)
                 {
-                    var ut = new Tb_Clientes()
-                    {
-                        Txt_Cliente = nombre,
-                        Txt_NumCliente = numcliente,
-                        Txt_Direccion = dirreccion,
-                        Txt_Telefono = telefono,
-                        Txt_Email = mail,
-                        Txt_Identificacion = identificacion,
-                        Fec_Alta = DateTime.Now
-                    };
 
-                    mir1.Tb_Clientes.Add(ut);
-                    mir1.SaveChanges();
+                    if (archivo != null && archivo.ContentLength > 0)
+                    {
+                        byte[] temparchivo = new byte[archivo.ContentLength];
+                        archivo.InputStream.Read(temparchivo, 0, archivo.ContentLength);
+
+                        var ut = new Tb_Clientes()
+                        {
+
+                            Txt_Cliente = nombre,
+                            Txt_NumCliente = numcliente,
+                            Txt_Direccion = dirreccion,
+                            Txt_Telefono = telefono,
+                            Txt_Email = mail,
+                            Txt_Identificacion = identificacion,
+                            Fec_Alta = DateTime.Now,
+                            File_Nombre = nombrearchivo,
+                            Doc_cliente = temparchivo
+
+                        };
+
+                        mir1.Tb_Clientes.Add(ut);
+                        mir1.SaveChanges();
+                    }
+
+
                 }
                 else
                 {
                     ViewBag.mensaje = "hola";
-                
+
                 }
             }
             return RedirectToAction("Index");
         }
 
-       
 
-       [HttpGet]
+        [HttpGet]
         public JsonResult returnticket(int registro)
         {
-
+            
             List<registrosall> ticket = new List<registrosall>();
             using (MasterExchangeEntities db = new MasterExchangeEntities())
             {
                 ticket = (from c in db.Tb_Registros
-                          join ca in db.TaxaCompras on c.Int_IdMoneda equals+
-                          ca.Int_IdMoneda
-                          
+                          join ca in db.Ct_Moneda on c.Int_IdMoneda equals ca.Int_IdMoneda
                           where c.Lng_IdRegistro == registro
                           select new registrosall() 
                           {
                               Lng_IdRegistro = c.Lng_IdRegistro,
-                              Moneda = ca.Moneda,
-                              Int_IdMoneda = c.Int_IdMoneda, 
+                              Moneda = ca.Txt_Moneda,
                               Dbl_MontoRecibir = c.Dbl_MontoRecibir,
                               Dbl_TipoCambio = c.Dbl_TipoCambio,
                               Dbl_MontoPagar = c.Dbl_MontoPagar,
-                              Fec_Fecha =  c.Fec_Fecha,
+                              Fec_Fecha =  c.Fec_Fecha
                              
 
                           }).ToList();
@@ -527,6 +574,126 @@ namespace WebApplication2.Controllers
                 
 
             return Json(ticket, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult returnticketventa(int alt)
+        {
+            
+
+            List<registrosall> ticket = new List<registrosall>();
+            using (MasterExchangeEntities db = new MasterExchangeEntities())
+            {
+                ticket = (from c in db.Tb_Registros
+                        
+                          join cb in db.Ct_Moneda on c.Int_IdMonVenta equals cb.Int_IdMoneda
+                          where c.Lng_IdRegistro == alt
+                          select new registrosall
+                          {
+                              Lng_IdRegistro = c.Lng_IdRegistro,
+                              Moneda = cb.Txt_Moneda,
+                              Monedaventa = cb.Txt_Moneda,
+                              Int_IdMoneda = c.Int_IdMoneda,
+                              Dbl_MontoRecibir = c.Dbl_MontoRecibir,
+                              Dbl_TipoCambio = c.Dbl_TipoCambio,
+                              Dbl_MontoPagar = c.Dbl_MontoPagar,
+                              Fec_Fecha = c.Fec_Fecha,
+                              Int_IdMonVenta = cb.Int_IdMoneda,
+                              Dbl_TipoCambioven = c.Dbl_TipoCambioven,
+                              Dbl_Entregar = c.Dbl_Entregar
+                          }).ToList();
+
+            }
+            return Json(ticket, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        public ActionResult cancelaciones()
+        {
+            int sucursalid = Convert.ToInt32(Session["idsucursal"]);
+            string a = User.Identity.Name;
+            int iduser = Convert.ToInt32(a);
+
+            bool t = false;
+        
+            DateTime fecha = DateTime.Now;
+
+
+
+            List<registrosall> lst1 = new List<registrosall>();
+            using (MasterExchangeEntities dr = new MasterExchangeEntities())
+            {
+
+                lst1 = (from d in dr.Tb_Registros
+                        join da in dr.Ct_Moneda on d.Int_IdMoneda equals+ da.Int_IdMoneda into df
+                        from da in df.DefaultIfEmpty()
+                        join db in dr.Tb_RegUsu on d.Lng_IdRegistro equals+ db.Lng_IdRegistro
+                        join dc in dr.Ct_TipoTran on d.Int_IdTipoTran equals+ dc.Int_IdTipoTran
+                        
+                        where db.Int_IdUsuario == iduser && d.Bol_Cancelar == t
+                        select new registrosall
+                        {
+                           Lng_IdRegistro = d.Lng_IdRegistro,
+                           Txt_TipoTran = dc.Txt_TipoTran,
+                           Int_IdMoneda = da.Int_IdMoneda,
+                           Moneda = da.Txt_Moneda,
+                           Dbl_TipoCambio = d.Dbl_TipoCambio,
+                           Dbl_Cambio = d.Dbl_Cambio,
+                           Int_IdMonVenta = da.Int_IdMoneda,
+                           Monedaven = da.Txt_Moneda, 
+                           Dbl_TipoCambioven = d.Dbl_TipoCambioven,
+                           Dbl_Entregar = d.Dbl_Entregar,
+                           Dbl_MontoPagar = d.Dbl_MontoPagar,
+                           Dbl_MontoRecibir = d.Dbl_MontoRecibir,
+                           Fec_Fecha = d.Fec_Fecha
+                           
+                        }).ToList();
+            }
+            return View(lst1);
+        }
+
+        public async Task<ActionResult> actualizar(int? registro)
+        {
+            if (registro == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Tb_Registros tb_Registros = await db.Tb_Registros.FindAsync(registro);
+
+            if (tb_Registros == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(tb_Registros);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> actualizar([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,Int_IdMonVenta,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Bol_multimoneda")] Tb_Registros tb_Registros, string motivo)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(tb_Registros).State = EntityState.Modified;
+
+                int id = tb_Registros.Lng_IdRegistro;
+                await db.SaveChangesAsync();
+
+                SqlDataAdapter historial = new SqlDataAdapter("UPDATE [dbo].[Tb_Registros] SET [Bol_Cancelar] = 1 where Lng_IdRegistro = "+tb_Registros.Lng_IdRegistro+"", con);
+                DataSet h = new DataSet();
+                historial.Fill(h);
+                h.Reset();
+
+                SqlDataAdapter obja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_Cancelaciones] ([Txt_Motivo] ,[Lng_IdRegistro] ,[Lng_IdUsuario],[Fec_Cancelacion]) VALUES('"+motivo+"' ,"+ id +","+User.Identity.Name+ ",GETDATE())", con);
+                DataSet a = new DataSet();
+                obja.Fill(a);
+                a.Reset();
+
+                return RedirectToAction("Index");
+
+            }
+            return View(tb_Registros);
         }
 
     }

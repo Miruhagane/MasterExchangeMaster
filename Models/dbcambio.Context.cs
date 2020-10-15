@@ -28,27 +28,32 @@ namespace WebApplication2.Models
         }
     
         public virtual DbSet<Ct_Moneda> Ct_Moneda { get; set; }
-        public virtual DbSet<Tb_Clientes> Tb_Clientes { get; set; }
         public virtual DbSet<Tb_RegistrosHistorico> Tb_RegistrosHistorico { get; set; }
         public virtual DbSet<Tb_Taxas> Tb_Taxas { get; set; }
         public virtual DbSet<Tb_RegCli> Tb_RegCli { get; set; }
         public virtual DbSet<Ct_Plazas> Ct_Plazas { get; set; }
         public virtual DbSet<Tb_PlazasApli> Tb_PlazasApli { get; set; }
         public virtual DbSet<Tb_RegUsu> Tb_RegUsu { get; set; }
-        public virtual DbSet<TaxaCompra> TaxaCompras { get; set; }
-        public virtual DbSet<TaxaVenta> TaxaVentas { get; set; }
-        public virtual DbSet<Tb_Registros> Tb_Registros { get; set; }
         public virtual DbSet<Ct_Areas> Ct_Areas { get; set; }
         public virtual DbSet<Ct_TipoTran> Ct_TipoTran { get; set; }
         public virtual DbSet<Tb_Sucursal> Tb_Sucursal { get; set; }
         public virtual DbSet<Tb_Usuarios> Tb_Usuarios { get; set; }
         public virtual DbSet<Taxacompcomb> Taxacompcombs { get; set; }
         public virtual DbSet<Tb_TaxSuc> Tb_TaxSuc { get; set; }
-        public virtual DbSet<Tb_EntradaSuc> Tb_EntradaSuc { get; set; }
         public virtual DbSet<Tb_EntEmp> Tb_EntEmp { get; set; }
         public virtual DbSet<Ct_Denominaciones> Ct_Denominaciones { get; set; }
+        public virtual DbSet<Tb_Clientes> Tb_Clientes { get; set; }
+        public virtual DbSet<Tb_RegistrosBanca> Tb_RegistrosBanca { get; set; }
+        public virtual DbSet<Tb_Vales> Tb_Vales { get; set; }
+        public virtual DbSet<Tb_ArqueoMoneda> Tb_ArqueoMoneda { get; set; }
+        public virtual DbSet<Tb_Arqueo> Tb_Arqueo { get; set; }
+        public virtual DbSet<Tb_Registros> Tb_Registros { get; set; }
+        public virtual DbSet<Tb_Cancelaciones> Tb_Cancelaciones { get; set; }
         public virtual DbSet<Tb_SalidaSuc> Tb_SalidaSuc { get; set; }
-        public virtual DbSet<Tb_Cierre> Tb_Cierre { get; set; }
+        public virtual DbSet<TaxaCompra> TaxaCompras { get; set; }
+        public virtual DbSet<TaxaVenta> TaxaVentas { get; set; }
+        public virtual DbSet<Tb_EntradaSuc> Tb_EntradaSuc { get; set; }
+        public virtual DbSet<Tb_HistorialEntySal> Tb_HistorialEntySal { get; set; }
     
         public virtual ObjectResult<buscar_Result1> buscar(string numero)
         {
@@ -64,22 +69,13 @@ namespace WebApplication2.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Tabla_Compras_Result>("Tabla_Compras");
         }
     
-        public virtual ObjectResult<Tb_Clientes> buscar1(string numero)
+        public virtual int buscar1(string numero)
         {
             var numeroParameter = numero != null ?
                 new ObjectParameter("numero", numero) :
                 new ObjectParameter("numero", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Tb_Clientes>("buscar1", numeroParameter);
-        }
-    
-        public virtual ObjectResult<Tb_Clientes> buscar1(string numero, MergeOption mergeOption)
-        {
-            var numeroParameter = numero != null ?
-                new ObjectParameter("numero", numero) :
-                new ObjectParameter("numero", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Tb_Clientes>("buscar1", mergeOption, numeroParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("buscar1", numeroParameter);
         }
     
         public virtual int inven_sucursal(Nullable<int> sucursal)
