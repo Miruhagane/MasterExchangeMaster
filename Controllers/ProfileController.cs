@@ -403,7 +403,7 @@ namespace WebApplication2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
+        public async Task<ActionResult> Index([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli, Lng_IdSucursal")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
         {
 
 
@@ -414,6 +414,7 @@ namespace WebApplication2.Controllers
                 await db.SaveChangesAsync();
                 Tb_RegCli.Lng_IdRegistro = tb_Registros.Lng_IdRegistro;
                 int idregistro = tb_Registros.Lng_IdRegistro;
+                int turno = Convert.ToInt32(Session["turno"]);
 
 
                 SqlDataAdapter obja = new SqlDataAdapter("insert into Tb_RegCli(Lng_IdRegistro , Lng_IdCliente) values( " + Tb_RegCli.Lng_IdRegistro + " , " + idcliente + " )", con);
@@ -421,7 +422,7 @@ namespace WebApplication2.Controllers
                 obja.Fill(a);
                 a.Reset();
 
-                SqlDataAdapter otr = new SqlDataAdapter("insert into Tb_RegUsu(Int_IdUsuario , Lng_IdRegistro) values( " + User.Identity.Name + " , " + Tb_RegCli.Lng_IdRegistro + " )", con);
+                SqlDataAdapter otr = new SqlDataAdapter("insert into Tb_RegUsu(Int_IdUsuario , Lng_IdRegistro, Int_Turno) values( " + User.Identity.Name + " , " + Tb_RegCli.Lng_IdRegistro + ", "+ turno + " )", con);
                 DataSet b = new DataSet();
                 otr.Fill(b);
                 b.Reset();
@@ -454,13 +455,13 @@ namespace WebApplication2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Venta([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,int_idmonventa,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli, Bol_multimoneda")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
+        public async Task<ActionResult> Venta([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,int_idmonventa,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli, Bol_multimoneda, Lng_IdSucursal")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
         {
             divisasCompra_venta();
 
             if (ModelState.IsValid)
             {
-
+                int turno = Convert.ToInt32(Session["turno"]);
 
                 db.Tb_Registros.Add(tb_Registros);
 
@@ -468,13 +469,15 @@ namespace WebApplication2.Controllers
                 Tb_RegCli.Lng_IdRegistro = tb_Registros.Lng_IdRegistro;
                 int idregistro = tb_Registros.Lng_IdRegistro;
 
+                
+
                 SqlDataAdapter obja = new SqlDataAdapter("insert into Tb_RegCli(Lng_IdRegistro , Lng_IdCliente) values( " + Tb_RegCli.Lng_IdRegistro + " , " + idcliente + " )", con);
                 DataSet a = new DataSet();
                 obja.Fill(a);
                 a.Reset();
 
 
-                SqlDataAdapter otr = new SqlDataAdapter("insert into Tb_RegUsu(Int_IdUsuario , Lng_IdRegistro) values( " + User.Identity.Name + " , " + Tb_RegCli.Lng_IdRegistro + " )", con);
+                SqlDataAdapter otr = new SqlDataAdapter("insert into Tb_RegUsu(Int_IdUsuario , Lng_IdRegistro , Int_Turno) values( " + User.Identity.Name + " , " + Tb_RegCli.Lng_IdRegistro + ", "+turno+" )", con);
                 DataSet b = new DataSet();
                 otr.Fill(b);
                 b.Reset();
@@ -615,8 +618,8 @@ namespace WebApplication2.Controllers
             int iduser = Convert.ToInt32(a);
 
             bool t = false;
-        
-            DateTime fecha = DateTime.Now;
+
+            DateTime fecha = Convert.ToDateTime(Session["fecha"]);
 
 
 
@@ -630,7 +633,7 @@ namespace WebApplication2.Controllers
                         join db in dr.Tb_RegUsu on d.Lng_IdRegistro equals+ db.Lng_IdRegistro
                         join dc in dr.Ct_TipoTran on d.Int_IdTipoTran equals+ dc.Int_IdTipoTran
                         
-                        where db.Int_IdUsuario == iduser && d.Bol_Cancelar == t
+                        where db.Int_IdUsuario == iduser && d.Bol_Cancelar == t && d.Fec_Fecha > fecha
                         select new registrosall
                         {
                            Lng_IdRegistro = d.Lng_IdRegistro,
@@ -676,25 +679,32 @@ namespace WebApplication2.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(tb_Registros).State = EntityState.Modified;
-
-                int id = tb_Registros.Lng_IdRegistro;
                 await db.SaveChangesAsync();
-
-                SqlDataAdapter historial = new SqlDataAdapter("UPDATE [dbo].[Tb_Registros] SET [Bol_Cancelar] = 1 where Lng_IdRegistro = "+tb_Registros.Lng_IdRegistro+"", con);
-                DataSet h = new DataSet();
-                historial.Fill(h);
-                h.Reset();
-
-                SqlDataAdapter obja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_Cancelaciones] ([Txt_Motivo] ,[Lng_IdRegistro] ,[Lng_IdUsuario],[Fec_Cancelacion]) VALUES('"+motivo+"' ,"+ id +","+User.Identity.Name+ ",GETDATE())", con);
-                DataSet a = new DataSet();
-                obja.Fill(a);
-                a.Reset();
 
                 return RedirectToAction("Index");
 
             }
             return View(tb_Registros);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult cancelar(int id, string motivo)
+        {
+
+            SqlDataAdapter historial = new SqlDataAdapter("UPDATE [dbo].[Tb_Registros] SET [Bol_Cancelar] = 1 where Lng_IdRegistro = " + id+ "", con);
+            DataSet h = new DataSet();
+            historial.Fill(h);
+            h.Reset();
+
+            SqlDataAdapter obja = new SqlDataAdapter("INSERT INTO [dbo].[Tb_Cancelaciones] ([Txt_Motivo] ,[Lng_IdRegistro] ,[Lng_IdUsuario],[Fec_Cancelacion]) VALUES('" + motivo + "' ," + id + "," + User.Identity.Name + ",GETDATE())", con);
+            DataSet a = new DataSet();
+            obja.Fill(a);
+            a.Reset();
+
+            return View();
+        }
+
 
     }
 }

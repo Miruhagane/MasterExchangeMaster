@@ -22,12 +22,13 @@
     var monto = document.getElementById("cantidad").value;
     var cambio = document.getElementById("valor").value;
     var total = document.getElementById("total_pago").value;
- 
+    var totalr = new Intl.NumberFormat().format(total);
 
     document.getElementById("monedacotizacion").innerHTML = a;
     document.getElementById("montocotizacion").innerHTML = monto;
     document.getElementById("cambiocotizacion").innerHTML = cambio;
-    document.getElementById("pagocotizacion").innerHTML = total;
+    document.getElementById("pagocotizacion").innerHTML = totalr;
+   
     var f = new Date();
     document.getElementById("fechajs").innerHTML = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
 

@@ -17,7 +17,8 @@
     <!-- Ionic icons -->
     <script src="https://kit.fontawesome.com/30fa52b14d.js" crossorigin="anonymous"></script>
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
-
+    <!--Hoja de estilos -->
+    <link href="~/Content/home.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -31,56 +32,67 @@
             <img id="logo1" src="~/Content/img/centro_cambio.png" />
 
 
-            <div class="card rounded  mt-1">
-                <div class="card-header border border-secondary text-center">
-                    <h5>Iniciar Sesion</h5>
-                </div>
-                <div class="card-body btn btn-light border border-secondary text-center">
-                    <form action="/Home/Index" class="mt-4" method="post">
+            <div class="card cardcorfing1">
 
-                        <div class="form-group">
+                <div class="card-body cardcorfing2  text-center">
+                    <div class="cardcorfing3">
+                        <h5 class="ht1">Iniciar Sesion</h5>
+                    </div>
+                    
+
+                    <form action="/Home/Index" class="mt-4 mit" method="post">
+
+                        <div class="form-group inpt1">
                             <div class="input-group border border-secondary mb-2">
                                 <div class="input-group-prepend ">
                                     <div class="input-group-text"><i class="fas fa-user-shield"></i></div>
                                 </div>
-                                <input type="text" class="form-control btn btn-light" id="nombre" name="usuario" placeholder="Nombre de usuraio">
+                                <input type="text" class=" form-control inpt1 btn btn-light" id="nombre" name="usuario" placeholder="Nombre de Usuario">
                             </div>
                         </div>
 
-                        <div class="form-group ">
+                        <div class="form-group inpt1">
 
 
                             <div class="input-group border border-secondary mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"> <i class="fas fa-key"></i></div>
                                 </div>
-                                <input type="password" class="form-control btn btn-light" id="password" name="Pass" placeholder="Contraseña">
+                                <input type="password" class="inpt1 form-control btn btn-light" id="password" name="Pass" placeholder="Contraseña">
                             </div>
                         </div>
 
-                        <div class="input-group border border-secondary mb-2">
+                        <div class="input-group inpt1 border border-secondary mb-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"> <i class="fas fa-business-time"></i></div>
                             </div>
-                            <select class="form-control btn-light" id="turnos" name="turno">
+                            <select class="form-control inpt1 btn-light" id="turnos" name="turno">
                                 <option value="0"> seleccione el turno de entrada</option>
                                 <option value="1">Turno 1</option>
                                 <option value="2">Turno 2</option>
                                 <option value="3">Turno 3</option>
                             </select>
 
-                        </div>
-
-                        <div class="form-group text-center">
-
-                            <div>
-                                <button type="button" onclick="ks()" class="btn btn-success text-center">
-                                    Iniciar Sesion
-                                </button>
-                            </div>
 
                             <div style="display: none">
-                                <button id="m2" type="submit" class="btn btn-success text-center">
+                                <input type="date" id="fecha" name="fecha" />
+                            </div>
+                        </div>
+
+                        <div class="inp1 form-group text-center">
+
+                            <div class="inp3">
+                                <button type="button" onclick="ks()" class="inp3 btn btn-success text-center">
+                                    Iniciar Sesion
+                                </button>
+
+
+
+
+                            </div>
+
+                            <div class="btn1" style="display: none">
+                                <button id="m2" type="submit" class="btn2 btn btn-success text-center">
                                     Iniciar Sesion
                                 </button>
                             </div>
@@ -134,4 +146,33 @@
     }
 
 
+</script>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").keypress(function (e) {
+            if (e.which == 13) {
+                return false;
+            }
+        });
+    });
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        var now = new Date();
+
+        var day = ("0" + now.getDate()).slice(-2);
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+        var today = now.getFullYear() + "-" + (month) + "-" + (day);
+        $("#fecha").val(today);
+    });
 </script>

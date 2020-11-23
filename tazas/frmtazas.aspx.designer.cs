@@ -33,22 +33,22 @@ namespace WebApplication2.aspx
         protected global::System.Web.UI.WebControls.TextBox IdUser;
 
         /// <summary>
-        /// Control Tb_taxaCompras.
+        /// Control carga.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView Tb_taxaCompras;
+        protected global::System.Web.UI.WebControls.TextBox carga;
 
         /// <summary>
-        /// Control Guardar.
+        /// Control Buscarsucursal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Guardar;
+        protected global::System.Web.UI.WebControls.Button Buscarsucursal;
 
         /// <summary>
         /// Control CheckBoxcancun.
@@ -159,30 +159,21 @@ namespace WebApplication2.aspx
         protected global::System.Web.UI.WebControls.SqlDataSource suc_leon;
 
         /// <summary>
-        /// Control sucursalselect.
+        /// Control Tb_taxaCompras.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList sucursalselect;
+        protected global::System.Web.UI.WebControls.GridView Tb_taxaCompras;
 
         /// <summary>
-        /// Control sucursales.
+        /// Control Guardar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sucursales;
-
-        /// <summary>
-        /// Control Buscarsucursal.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Buscarsucursal;
+        protected global::System.Web.UI.WebControls.Button Guardar;
     }
 }

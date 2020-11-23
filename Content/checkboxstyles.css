@@ -1,0 +1,144 @@
+﻿* {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.wrap {
+    width: 90%;
+    max-width: 1000px;
+    margin: auto; 
+}
+
+.dr input[type="checkbox"] {
+    display: none
+}
+
+
+
+input[type="checkbox"] {
+    position: absolute;
+    left: -9999px;
+}
+
+label {
+    position: relative;
+    box-sizing: border-box;
+    padding: 1px 6px 6px 51px;
+    background-color: #ededed;
+    border: 1px solid #004a7f;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #004a7f;
+    cursor: pointer;
+    transition: all .25s ease-in-out;
+}
+
+    label:hover::before {
+        border: 8px solid #004a7f;
+        border-radius: 50%;
+    }
+
+    label::before {
+        position: absolute;
+        content: "";
+        left: 12px;
+        top: 8px;
+        box-sizing: border-box;
+        width: 15px;
+        height: 15px;
+        border: 2px solid #004a7f;
+        border-radius: 8px;
+        transition: all .25s ease-in-out;
+    }
+
+input:checked + label {
+    background-color: #004a7f;
+    border-radius: 32px;
+    color: #ededed;
+}
+
+    input:checked + label::before {
+        background-color: #004a7f;
+        border: 8px solid #ddd;
+        border-radius: 50%;
+    }
+
+.tablacss {
+
+    text-align: center;
+}
+
+
+
+    .tablacss tr {
+        background: #f2fcfe;
+        
+    }
+
+    .tablacss td {
+        padding-right: 1.5rem;
+    }
+
+    .tablacss tr:hover {
+        background: #808080;
+    }
+
+option {
+    font-weight: bold;
+    text-align: center;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #78879a;
+    flex: 1;
+    padding: 0 .5em;
+    color: #ffffff;
+    cursor: pointer;
+    background-image: none;
+}
+
+    select::-ms-expand {
+        display: none
+    }
+
+.select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 2em;
+    line-height: 2;
+    background: #0026ff;
+    overflow: hidden;
+    border-radius: .55em;
+
+}
+
+
+    .select::after {
+        content: '\25bc';
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0 1em;
+        background: #a9a9a9;
+        pointer-events: none;
+        transition: .25s all ease;
+    }
+
+.select:hover::after {
+    color:aqua;
+
+}

@@ -1,0 +1,256 @@
+﻿@model WebApplication2.Models.Tb_SalidaSuc
+
+@{
+    ViewBag.Title = "datosvr";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-sm-10 mt-3 ">
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-dark text-white">
+            <h5>Saldo actual</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col"><small>Monto</small></th>
+                        <th scope="col"><small>Fecha</small></th>
+                        <th scope="col"><small>Usuario</small></th>
+                        <th><small></small></th>
+                        <th><small></small></th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo">
+                </tbody>
+            </table>
+
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="actualizarstatus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cambio de Estatus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("status", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnComplete = "Complet()"
+
+            }))
+            {
+                <div class="modal-body">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="col-sm-12">
+                        <label>Actualizar estados</label>
+
+
+                        <div style="display: none">
+                            <input type="text" id="idregistro" class="form-control form-control-sm" name="idregistro" />
+                            <input type="text" id="estatus" name="estatus" value="5" class="form-control form-control-sm" />
+                        </div>
+
+                        <div id="motivo" class="col-sm-12">
+                            <label>Mensaje</label>
+                            <input type="text" id="mtc" class="form-control form-control-sm" name="mtc" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="submit" class="btn btn-primary">Proceso Cancelado</button>
+                </div>
+
+                <script>
+                    function Complet() {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Datos Actualizados',
+                        })
+
+                        location.reload();
+                    }
+
+                </script>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="postticket" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cambio de Estatus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("datosvr", null,  new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnComplete = "Complet()"
+
+            }, new { enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="col-sm-12">
+
+
+
+                        <div style="display: none">
+
+                            <label>Actualizar estados</label>
+                            <input type="text" id="idgrupopost" class="form-control form-control-sm" name="idregistro" />
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>Archivo de Ticket</label>
+                            <div class="col-sm-10">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input form-control-sm" name="archivo" id="archivo" required>
+                                    <label class="custom-file-label" for="archivo">Agrega un archivo</label>
+                                </div>
+
+
+                                <script>
+                                    $("input[type=file]").change(function () {
+                                        var fieldVal = $(this).val();
+                                        if (fieldVal != undefined || fieldVal != "") {
+                                            $(this).next(".custom-file-label").text(fieldVal);
+                                        }
+                                    });
+
+                                    document.getElementById("archivo").onchange = function () {
+                                        var rt = document.getElementById("archivo").files[0].name;
+                                        console.log(rt);
+                                        document.getElementById("nombrearchivo").value = rt;
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="submit" class="btn btn-primary">Proceso Cancelado</button>
+                </div>
+
+                <script>
+                    function Complet() {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Datos Actualizados',
+                        })
+
+                        location.reload();
+                    }
+
+                </script>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        agrupacion();
+    })();
+
+
+    function agrupacion() {
+        fetch("/SalidaSuc/agrupar")
+            .then(function (result) {
+
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+
+            .then(function (tjson) {
+
+                console.log(tjson);
+
+                var cuerpo = document.getElementById("cuerpo");
+
+                cuerpo.innerHTML = "";
+                let valor = 0;
+
+                let query = JSON.parse(tjson);
+                let fecha = '';
+
+                console.log(query);
+                for (let item of query) {
+                    fecha = new Date(item.fecha);
+                    fecha = fecha.toLocaleDateString();
+                    cuerpo.innerHTML += `
+                         <tr>
+                            <td style="display: none"><input type="text" id="idgrupo${valor}" readonly class="form-control form-control-sm"  value="${item.Grupo}" /></td>
+                            <td><small>$ ${item.total}</small></td>
+                            <td><small>${fecha}</small></td>
+                            <td><small>${item.Usuario}</small></td>
+                            <td><button data-toggle="modal" data-target="#actualizarstatus type="button" class="btn btn-sm btn-danger"><i class="fas fa-strikethrough"></i></button> </td>
+                            <td><button data-toggle="modal" data-placement="bottom" title="Ingresar Ticket"  data-toggle="modal" data-target="#postticket" onclick="obtgrupo(${valor})" type="button" class="btn btn-sm btn-danger"><i class="fas fa-ticket-alt"></i></button> </td>
+                        </tr>
+                        `
+                    valor = valor + 1;
+                }
+            })
+    }
+
+
+    function obtgrupo(idregistro) {
+        var id = document.getElementById("idgrupo" + idregistro).value;
+
+        document.getElementById("idgrupopost").value = id;
+    }
+
+</script>
+
+@*necesario para ajaxdocumentos*@
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+        if (form.getAttribute("enctype") === "multipart/form-data") {
+            if (form.dataset.ajax) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (form.dataset.ajaxUpdate) {
+                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                            if (updateTarget) {
+                                updateTarget.innerHTML = xhr.responseText;
+                            }
+                        }
+                    }
+                };
+                xhr.send(new FormData(form));
+            }
+        }
+    }, true);
+</script>

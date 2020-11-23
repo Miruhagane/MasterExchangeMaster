@@ -64,13 +64,16 @@ namespace WebApplication2.Controllers
             int sucursalid = Convert.ToInt32(Session["idSucursal"]);
             int turno = Convert.ToInt32(Session["turno"]);
             int usuario = Convert.ToInt32(User.Identity.Name);
+            DateTime fecha = Convert.ToDateTime(Session["fecha"]);
+
+
             List<inventario> querty = new List<inventario>();
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
                 querty = (from c in dr.Tb_EntradaSuc
                           join ca in dr.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
                           join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
-                          where c.Int_Sucursal == sucursalid && c.Bol_Activo == a && ca.Int_IdTurno == turno && ca.Int_IdUsuario == usuario
+                          where c.Int_Sucursal == sucursalid && c.Bol_Activo == a && ca.Int_IdTurno == turno && ca.Int_IdUsuario == usuario && c.Fec_Ini > fecha
                           select new inventario
                           {
                               Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
@@ -82,6 +85,12 @@ namespace WebApplication2.Controllers
             return View(querty);
         }
 
+        public ActionResult dotaciones()
+        {
+            modulodivisas();
+            return View();
+        }
+
         
         public JsonResult estatus()
         {
@@ -90,24 +99,66 @@ namespace WebApplication2.Controllers
             int sucursalid = Convert.ToInt32(Session["idSucursal"]);
             int turno = Convert.ToInt32(Session["turno"]);
             int usuario = Convert.ToInt32(User.Identity.Name);
+
+            DateTime fecha = Convert.ToDateTime(Session["fecha"]);
+
             List<inventario> querty;
             using (MasterExchangeEntities dr = new MasterExchangeEntities())
             {
                 querty = (from c in dr.Tb_EntradaSuc
                           join ca in dr.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
                           join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
-                          where c.Int_Sucursal == sucursalid && c.Bol_Activo == a && ca.Int_IdTurno == turno && ca.Int_IdUsuario == usuario
+                          join cc in dr.Tb_Sucursal on c.Int_Sucursal equals cc.Lng_IdSucursal
+                          join cd in dr.Tb_Usuarios on ca.Int_IdUsuario equals cd.Int_Idusuario
+                          where c.Int_Sucursal == sucursalid && c.Bol_Activo == a && ca.Int_IdTurno == turno && ca.Int_IdUsuario == usuario && c.Fec_Ini > fecha && ca.Fec_Ini > fecha
                           select new inventario
                           {
                               Lng_IdEntrada = c.Lng_IdEntrada,
                               Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
                               Txt_Moneda = cb.Txt_Moneda,
-                              Int_Estatus = c.Int_Estatus
+                              Int_Estatus = c.Int_Estatus,
+                              Txt_sucursal = cc.Txt_Sucursal,
+                              n_usuario = cd.Txt_Nombre,
+                              Fec_Ini = c.Fec_Ini,
+                              Txt_Motivo = c.Txt_Motivo
+
                           }).ToList();
             }
 
 
             return Json(querty, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult admins()
+        {
+            DateTime fecha = Convert.ToDateTime(Session["fecha"]);
+
+            List<inventario> querty;
+
+            using (MasterExchangeEntities dc = new MasterExchangeEntities())
+            {
+                querty = (from c in dc.Tb_EntradaSuc
+                          join ca in dc.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
+                          join cb in dc.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
+                          join cc in dc.Tb_Sucursal on c.Int_Sucursal equals cc.Lng_IdSucursal
+                          join cd in dc.Tb_Usuarios on ca.Int_IdUsuario equals cd.Int_Idusuario
+                          where c.Int_Estatus == 2 || c.Int_Estatus == 3 && c.Fec_Ini > fecha 
+                          select new inventario
+                          {
+                              Lng_IdEntrada = c.Lng_IdEntrada,
+                              Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
+                              Txt_Moneda = cb.Txt_Moneda,
+                              Int_Estatus = c.Int_Estatus,
+                              Txt_sucursal = cc.Txt_Sucursal,
+                              n_usuario = cd.Txt_Nombre,
+                              Fec_Ini = c.Fec_Ini,
+                              Txt_Motivo = c.Txt_Motivo
+                          }).ToList();
+
+
+            }
+
+                return Json(querty, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -126,7 +177,7 @@ namespace WebApplication2.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index([Bind(Include = "Lng_IdEntrada,Dbl_SaldoEntrada,Fec_Ini,Fec_Fin,Int_Sucursal,Int_IdMoneda,Bol_Activo,Int_Estatus")] Tb_EntradaSuc tb_EntradaSuc, Tb_EntEmp tb_EntEmp)
+        public async Task<ActionResult> Index([Bind(Include = "Lng_IdEntrada,Dbl_SaldoEntrada,Fec_Ini,Fec_Fin,Int_Sucursal,Int_IdMoneda,Bol_Activo,Int_Estatus,Txt_Motivo")] Tb_EntradaSuc tb_EntradaSuc, Tb_EntEmp tb_EntEmp)
         {
             int idturno = Convert.ToInt32(Session["turno"]);
             modulodivisas();
@@ -203,7 +254,7 @@ namespace WebApplication2.Controllers
             int sucursal = Convert.ToInt32(Session["idSucursal"]);
 
 
-            SqlDataAdapter caja = new SqlDataAdapter("UPDATE [dbo].[Tb_EntradaSuc] SET [Int_Estatus] = "+ estatus + " ,[Txt_ Motivo] = ' "+mtc+" ' where  Lng_IdEntrada = " + idregistro + " ", con);
+            SqlDataAdapter caja = new SqlDataAdapter("UPDATE [dbo].[Tb_EntradaSuc] SET [Int_Estatus] = "+ estatus + ", [Txt_Motivo] = ' "+mtc+" ' where  Lng_IdEntrada = " + idregistro + " ", con);
             DataSet a = new DataSet();
             caja.Fill(a);
             a.Reset();

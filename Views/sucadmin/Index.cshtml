@@ -1,0 +1,165 @@
+﻿@model IEnumerable<WebApplication2.Models.Tb_Sucursal>
+
+@{
+    ViewBag.Title = "Dotacion Inicial";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int a = 1;
+    int valor = 10;
+
+}
+
+<div class="col-sm-12 pl-5 pt-5 row">
+    <form action="/sucadmin/insert">
+
+        <div class="col-sm-12 margin1 row">
+
+            <div class="col-sm-6 pl-5">
+                <div class="card carta shadow-lg">
+
+                    <div class="card-body cardbody">
+                        <table class="table table-sm">
+
+                            <thead class="table-dark">
+                                <tr>
+
+                                    <th>
+                                        Sucursal
+                                    </th>
+                                    <th>
+                                        Monto
+                                    </th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Lng_IdSucursal <= 9)
+
+                                    {
+                                        <tr class="backdek">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Txt_Sucursal)
+                                            </td>
+                                            <td>
+                                                <input type="text" class=" btnhovermonto form-control form-control-sm" value="0" name="monto_@a" />
+                                            </td>
+
+                                        </tr>
+
+
+                                    }
+
+                                    a = a + 1;
+                                }
+                            </tbody>
+                        
+
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-6 pl-5">
+                <div class="card carta  shadow-lg">
+
+                    <div class="card-body cardbody">
+                        <table class="table table-sm">
+
+                            <thead class="table-dark">
+                                <tr>
+
+                                    <th>
+                                        Sucursal
+                                    </th>
+                                    <th>
+                                        Monto
+                                    </th>
+
+                                </tr>
+                            </thead>
+                        
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+                                    if (item.Lng_IdSucursal >= 10)
+
+                                    {
+                                        <tr class="backdek">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Txt_Sucursal)
+                                            </td>
+                                            <td>
+                                                <input type="text" class="btnhovermonto form-control form-control-sm" value="0" name="monto_@valor" />
+                                            </td>
+
+
+                                        </tr>
+
+                                        valor = valor + 1;
+                                    }
+
+
+                                }
+
+                            </tbody>
+                      
+
+                        </table>
+                    </div>
+
+                    <div class="card-footer f1">
+                        <div class="f2">
+                            <button type="button" onclick="submit()" class="f3 btn-warning btn btn-sm">Guardar</button>
+
+                        </div>
+
+
+                        <div style="display: none">
+                            <input type="submit" class="btn btn-secondary btn-sm" id="postdotacion" value="guardar" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </form>
+
+
+
+</div>
+
+
+
+<script>
+    function submit()
+    {
+        document.getElementById("postdotacion").click();
+
+       
+
+            Push.create("Buen dia " + nombre + "", {
+                tag: 'foo',
+                body: "Se a generado nuevas dotaciones Iniciales",
+                icon: '../../Content/img/logo.png',
+                requireInteraction: true,
+                onClick: function () {
+                    window.focus();
+                    this.close();
+
+                    Push.close('foo');
+                }
+
+            });
+
+
+     
+    }
+</script>

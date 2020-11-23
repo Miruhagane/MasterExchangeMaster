@@ -87,12 +87,12 @@ namespace WebApplication2.Arqueos
         protected global::System.Web.UI.WebControls.Label fecha;
 
         /// <summary>
-        /// Control impresion.
+        /// Control dt.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button impresion;
+        protected global::System.Web.UI.WebControls.Button dt;
     }
 }

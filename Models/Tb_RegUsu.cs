@@ -17,5 +17,6 @@ namespace WebApplication2.Models
         public int lng_IdRegUsu { get; set; }
         public Nullable<int> Int_IdUsuario { get; set; }
         public Nullable<int> Lng_IdRegistro { get; set; }
+        public Nullable<int> Int_Turno { get; set; }
     }
 }

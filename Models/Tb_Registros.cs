@@ -31,5 +31,6 @@ namespace WebApplication2.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime Fec_Fecha { get; set; }
         public Nullable<bool> Bol_multimoneda { get; set; }
+        public Nullable<int> Lng_IdSucursal { get; set; }
     }
 }

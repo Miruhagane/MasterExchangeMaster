@@ -23,6 +23,6 @@ namespace WebApplication2.Models
         public Nullable<int> Int_IdMoneda { get; set; }
         public Nullable<bool> Bol_Activo { get; set; }
         public Nullable<int> Int_Estatus { get; set; }
-        public string Txt__Motivo { get; set; }
+        public string Txt_Motivo { get; set; }
     }
 }

@@ -16,12 +16,12 @@ namespace WebApplication2.Arqueos
     {
         string con = ConfigurationManager.ConnectionStrings["server2"].ConnectionString;
 
-        string[] valoredenominacion = { "", "", "", "", "", "", "", "", "", "" };
+        string[] valoredenominacion = { "", "", "", "", "", "", "", "", "", "", "" };
 
-        string[] IdCierre = { "", "", "", "", "", "", "", "", "", "" };
+        string[] IdCierre = { "", "", "", "", "", "", "", "", "", "","" };
 
-        string[] valoresmonedaarqueo = {"","","","","",""};
-        string[] idmonedaarqueo = {"","","","","",""};
+        string[] valoresmonedaarqueo = {"","","","","","" ,""};
+        string[] idmonedaarqueo = {"","","","","","",""};
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -57,7 +57,6 @@ namespace WebApplication2.Arqueos
             Tb_arqueoXmoenda.DataBind();
 
 
-
             estatus.Text = "2";
         }
 
@@ -71,7 +70,7 @@ namespace WebApplication2.Arqueos
             int valor = 0;
 
             int v = 0;
-            for (int a = 0; a < 10; a++)
+            for (int a = 0; a < 11; a++)
             {
                 if (valoredenominacion[v] == "")
                 {
@@ -81,7 +80,7 @@ namespace WebApplication2.Arqueos
                 }
                 else
                 {
-                    valoredenominacion[v] += "" + ((TextBox)Tb_arqueofinal.Rows[v].FindControl("Cantidad")).Text;
+                    valoredenominacion[v] += "" + ((TextBox)Tb_arqueofinal.Rows[v].FindControl("Dbl_Cantidad")).Text;
                     IdCierre[v] += "" + ((TextBox)Tb_arqueofinal.Rows[v].FindControl("IdCierre")).Text;
                 }
                 v = v + 1;
@@ -105,7 +104,7 @@ namespace WebApplication2.Arqueos
 
             }
 
-            for (int b = 0; b < 10; b++)
+            for (int b = 0; b < 11; b++)
             {
 
                 SqlConnection conectorbd = new SqlConnection(con);

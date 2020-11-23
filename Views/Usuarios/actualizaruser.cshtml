@@ -1,0 +1,171 @@
+﻿@model WebApplication2.Models.Tb_Usuarios
+
+@{
+    ViewBag.Title = "actualizaruser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+   
+}
+
+
+
+<div class="col-sm-10 mt-3 ">
+
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-dark text-white">
+            <h5>Saldo actual</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col"><small>Nombre</small></th>
+                        <th scope="col"><small>Sucursal Actual</small></th>
+                        <th scope="col"><small>Sucursal Nueva</small></th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo">
+                </tbody>
+            </table>
+
+        </div>
+   
+    </div>
+
+</div>
+
+
+           
+
+<script>
+
+    (function () {
+        agrupacion();
+      
+    })();
+
+    var vprimaria = 1;
+    function agrupacion() {
+
+
+        fetch("/Usuarios/obtusersuc")
+            .then(function (result) {
+
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+
+            .then(function (tjson) {
+
+                console.log(tjson);
+                
+                var cuerpo = document.getElementById("cuerpo");
+                cuerpo.innerHTML = "";
+                let valor = 1;
+
+                for (let item of tjson) {
+                    cuerpo.innerHTML += `
+                            <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Int_Idusuario}" /></td>
+                            <td><small>${item.Txt_Nombre + item.Txt_Apellido}</small></td>
+                            <td><small>${item.txt_sucursal}</small></td>
+                            <td>
+                             <select id="sucursal${valor}" onchange="cambiosuc(${valor})" class="form-control sucursal form-control-sm" name="sucursal">
+                              <option value="0">Selecciona una Opcion</option>
+                                </select>
+                            </td>
+                        `
+
+
+                 
+
+                    valor = valor + 1;
+                    vprimaria = valor;
+
+                }
+
+                vprimaria = vprimaria - 1;
+                let mrtp = 0;
+                for (i = 1; i <= vprimaria; i++)
+                {
+                    
+                    console.log("for en = " + i);
+                    fetch("/Usuarios/obtsuc")
+                        .then(function (result) {
+
+                            if (result.ok) {
+                                return result.json();
+                            }
+                        })
+
+                        .then(function (data) {
+                            console.log(mrtp);
+                            var sel = document.getElementById('sucursal' + mrtp);
+                            console.log(document.getElementById('sucursal' + mrtp));
+
+                            mrtp = mrtp + 1;
+                            data.forEach(function (Elementos) {
+
+                                let cbopadre = document.getElementById("sucursal" + mrtp);
+                                let opt = document.createElement("option");
+
+                                opt.appendChild(document.createTextNode(Elementos.Text));
+
+                                opt.value = Elementos.value;
+
+                                cbopadre.appendChild(opt);
+
+                             
+
+                            })
+                         
+                        })
+
+                    
+
+                }
+
+              
+
+            })
+    
+   
+    }
+
+
+ 
+    
+
+
+
+    function cambiosuc(res)
+    {
+
+        var idsuc = document.getElementById("sucursal" + res).value;
+        var iduser = document.getElementById("idestatus" + res).value;
+
+        const post = {
+            userid: iduser,
+            sucid: idsuc
+        }
+
+        fetch("/Usuarios/postsuc", 
+            {
+                method: 'POST',
+                body: JSON.stringify(post),
+                headers: {
+                    "Content-type": "application/json"
+                }
+
+            })
+            .then(result => result.json())
+            .then(data => console.log(data) 
+        )
+
+        agrupacion();
+    }
+
+</script>       
+
+
+              

@@ -7,7 +7,8 @@ body {
     padding-bottom: 20px;
 }
 
-#logo1{
+
+#logo1 {
     width: 100%;
     height: auto;
 }
@@ -64,6 +65,18 @@ body {
 {
 margin-bottom: 0;
 }
+
+.gradientebody {
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
+
+.cardbody {
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
+
+.cabecera {
+    background: #34495E;
+}
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */
@@ -71,5 +84,45 @@ margin-bottom: 0;
         display: none;
     }
 }
+.bordes {
+    animation-name: bordesk;
+    animation-duration: 2s;
+}
 
+.margin1 {
+    padding-left: 10rem;
+}
+
+.btnhovermonto {
+    background: #a0b3b0;
+    border-radius: 8px;
+}
+
+    .btnhovermonto:hover {
+        background: #caece1;
+    }
+
+
+.backdek {
+    background: #fdfbfb;
+    border-radius: 10px;
+
+}
+
+    .backdek:hover {
+        background: #ebedee;
+    }
+
+.carta {
+    border-width: 5px;
+    border-color: #6d7d8669;
+}
+    .carta:hover {
+        transform: scale(1.1);
+        transition: 0.3s;
+    }
+
+.f2 {
+  margin-top: -11px;
+}
 

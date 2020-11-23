@@ -17,6 +17,8 @@ namespace WebApplication2.Controllers
     {
         private MasterExchangeEntities db = new MasterExchangeEntities();
 
+
+        
         // GET: Caja
         public ActionResult Index()
         {

@@ -37,7 +37,7 @@
             <div class="card text-white text-center border-light bg-dark" style="max-width: 30rem;">
                 <div class="card-header border-light">Arqueo Por Pesos</div>
                 <div class="card-body">
-                    <asp:GridView ID="Tb_arqueofinal" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" BackColor="White" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CellPadding="0" DataKeyNames="Lng_IdCierre" ForeColor="Black" GridLines="Vertical">
+                    <asp:GridView ID="Tb_arqueofinal" runat="server" AllowSorting="True" AutoGenerateColumns="False" BackColor="White" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CellPadding="0" DataKeyNames="Lng_IdCierre" ForeColor="Black" GridLines="Vertical">
                         <AlternatingRowStyle BackColor="#CCCCCC" />
                         <Columns>
                             <asp:TemplateField HeaderText="ID" InsertVisible="False" SortExpression="Lng_IdCierre" Visible="False">
@@ -46,7 +46,7 @@
                                     <asp:TextBox ID="IdCierre" runat="server" CssClass="form-control" ReadOnly="true" Text='<%# Bind("Lng_IdCierre") %>'></asp:TextBox>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:BoundField DataField="Num_Denominacion" HeaderText="Denominacion" SortExpression="Num_Denominacion" DataFormatString="{0:C3}" />
+                            <asp:BoundField DataField="Num_Denominacion" HeaderText="Denominacion" SortExpression="Num_Denominacion" DataFormatString="{0:C2}" />
                             <asp:TemplateField HeaderText="Cantidad" SortExpression="Cantidad">
                                 <ItemTemplate>
                                     <asp:TextBox ID="Cantidad" runat="server" oninput="sumas()" CssClass="form-control" Text='<%# Bind("Dbl_Cantidad") %>'></asp:TextBox>
@@ -108,7 +108,7 @@
                            <asp:GridView ID="Tb_arqueoXmoenda" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CellPadding="3" DataKeyNames="Codigo" ForeColor="Black" GridLines="Vertical">
                                <AlternatingRowStyle BackColor="#CCCCCC" />
                                <Columns>
-                                   <asp:TemplateField HeaderText="Codigo" InsertVisible="False" SortExpression="Codigo">
+                                   <asp:TemplateField HeaderText="Codigo" InsertVisible="False" SortExpression="Codigo" Visible="False">
                                        <ItemTemplate>
                                            <asp:TextBox ID="Codigo" runat="server" CssClass="form-control" ReadOnly="true" Text='<%# Bind("Codigo") %>'></asp:TextBox>
                                        </ItemTemplate>
@@ -224,6 +224,11 @@
                                     <td id="cantidad10"></td>
                                 </tr>
 
+                                <tr>
+                                    <td>$.50</td>
+                                    <td id="cantidad11"></td>
+                                </tr>
+
                               
                             </tbody>
                         </table>
@@ -268,13 +273,19 @@
                                     <td id="f"></td>
                                 </tr>
 
-
+                                
                             </tbody>
                         </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <asp:Button  ID="impresion" runat="server" OnClick="btnguardar_Click" class="btn btn-primary" Text="Guardar" />
+
+                         <button type="button" class="btn btn-primary" onclick="printPage()">Guardar</button>
+
+                        <div style="display:none">
+                            <asp:Button ID="dt" OnClick="btnguardar_Click" class="btn btn-primary" runat="server" Text="guardar" />
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -392,6 +403,7 @@
            var t8 = parseInt(document.getElementById("Tb_arqueofinal_Cantidad_7").value) * 5;
            var t9 = parseInt(document.getElementById("Tb_arqueofinal_Cantidad_8").value) * 2;
            var t10 = parseInt(document.getElementById("Tb_arqueofinal_Cantidad_9").value) * 1;
+           var t11 = parseInt(document.getElementById("Tb_arqueofinal_Cantidad_10").value) * 0.50;
 
           
 
@@ -406,6 +418,7 @@
            document.getElementById("cantidad8").innerHTML = "";
            document.getElementById("cantidad9").innerHTML = "";
            document.getElementById("cantidad10").innerHTML = "";
+           document.getElementById("cantidad11").innerHTML = "";
 
            document.getElementById("cantidad1").innerHTML = document.getElementById("Tb_arqueofinal_Cantidad_0").value;
            document.getElementById("cantidad2").innerHTML = document.getElementById("Tb_arqueofinal_Cantidad_1").value;
@@ -417,12 +430,13 @@
            document.getElementById("cantidad8").innerHTML = document.getElementById("Tb_arqueofinal_Cantidad_7").value;
            document.getElementById("cantidad9").innerHTML = document.getElementById("Tb_arqueofinal_Cantidad_8").value;
            document.getElementById("cantidad10").innerHTML = document.getElementById("Tb_arqueofinal_Cantidad_9").value;
+           document.getElementById("cantidad11").innerHTML = document.getElementById("Tb_arqueofinal_Cantidad_10").value;
 
       
 
 
 
-           var resultado = t1 + t2 + t3 + t4 + t5 + t6 + t7 + t8 + t9 + t10;
+           var resultado = t1 + t2 + t3 + t4 + t5 + t6 + t7 + t8 + t9 + t10 + t11;
            var a = new Intl.NumberFormat().format(resultado);
            document.getElementById("valor").innerHTML = a;
         
@@ -454,5 +468,23 @@
 
         }
     </script>
+
+    <script>
+        function printPage() {
+
+            var div = document.getElementById("bodyticket").innerHTML;
+            var contenidoOriginal = document.body.innerHTML;
+
+            document.getElementById("dt").click();
+
+            document.body.innerHTML = div;
+
+            document.body.innerHTML = contenidoOriginal;
+            
+            window.print();
+        }
+
+    </script>
+
 </body>
 </html>

@@ -54,8 +54,9 @@ function compras_cantidad() {
     var cambiomadre = document.getElementById("valor2").value;
 
     var total = document.getElementById("total_pago").value;
+    var totalr = new Intl.NumberFormat().format(total);
 
-
+    console.log(totalr);
     document.getElementById("monedacotizacion1").innerHTML = apadre;
     document.getElementById("montocotizacion1").innerHTML = montopadre;
     document.getElementById("cambiocotizacion1").innerHTML = cambiopadre;
@@ -63,7 +64,7 @@ function compras_cantidad() {
     document.getElementById("monedacotizacion2").innerHTML = amadre;
     document.getElementById("cambiocotizacion2").innerHTML = cambiomadre;
 
-    document.getElementById("pagocotizacion1").innerHTML = total;
+    document.getElementById("pagocotizacion1").innerHTML = totalr;
 
     var f = new Date();
     document.getElementById("fechajs").innerHTML = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();

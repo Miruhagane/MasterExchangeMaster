@@ -1,0 +1,412 @@
+﻿@model WebApplication2.Models.Tb_EntradaSuc
+
+@{
+    ViewBag.Title = "Dotaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
+}
+
+
+
+<div class="col-sm-10 mt-3">
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-dark text-white">
+            <h5>Saldo actual</h5>
+        </div>
+        <div class="card-body">
+
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Monto</th>
+                        <th scope="col">Moneda</th>
+                        <th scope="col">Motivo</th>
+                        <th scope="col">Sucursal</th>
+                        <th scope="col">Cajero</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Estatus</th>
+
+                    </tr>
+                </thead>
+                <tbody id="cuerpo">
+                </tbody>
+            </table>
+
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Entrada">
+                Ingresar
+            </button>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="actualizarstatus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cambio de Estatus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("status", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnComplete = "Complet()"
+
+            }))
+            {
+                <div class="modal-body">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="col-sm-12">
+                        <label>Actualizar estados</label>
+                        <div>
+                            <select class="custom-select my-1 mr-sm-2" id="estatusselect">
+                                <option selected>selecciona un estatus</option>
+                                <option value="3">validado</option>
+                                <option value="5">Cancelado</option>
+
+                            </select>
+
+                        </div>
+
+                        <div style="display: none">
+                            <input type="text" id="idregistro" class="form-control form-control-sm" name="idregistro" />
+                            <input type="text" id="estatus" name="estatus" class="form-control form-control-sm" />
+                        </div>
+
+                        <div id="motivo" class="col-sm-12" style="display: none">
+                            <label>motivo de Cancelacion</label>
+                            <input type="text" id="mtc" class="form-control form-control-sm" name="mtc" />
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+
+                <script>
+                    function Complet() {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Datos Actualizados',
+                        })
+
+                        location.reload();
+                    }
+
+                </script>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="Entrada" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Ingresa Saldo De Entrada</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <form>
+                        <div class="form-row">
+
+
+                            <div class="col-sm-6 mb-2">
+                                <label>Saldo Entrada</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Dbl_SaldoEntrada, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Dbl_SaldoEntrada, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Moneda</label>
+
+                                @Html.DropDownList("Datos", items, "Selecciona la divisa", new { @type = "number", @class = "form-control", @id = "padre" })
+
+                                <div class="" style="display: none">
+                                    @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "idmonedaEnt", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <label>Sucursal</label>
+
+                                <div class="col-md-10">
+                                    <input class="form-control" disabled id="NomSucursal" value=@Session["sucursaledelusuario"] />
+
+                                    <div style="display: none">
+                                        <input id="IdSucursal" value="@Session["idSucursal"]" />
+                                        @Html.EditorFor(model => model.Int_Sucursal, new { htmlAttributes = new { @class = "form-control", @id = "intsucursal", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.Int_Sucursal, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div style="display: none">
+                                        @Html.EditorFor(Model => Model.Bol_Activo, new { AllowHtmlAttribute = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(Model => Model.Bol_Activo, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div style="display: none">
+                                        @Html.EditorFor(model => model.Int_Estatus, new { htmlAttributes = new { @class = "form-control", @id = "intstatus", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.Int_Estatus, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Fecha Entrada</label>
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.Fec_Ini, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
+                                    @Html.ValidationMessageFor(model => model.Fec_Ini, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-sm-12 mt-4">
+                                <button type="submit" class="btn btn-success">Guardar </button>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                    <script>
+                        function completado() {
+
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Actulizado',
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+
+                            location.reload();
+                        }
+                    </script>
+
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    function getDateIfDate(d) {
+        var m = d.match(/\/Date\((\d+)\)\//);
+        return m ? (new Date(+m[1])).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : d;
+    }
+
+    (function () {
+
+        estados();
+    })();
+
+    //js crear estatus
+    function estados() {
+
+
+        fetch("/EntradaCaja/admins")
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then(function (tjson) {
+                var cuerpo = document.getElementById("cuerpo");
+                cuerpo.innerHTML = "";
+                let valor = 0;
+
+
+                let estatus = "";
+
+                let cambio = "";
+
+                let fecha = "";
+
+                for (let item of tjson) {
+
+                    estatus += item.Int_Estatus
+                    fecha += item.Fec_Ini
+
+
+
+                    //Estatus de entradas creadas
+                    if (estatus == "1") {
+                        cambio += item.Dbl_SaldoEntrada
+                        fecha += item.Fec_Ini
+                        var a = new Intl.NumberFormat().format(cambio);
+
+                        cuerpo.innerHTML += `
+                        <tr>
+                            <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
+                            <td>$ ${a}</td>
+                            <td>${item.Txt_Moneda} </td>
+                            <td>${item.Txt_Motivo} </td>
+                            <td>${item.Txt_sucursal} </td>
+                            <td>${item.n_usuario} </td>
+                            <td>${ getDateIfDate(fecha)}</td>
+                            <td> <button onclick="obtid(${valor})" class="btn btn-sm btn-secondary">Creado</button> </td>
+                        </tr>
+                       `
+                        estatus = "";
+                        cambio = "";
+
+                    }
+                    //estatus de dotaciones solicitados
+                    else if (estatus == "2") {
+                        cambio += item.Dbl_SaldoEntrada
+                        fecha += item.Fec_Ini
+                        var b = new Intl.NumberFormat().format(cambio);
+
+                        cuerpo.innerHTML += `
+                        <tr>
+                            <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
+                            <td>$ ${b}</td>
+                            <td>${item.Txt_Moneda}</td>
+                            <td>${item.Txt_Motivo}</td>
+                            <td>${item.Txt_sucursal}</td>
+                            <td>${item.n_usuario}</td>
+                            <td>${getDateIfDate(fecha)}</td>
+                            <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-info">Solicitado</button> </td>
+                        </tr>
+                       `
+                        estatus = "";
+                        cambio = "";
+                    }
+
+                    //estatus de solicitudes validadas por admin
+
+                    else if (estatus == "3") {
+                        cambio += item.Dbl_SaldoEntrada
+                        fecha += item.Fec_Ini
+                        var c = new Intl.NumberFormat().format(cambio);
+
+                        cuerpo.innerHTML += `
+                        <tr>
+                            <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
+                            <td>$ ${c}</td>
+                            <td>${item.Txt_Moneda} </td>
+                            <td>${item.Txt_Motivo}</td>
+                            <td>${item.Txt_sucursal}</td>
+                            <td>${item.n_usuario}</td>
+                            <td>${ getDateIfDate(fecha)}</td>
+                           <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-primary">En Proceso</button> </td>
+                        </tr>
+                       `
+                        estatus = "";
+                        cambio = "";
+                    }
+
+                    //estatus de solicitudes ya recibidos por cajero
+                    else if (estatus == "4") {
+                        cambio += item.Dbl_SaldoEntrada
+                        fecha += item.Fec_Ini
+                        var d = new Intl.NumberFormat().format(cambio);
+
+                        cuerpo.innerHTML += `
+                        <tr>
+                            <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
+                            <td>$ ${d}</td>
+                            <td>${item.Txt_Moneda} </td>
+                            <td>${item.Txt_Motivo}</td>
+                            <td>${item.Txt_sucursal}</td>
+                            <td>${item.n_usuario}</td>
+                            <td>${getDateIfDate(fecha)}</td>
+                            <td> <button  type="button" class="btn btn-sm btn-success">Recibido</button> </td>
+                        </tr>
+                       `
+                        estatus = "";
+                        cambio = "";
+                    }
+                    //estatus de solicitudes caneladas por cajero
+
+                    else if (estatus == "5") {
+                        cambio += item.Dbl_SaldoEntrada
+                        fecha += item.Fec_Ini
+                        var e = new Intl.NumberFormat().format(cambio);
+
+
+                        cuerpo.innerHTML += `
+                        <tr>
+                            <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
+                            <td>$ ${e}</td>
+                            <td>${item.Txt_Moneda} </td>
+                            <td>${item.Txt_Motivo}</td>
+                            <td>${item.Txt_sucursal}</td>
+                            <td>${item.n_usuario}</td>
+                            <td>${getDateIfDate(fecha)}</td>
+                             <td> <button class="btn btn-sm btn-danger">Cancelado</button> </td>
+                        </tr>
+                       `
+                        estatus = "";
+                        cambio = "";
+                    }
+
+
+                    valor = valor + 1;
+                    estatus = "";
+                    cambio = "";
+                }
+
+            })
+
+
+    }
+
+    //obtener id para el cambio de estatus
+    function obtid(idregistro) {
+        var id = document.getElementById("idestatus" + idregistro).value;
+
+        document.getElementById("idregistro").value = id;
+    }
+
+    //Mostrar mensaje en caso de camcelacion
+    var selectd = document.getElementById("estatusselect");
+    selectd.addEventListener("change", vstatus);
+
+    function vstatus() {
+        var r = document.getElementById("estatusselect").value;
+        document.getElementById("estatus").value = r;
+
+        if (r == "5") {
+            document.getElementById("motivo").style.display = "";
+        }
+        else {
+            document.getElementById("motivo").style.display = "none";
+        }
+
+    }
+
+</script>

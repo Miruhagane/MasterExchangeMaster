@@ -37,6 +37,7 @@
                         <input id="cliente" name="idcliente" class="form-control" value="0" />
                         <input id="idregistroticket" value="@ViewBag.id" />
                         <input id="idtipodeusuario" value="@Session["intareadeusurio"]" />
+                        <input id="sucursal" value="@Session["idSucursal"]" />
 
                     </div>
 
@@ -129,6 +130,11 @@
                     <div>
                         @Html.EditorFor(model => model.Dbl_Entregar, new { htmlAttributes = new { @type = "Text", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Dbl_Entregar, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div>
+                        @Html.EditorFor(Model => Model.Lng_IdSucursal, new { htmlAttributes = new { @type = "Text", @class = "form-control", @id="sucursalid"} })
+                        @Html.ValidationMessageFor(model => model.Lng_IdSucursal, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -276,8 +282,6 @@
                 }, new { enctype = "multipart/form-data" }))
                 {
 
-
-
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -415,7 +419,7 @@
                 <p class="h6 margin1"><small> CENTRO CAMBIARIO SA DE CV</small></p>
                 <p class="h6 margin1"><small>RFC: BME1112161K1</small></p>
                 <p class="h6 margin1"><small>SUCURSAL: @Session["sucursaledelusuario"]</small></p>
-                <p class="h6 margin1"><small>Av. SayI MZ. 05 L. 02 Smza 6A entre Av. Bonampak y Av. Tulum</small></p>
+                <p class="h6 margin1"><small>@Session["direccion"]</small></p>
 
                 <p class="h6 margin1"><small>-----------------------------------------</small></p>
                 <p class="h6 margin1"><small>Compra De Divisas</small></p>
@@ -644,6 +648,8 @@
 
                     document.getElementById("Bol_Cancelar").value = "true";
 
+                    var idsucursal = document.getElementById("sucursal").value;
+                    document.getElementById("sucursalid").value = idsucursal;
 
                 })
 

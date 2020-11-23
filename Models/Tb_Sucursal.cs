@@ -17,5 +17,6 @@ namespace WebApplication2.Models
         public int Lng_IdSucursal { get; set; }
         public Nullable<int> Int_IdPlaza { get; set; }
         public string Txt_Sucursal { get; set; }
+        public string Txt_Direccion { get; set; }
     }
 }

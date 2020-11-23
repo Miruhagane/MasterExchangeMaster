@@ -13,13 +13,15 @@
             <div class="card-header bg-dark text-white">
                 <h5>Saldo actual</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body">                                                                     
 
                 <table class="table table-sm">
                     <thead>
                         <tr>
                             <th scope="col">Monto</th>
                             <th scope="col">Moneda</th>
+                            <th scope="col">motivo</th>
+                            <th scope="col">fecha</th>
                             <th scope="col">Estatus</th>
                      
                         </tr>
@@ -61,7 +63,7 @@
 
 
                                 <div class="col-sm-6 mb-2">
-                                    <label>Saldo Entrada</label>
+                                    <label>Dotacion</label>
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.Dbl_SaldoEntrada, new { htmlAttributes = new { @class = "form-control" } })
                                         @Html.ValidationMessageFor(model => model.Dbl_SaldoEntrada, "", new { @class = "text-danger" })
@@ -77,6 +79,13 @@
                                         @Html.EditorFor(model => model.Int_IdMoneda, new { htmlAttributes = new { @class = "form-control", @id = "idmonedaEnt", @readonly = true } })
                                         @Html.ValidationMessageFor(model => model.Int_IdMoneda, "", new { @class = "text-danger" })
                                     </div>
+                                </div>
+
+                                <div class="col-sm-6 mb-3">
+                                    <label>Motivo de Peticion </label>
+                                    @Html.EditorFor(Model => Model.Txt_Motivo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Txt_Motivo, "", new { @class = "text-danger" })
+
                                 </div>
 
 
@@ -246,6 +255,10 @@
 
   
 <script>
+    function getDateIfDate(d) {
+        var m = d.match(/\/Date\((\d+)\)\//);
+        return m ? (new Date(+m[1])).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : d;
+    }
 
     (function () {
         estados();
@@ -272,15 +285,18 @@
 
                 let cambio = "";
 
+                let fecha = "";
+
                 for (let item of tjson) {
 
                     estatus += item.Int_Estatus 
-
+                    fecha += item.Fec_Ini
                     
 
                          //Estatus de entradas creadas                    
                     if (estatus == "1") {
                         cambio += item.Dbl_SaldoEntrada
+                        fecha += item.Fec_Ini
                         var a = new Intl.NumberFormat().format(cambio);
 
                             cuerpo.innerHTML += `
@@ -288,7 +304,9 @@
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
                             <td>$ ${a}</td>
                             <td>${item.Txt_Moneda} </td>
-                              <td> <button onclick="obtid(${valor})" class="btn btn-sm btn-secondary">Creado</button> </td>
+                            <td>${item.Txt_Motivo} </td>
+                            <td>${getDateIfDate(fecha)} </td>
+                            <td> <button onclick="obtid(${valor})" class="btn btn-sm btn-secondary">Creado</button> </td>
                         </tr>
                        `
                             estatus = "";
@@ -298,6 +316,7 @@
                           //estatus de dotaciones solicitados
                     else if (estatus == "2") {
                         cambio += item.Dbl_SaldoEntrada
+                        fecha += item.Fec_Ini
                         var b = new Intl.NumberFormat().format(cambio);
 
                             cuerpo.innerHTML += `
@@ -305,6 +324,8 @@
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
                             <td>$ ${b}</td>
                             <td>${item.Txt_Moneda} </td>
+                            <td>${item.Txt_Motivo} </td>
+                            <td>${getDateIfDate(fecha)} </td>
                             <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-info">Solicitado</button> </td>
                         </tr>
                        `
@@ -316,6 +337,7 @@
 
                     else if (estatus == "3") {
                         cambio += item.Dbl_SaldoEntrada
+                        fecha += item.Fec_Ini
                         var c = new Intl.NumberFormat().format(cambio);
 
                             cuerpo.innerHTML += `
@@ -323,6 +345,8 @@
                             <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
                             <td>$ ${c}</td>
                             <td>${item.Txt_Moneda} </td>
+                            <td>${item.Txt_Motivo} </td>
+                            <td>${getDateIfDate(fecha)} </td>
                            <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-primary">En Proceso</button> </td>
                         </tr>
                        `
@@ -333,6 +357,7 @@
                     //estatus de solicitudes ya recibidos por cajero
                     else if (estatus == "4") {
                         cambio += item.Dbl_SaldoEntrada
+                        fecha += item.Fec_Ini
                         var d = new Intl.NumberFormat().format(cambio);
 
                             cuerpo.innerHTML += `
@@ -340,6 +365,8 @@
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
                             <td>$ ${d}</td>
                             <td>${item.Txt_Moneda} </td>
+                            <td>${item.Txt_Motivo} </td>
+                            <td>${getDateIfDate(fecha)} </td>
                             <td> <button  type="button" class="btn btn-sm btn-success">Recibido</button> </td>
                         </tr>
                        `
@@ -350,6 +377,7 @@
 
                     else if (estatus == "5") {
                         cambio += item.Dbl_SaldoEntrada
+                        fecha += item.Fec_Ini
                         var e = new Intl.NumberFormat().format(cambio);
 
 
@@ -358,6 +386,8 @@
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
                             <td>$ ${e}</td>
                             <td>${item.Txt_Moneda} </td>
+                            <td>${item.Txt_Motivo} </td>
+                            <td>${getDateIfDate(fecha)} </td>
                              <td> <button class="btn btn-sm btn-danger">Cancelado</button> </td>
                         </tr>
                        `

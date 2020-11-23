@@ -22,17 +22,20 @@ namespace WebApplication2.tazas
         {
             string iduser1 = Convert.ToString(Session["intareadeusurio"]);
             IdUser.Text = iduser1;
+            carga.Text = "1";
           
         }
 
         private void obtndivisa()
         {
-            int sucursalid = Convert.ToInt32(sucursalselect.SelectedValue);
-            SqlDataAdapter compras = new SqlDataAdapter("SELECT DISTINCT a.Int_IdMoneda AS IdTaxa, b.Txt_Moneda AS Moneda, a.dbl_Valor AS Valor, a.Fec_Dia AS Dia, a.Lng_IdTaxa, b.Int_IdMoneda FROM dbo.Tb_Taxas AS a INNER JOIN dbo.Ct_Moneda AS b ON a.Int_IdMoneda = b.Int_IdMoneda inner join dbo.Tb_TaxSuc as c on a.Lng_IdTaxa = c.Lng_IdTaxSuc where(a.Int_IdMoneda IN (1, 2, 3, 4, 5, 6)) and a.Lng_IdTaxa in (SELECT TOP (6) Lng_IdTaxa from Tb_Taxas as d inner join dbo.Tb_TaxSuc as c on d.Lng_IdTaxa = c.Lng_IdTaxSuc where Bol_Tipo = 1 and c.Lng_IdSucursal = "+sucursalid+" order by 1 desc) and a.Bol_Tipo = 1 order by 1", con);
+            //int sucursalid = Convert.ToInt32(sucursalselect.SelectedValue);
+            SqlDataAdapter compras = new SqlDataAdapter("SELECT DISTINCT a.Int_IdMoneda AS IdTaxa, b.Txt_Moneda AS Moneda, a.dbl_Valor AS Valor, a.Fec_Dia AS Dia, a.Lng_IdTaxa, b.Int_IdMoneda FROM dbo.Tb_Taxas AS a INNER JOIN dbo.Ct_Moneda AS b ON a.Int_IdMoneda = b.Int_IdMoneda inner join dbo.Tb_TaxSuc as c on a.Lng_IdTaxa = c.Lng_IdTaxSuc where(a.Int_IdMoneda IN (1, 2, 3, 4, 5, 6)) and a.Lng_IdTaxa in (SELECT TOP (6) Lng_IdTaxa from Tb_Taxas as d inner join dbo.Tb_TaxSuc as c on d.Lng_IdTaxa = c.Lng_IdTaxSuc where Bol_Tipo = 1 and c.Lng_IdSucursal = 1 order by 1 desc) and a.Bol_Tipo = 1 order by 1", con);
             DataTable tabla = new DataTable();
             compras.Fill(tabla);
             this.Tb_taxaVentas.DataSource = (tabla);
             Tb_taxaVentas.DataBind();
+
+            carga.Text = "2";
 
            
 
@@ -244,7 +247,7 @@ namespace WebApplication2.tazas
 
             for (int i = 0; i < CheckBoxtulum.Items.Count; i++)
             {
-                if (CheckBoxcabos.Items[i].Selected)
+                if (CheckBoxtulum.Items[i].Selected)
                 {
                     if (tulum == "")
                     {
@@ -387,25 +390,24 @@ namespace WebApplication2.tazas
                     int v = 0;
                     int val = 0;
 
+                    for (int tb = 0; tb < 6; tb++)
+                    {
+
+                        if (valoresmoneda[v] == "")
+                        {
+                            valoresmoneda[v] = ((TextBox)Tb_taxaVentas.Rows[v].FindControl("TextValor")).Text;
+                        }
+                        else
+                        {
+                            valoresmoneda[v] += "" + ((TextBox)Tb_taxaVentas.Rows[v].FindControl("TextValor")).Text;
+                        }
+
+                        v = v + 1;
+                    }
+
                     for (int b = 0; b < 6; b++)
                     {
                  
-
-                        for (int tb = 0; tb < 6; tb++)
-                        {
-
-                            if (valoresmoneda[v] == "")
-                            {
-                                valoresmoneda[v] = ((TextBox)Tb_taxaVentas.Rows[v].FindControl("TextValor")).Text;
-                            }
-                            else
-                            {
-                                valoresmoneda[v] += "" + ((TextBox)Tb_taxaVentas.Rows[v].FindControl("TextValor")).Text;
-                            }
-
-                            v = v + 1;
-                        }
-
                         SqlConnection conectorbd = new SqlConnection(con);
                         SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
                         conectorbd.Open();

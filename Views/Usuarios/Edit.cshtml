@@ -124,6 +124,7 @@
                         <label class="h6">Sucursal</label>
 
                         <select id="sucursal" class="form-control" name="sucursal">
+                              <option value="0">Selecciona una Opcion</option>
                         </select>
 
                         <div style="display: none">
@@ -261,7 +262,7 @@
             })
             .then(function (data) {
                 var sel = document.getElementById('sucursal');
-                for (i = sel.length - 1; i >= 0; i--) {
+                for (i = sel.length - 1; i >= 1; i--) {
                     sel.remove(i);
                 }
                 data.forEach(function (Elementos) {

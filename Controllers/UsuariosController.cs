@@ -42,6 +42,8 @@ namespace WebApplication2.Controllers
     public class UsuariosController : Controller
     {
         private MasterExchangeEntities db = new MasterExchangeEntities();
+
+        string con = System.Configuration.ConfigurationManager.ConnectionStrings["server2"].ConnectionString;
         // obtener areas
         public void arear()
         {
@@ -96,7 +98,60 @@ namespace WebApplication2.Controllers
 
             ViewBag.plaza = plaza;
         }
-   
+
+
+
+        public ActionResult actualizaruser()
+        {
+
+            return View();
+        }
+
+
+        public JsonResult obtusersuc()
+        {
+            List<users> querty;
+            using (MasterExchangeEntities da = new MasterExchangeEntities())
+            {
+
+                querty = (from a in da.Tb_Usuarios
+                          join ab in da.Tb_Sucursal on a.Lng_IdSucursal equals ab.Lng_IdSucursal
+                          where a.Int_IdArea == 2 && a.Bol_Activo == 0
+                          select new users
+                          {
+                              Int_Idusuario = a.Int_Idusuario,
+                              Txt_Nombre = a.Txt_Nombre,
+                              Txt_Apellido = a.Txt_Apellido,
+                              Lng_IdSucursal = ab.Lng_IdSucursal,
+                              txt_sucursal = ab.Txt_Sucursal
+
+                          }).ToList();
+
+            }
+            return Json(querty, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        public JsonResult obtsuc()
+        {
+            List<Elementos> lst = new List<Elementos>();
+            using (MasterExchangeEntities sc = new MasterExchangeEntities())
+            {
+                lst = (from a in sc.Tb_Sucursal
+                       select new Elementos
+                       {
+                           value = a.Lng_IdSucursal,
+                           Text = a.Txt_Sucursal
+
+                       }).ToList();
+            }
+
+            return Json(lst, JsonRequestBehavior.AllowGet);
+
+        }
+
+
         // obtener sucursales
         [HttpGet]
         public JsonResult sucursales(int int_plaza)
@@ -110,12 +165,14 @@ namespace WebApplication2.Controllers
                               {
                                   value = c.Lng_IdSucursal,
                                   Text = c.Txt_Sucursal
-                                  
+
                               }).ToList();
             }
 
             return Json(sucursales, JsonRequestBehavior.AllowGet);
         }
+
+
         private class Elementos
         {
             public int value { get; set; }
@@ -175,48 +232,59 @@ namespace WebApplication2.Controllers
         public ActionResult Index(string Usuario)
         { if (Usuario != null)
             {
-                var tbuser = from tabla in db.Tb_Usuarios  select tabla;
+                var tbuser = from tabla in db.Tb_Usuarios select tabla;
 
-               
+
 
                 if (!string.IsNullOrEmpty(Usuario))
                 {
                     tbuser = tbuser.Where(tabla => tabla.Txt_Nombre.Contains(Usuario) || tabla.Txt_NomCorto.Contains(Usuario) || tabla.Txt_email.Contains(Usuario));
-                    
+
                 }
 
                 //retornar valores de usuario pra inner join
                 var Userindex = db.Tb_Usuarios.FirstOrDefault(e => e.Txt_Nombre == Usuario || e.Txt_NomCorto == Usuario || e.Txt_email == Usuario);
-                int? areausuario = Userindex.Int_IdArea;
-                int? Idsucursal = Userindex.Lng_IdSucursal;
-                int? idplaza = Userindex.Int_IdPlaza;
-                ViewBag.iduser = Userindex.Int_Idusuario;
 
-                //obtener area del usuario
-                var Obtarea = db.Ct_Areas.FirstOrDefault(a => a.Int_IdArea == areausuario);
-                string areauser = Obtarea.Txt_Area;
+                if (Userindex != null)
+                {
+                    int? areausuario = Userindex.Int_IdArea;
+                    int? Idsucursal = Userindex.Lng_IdSucursal;
+                    int? idplaza = Userindex.Int_IdPlaza;
+                    ViewBag.iduser = Userindex.Int_Idusuario;
 
-                //Obtener plaza del usuario
-                var obtplaza = db.Ct_Plazas.FirstOrDefault(b => b.Int_IdPlazas == idplaza);
-                string plazauser = obtplaza.Txt_Plazas;
+                    //obtener area del usuario
+                    var Obtarea = db.Ct_Areas.FirstOrDefault(a => a.Int_IdArea == areausuario);
+                    string areauser = Obtarea.Txt_Area;
 
-                //obtener sucursal del usuario 
-                var obtsucursal = db.Tb_Sucursal.FirstOrDefault(c => c.Lng_IdSucursal == Idsucursal);
-                string sucursaluser = obtsucursal.Txt_Sucursal;
+                    //Obtener plaza del usuario
+                    var obtplaza = db.Ct_Plazas.FirstOrDefault(b => b.Int_IdPlazas == idplaza);
+                    string plazauser = obtplaza.Txt_Plazas;
 
-                ViewBag.sucursal = sucursaluser;
-                ViewBag.area = areauser;
-                ViewBag.plaza = plazauser;
+                    //obtener sucursal del usuario 
+                    var obtsucursal = db.Tb_Sucursal.FirstOrDefault(c => c.Lng_IdSucursal == Idsucursal);
+                    string sucursaluser = obtsucursal.Txt_Sucursal;
 
-                return View(tbuser.ToList());
+                    ViewBag.sucursal = sucursaluser;
+                    ViewBag.area = areauser;
+                    ViewBag.plaza = plazauser;
+
+                    return View(tbuser.ToList());
+                }
+                else
+                {
+                    ViewBag.msn = "2";
+                    return View();
+                }
+
+
 
             }
 
 
-        
-           
+
+
             return View();
-           
+
         }
 
 
@@ -229,19 +297,19 @@ namespace WebApplication2.Controllers
 
             return File(imge.Img_Foto, "image/jpg");
         }
- 
+
 
         //Obtiene datos para Formulario de Insert
         public ActionResult Create()
         {
             arear();
             Plazas();
-          
+
             return View();
         }
 
         // POST: Usuarios/Create
-     
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Int_Idusuario,Txt_Nombre,Txt_Apellido,Txt_NomCorto,Txt_Password,Bol_Activo,Int_IdArea,Int_IdSubarea,Fec_Alta,Fec_Baja,Int_Ext,Num_Telefono_1,Bol_Bloqueado,Num_Telefono_2,Txt_email,Bol_Promotor,Int_IdEmpresa,Txt_Password2,Txt_Password3,Int_Idempleado,Int_IdPlaza,Lng_IdSucursal,Int_IdDepartamentos,Img_Foto")] Tb_Usuarios tb_Usuarios)
@@ -257,12 +325,12 @@ namespace WebApplication2.Controllers
                 await db.SaveChangesAsync();
 
                 string nombrecorto = tb_Usuarios.Txt_NomCorto;
-                return RedirectToAction("Index", new { Usuario = nombrecorto});
+                return RedirectToAction("Index", new { Usuario = nombrecorto });
             }
 
             arear();
             Plazas();
-           
+
 
             return View();
         }
@@ -277,7 +345,7 @@ namespace WebApplication2.Controllers
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            } 
+            }
 
 
             Tb_Usuarios tb_Usuarios = await db.Tb_Usuarios.FindAsync(id);
@@ -305,14 +373,14 @@ namespace WebApplication2.Controllers
             {
                 _Usuarios = db.Tb_Usuarios.Find(tb_Usuarios.Int_Idusuario);
                 tb_Usuarios.Img_Foto = _Usuarios.Img_Foto;
-            
+
             }
-            else{
+            else {
 
                 WebImage image = new WebImage(fileBase.InputStream);
                 tb_Usuarios.Img_Foto = image.GetBytes();
             }
-            
+
 
             if (ModelState.IsValid)
             {
@@ -320,10 +388,10 @@ namespace WebApplication2.Controllers
                 db.Entry(tb_Usuarios).State = EntityState.Modified;
                 await db.SaveChangesAsync();
 
-                
-                return RedirectToAction("Index", new { Usuario = tb_Usuarios.Txt_NomCorto});
+
+                return RedirectToAction("Index", new { Usuario = tb_Usuarios.Txt_NomCorto });
             }
-            
+
             return View();
 
         }
@@ -352,6 +420,19 @@ namespace WebApplication2.Controllers
 
 
             return File(memoryStream, "image/jpg");
+        }
+
+        [HttpPost]
+        public JsonResult postsuc(string userid, string sucid)
+        {
+            int a = 1;
+
+            SqlDataAdapter updateuser = new SqlDataAdapter("update Tb_Usuarios set Lng_IdSucursal = "+sucid+" where Int_Idusuario = "+userid+"", con);
+            DataSet set = new DataSet();
+            updateuser.Fill(set);
+            set.Reset();
+
+            return Json(a, JsonRequestBehavior.AllowGet);
         }
     }
 }

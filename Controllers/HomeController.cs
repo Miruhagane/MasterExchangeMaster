@@ -35,16 +35,18 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(string usuario, string Pass, string turno)
+        public ActionResult Index(string usuario, string Pass, string turno, DateTime fecha)
         {
            
             if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(Pass))
             {
                        //validacion de usuario
                MasterExchangeEntities db = new MasterExchangeEntities();
+
                 var userv = db.Tb_Usuarios.FirstOrDefault(e => e.Txt_NomCorto == usuario && e.Txt_Password == Pass);
 
-
+                Session["fecha"] = fecha;
+                Session["turno"] = turno;
 
                 if (userv != null)
                 {
@@ -55,6 +57,7 @@ namespace WebApplication2.Controllers
                     int? tipo = userv.Int_IdArea;
                     int? Sucursal = userv.Lng_IdSucursal;
                     string suc = userv.Lng_IdSucursal.ToString();
+                    
 
                     //obtener el area del usuario
                     var area = db.Ct_Areas.FirstOrDefault(a => a.Int_IdArea == tipo);
@@ -64,6 +67,7 @@ namespace WebApplication2.Controllers
 
                     var Idsucursal = db.Tb_Sucursal.FirstOrDefault(s => s.Lng_IdSucursal == Sucursal);
                     string Sucursalusuario = Idsucursal.Txt_Sucursal;
+                    string direccion = Idsucursal.Txt_Direccion;
 
                     //obtener plaza de la sucursal
                     int? idplazasucursal = Idsucursal.Int_IdPlaza;
@@ -76,11 +80,12 @@ namespace WebApplication2.Controllers
                     Session["area"] = areausuario;
                     Session["intareadeusurio"] = tipo;
                     Session["sucursaledelusuario"] = Sucursalusuario;
+                    Session["direccion"] = direccion;
                     Session["plazadelusuaio"] = plazadelusuario;
 
                     FormsAuthentication.SetAuthCookie(id, true);
 
-                    Session["turno"] = turno;
+                    
 
                     bool activo = false;
                     bool status = true;
@@ -96,13 +101,14 @@ namespace WebApplication2.Controllers
 
 
                         var denominacion = db.Ct_Denominaciones.Max(c => c.Int_IdDenominacion);
-                    int iddeno = Convert.ToInt32(denominacion);
+                        int iddeno = Convert.ToInt32(denominacion);
 
                     if (userv.Int_IdArea == 1)
                     {
                         return RedirectToAction("Index", "Profile");
                     }
 
+                
 
                     else if (dbturno == null)
                     {

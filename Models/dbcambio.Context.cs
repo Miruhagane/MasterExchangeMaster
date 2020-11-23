@@ -37,7 +37,6 @@ namespace WebApplication2.Models
         public virtual DbSet<Ct_Areas> Ct_Areas { get; set; }
         public virtual DbSet<Ct_TipoTran> Ct_TipoTran { get; set; }
         public virtual DbSet<Tb_Sucursal> Tb_Sucursal { get; set; }
-        public virtual DbSet<Tb_Usuarios> Tb_Usuarios { get; set; }
         public virtual DbSet<Taxacompcomb> Taxacompcombs { get; set; }
         public virtual DbSet<Tb_TaxSuc> Tb_TaxSuc { get; set; }
         public virtual DbSet<Tb_EntEmp> Tb_EntEmp { get; set; }
@@ -49,11 +48,16 @@ namespace WebApplication2.Models
         public virtual DbSet<Tb_Arqueo> Tb_Arqueo { get; set; }
         public virtual DbSet<Tb_Registros> Tb_Registros { get; set; }
         public virtual DbSet<Tb_Cancelaciones> Tb_Cancelaciones { get; set; }
-        public virtual DbSet<Tb_SalidaSuc> Tb_SalidaSuc { get; set; }
         public virtual DbSet<TaxaCompra> TaxaCompras { get; set; }
         public virtual DbSet<TaxaVenta> TaxaVentas { get; set; }
+        public virtual DbSet<Tb_SalidaSuc> Tb_SalidaSuc { get; set; }
         public virtual DbSet<Tb_EntradaSuc> Tb_EntradaSuc { get; set; }
-        public virtual DbSet<Tb_HistorialEntySal> Tb_HistorialEntySal { get; set; }
+        public virtual DbSet<Tb_Usuarios> Tb_Usuarios { get; set; }
+        public virtual DbSet<Tb_Dotaciones> Tb_Dotaciones { get; set; }
+        public virtual DbSet<Tb_DotSal> Tb_DotSal { get; set; }
+        public virtual DbSet<Tb_DotGrupo> Tb_DotGrupo { get; set; }
+        public virtual DbSet<Tb_EstatusTesoreria> Tb_EstatusTesoreria { get; set; }
+        public virtual DbSet<Tb_TicketTesoreria> Tb_TicketTesoreria { get; set; }
     
         public virtual ObjectResult<buscar_Result1> buscar(string numero)
         {

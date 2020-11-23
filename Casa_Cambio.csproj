@@ -262,6 +262,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="admiinistrativo\dotaciones.aspx.cs">
+      <DependentUpon>dotaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admiinistrativo\dotaciones.aspx.designer.cs">
+      <DependentUpon>dotaciones.aspx</DependentUpon>
+    </Compile>
     <Compile Include="admiinistrativo\VentasUser.aspx.cs">
       <DependentUpon>VentasUser.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -284,9 +291,10 @@
     <Compile Include="Controllers\CajaController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\EntradaCajaController.cs" />
+    <Compile Include="Controllers\notificacionesController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SalidaSucController.cs" />
-    <Compile Include="Controllers\Tb_RegistrosController.cs" />
+    <Compile Include="Controllers\sucadminController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValesController.cs" />
     <Compile Include="Models\buscar_Result.cs">
@@ -334,13 +342,22 @@
     <Compile Include="Models\Tb_Clientes.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Tb_Dotaciones.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tb_DotGrupo.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tb_DotSal.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tb_EntEmp.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tb_EntradaSuc.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Tb_HistorialEntySal.cs">
+    <Compile Include="Models\Tb_EstatusTesoreria.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tb_PlazasApli.cs">
@@ -373,12 +390,16 @@
     <Compile Include="Models\Tb_TaxSuc.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Tb_TicketTesoreria.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tb_Usuarios.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tb_Vales.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\agrupacion.cs" />
     <Compile Include="Models\ViewModels\Areas.cs" />
     <Compile Include="Models\ViewModels\Clientes.cs" />
     <Compile Include="Models\ViewModels\inventario.cs" />
@@ -386,14 +407,21 @@
     <Compile Include="Models\ViewModels\reegistro.cs" />
     <Compile Include="Models\ViewModels\registrosall.cs" />
     <Compile Include="Models\ViewModels\saldos.cs" />
+    <Compile Include="Models\ViewModels\Salidas.cs" />
     <Compile Include="Models\ViewModels\Sucursal.cs" />
     <Compile Include="Models\ViewModels\tazas.cs" />
     <Compile Include="Models\ViewModels\tbusuarios.cs" />
     <Compile Include="Models\ViewModels\Tcompras.cs" />
+    <Compile Include="Models\ViewModels\users.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="tazas\frmtazas.aspx.cs">
       <DependentUpon>frmtazas.aspx</DependentUpon>
@@ -433,6 +461,13 @@
     <Compile Include="Models\ViewModels\Tventas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\cambiorepository.cs" />
+    <Compile Include="tazas\Historialtazas.aspx.cs">
+      <DependentUpon>Historialtazas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="tazas\Historialtazas.aspx.designer.cs">
+      <DependentUpon>Historialtazas.aspx</DependentUpon>
+    </Compile>
     <Compile Include="tazas\TazasVentas.aspx.cs">
       <DependentUpon>TazasVentas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -442,6 +477,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admiinistrativo\dotaciones.aspx" />
     <Content Include="admiinistrativo\VentasUser.aspx" />
     <Content Include="Arqueos\arqueocierre.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
@@ -452,16 +488,21 @@
     <Content Include="Content\bootstrap.cosmo.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\checkboxstyles.css" />
+    <Content Include="Content\home.css" />
     <Content Include="Content\img\Cgradientes2.jpg" />
     <Content Include="Content\img\estilo-de-semitonos.jpg" />
     <Content Include="Content\img\fondo-proyecto-creativo.jpg" />
     <Content Include="Content\img\Fondo_Cuser.jpg" />
     <Content Include="Content\img\loading.gif" />
+    <Content Include="Content\img\logo.png" />
     <Content Include="Content\Usuarios.css" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\push.js" />
+    <Content Include="Scripts\push.min.js" />
     <Content Include="Scripts\venta.js" />
     <Content Include="Scripts\jquery.datetimepicker.full.js" />
     <Content Include="Scripts\jquery.datetimepicker.min.css" />
@@ -517,6 +558,10 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="Properties\PublishProfiles\MasterExchange - Web Deploy.pubxml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\secion.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
@@ -603,6 +648,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="tazas\Historialtazas.aspx" />
     <Content Include="tazas\TazasVentas.aspx" />
     <Content Include="Views\EntradaCaja\entradajs\Indexjs.js" />
     <Content Include="Web.config" />
@@ -671,13 +717,21 @@
     <Content Include="Views\SalidaSuc\Index.cshtml" />
     <Content Include="Views\SalidaSuc\tsalida.cshtml" />
     <Content Include="Views\profile\actualizar.cshtml" />
-    <Content Include="Views\Tb_Registros\Create.cshtml" />
-    <Content Include="Views\Tb_Registros\Delete.cshtml" />
-    <Content Include="Views\Tb_Registros\Details.cshtml" />
-    <Content Include="Views\Tb_Registros\Edit.cshtml" />
-    <Content Include="Views\Tb_Registros\Index.cshtml" />
     <Content Include="Views\profile\returnticketventa.cshtml" />
     <Content Include="Views\EntradaCaja\estatus.cshtml" />
+    <Content Include="Views\EntradaCaja\dotaciones.cshtml" />
+    <Content Include="Views\Arqueo\Index.cshtml" />
+    <Content Include="Views\Administracion\Historial.cshtml" />
+    <Content Include="Views\sucadmin\Create.cshtml" />
+    <Content Include="Views\sucadmin\Delete.cshtml" />
+    <Content Include="Views\sucadmin\Details.cshtml" />
+    <Content Include="Views\sucadmin\Edit.cshtml" />
+    <Content Include="Views\sucadmin\Index.cshtml" />
+    <Content Include="Views\SalidaSuc\indexsalidas.cshtml" />
+    <Content Include="Scripts\push.min.js.map" />
+    <Content Include="Views\SalidaSuc\datosvr.cshtml" />
+    <Content Include="Views\SalidaSuc\agrupar.cshtml" />
+    <Content Include="Views\Usuarios\actualizaruser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

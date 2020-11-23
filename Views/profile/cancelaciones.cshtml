@@ -1,109 +1,521 @@
 ﻿@model IEnumerable<WebApplication2.Models.ViewModels.registrosall>
 
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-body">
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-body">
 
-                <table class="table table-sm">
+            <table class="table table-sm">
 
-                    <thead class="thead-dark">
+                <thead class="thead-dark">
+                    <tr>
+
+                        <th>
+                            <small>Tipo</small>
+                        </th>
+                        <th>
+                            <small>Moneda Compra</small>
+                        </th>
+                        <th>
+                            <small>Tipo cambio</small>
+                        </th>
+                        <th>
+                            <small>Recibido</small>
+                        </th>
+
+                        <th>
+                            <small>moneda venta</small>
+                        </th>
+
+                        <th>
+                            <small>Tipo cambio</small>
+                        </th>
+
+                        <th>
+                            <small>Pagaste</small>
+                        </th>
+                        <th>
+                            <small>Entregaste</small>
+                        </th>
+
+                        <th>
+                            <small>Cambio pesos</small>
+                        </th>
+                        <th>
+                            <small>Fecha</small>
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+
+                @foreach (var item in Model)
+                {
+
+                    <tbody>
+
                         <tr>
 
-                            <th>
-                                <small>Tipo</small>
-                            </th>
-                            <th>
-                                <small>Moneda Compra</small>
-                            </th>
-                            <th>
-                                <small>Tipo cambio</small>
-                            </th>
-                            <th>
-                                <small>Recibido</small>
-                            </th>
+                            <td style="display: none">
+                                <input class="form-control form-control-sm" id="idregistro" value="@item.Lng_IdRegistro" />
+                            </td>
 
-                            <th>
-                                <small>moneda venta</small>
-                            </th>
+                            <td style="display: none">
+                                <input class="form-control form-control-sm" id="idTransaccion" value="@item.Int_IdTipoTran" />
+                            </td>
 
-                            <th>
-                                <small>Tipo cambio</small>
-                            </th>
+                            <td>
+                                <small>@item.Txt_TipoTran</small>
+                            </td>
+                            <td>
+                                <small>@item.Moneda</small>
+                            </td>
+                            <td>
+                                <small>$@string.Format("{0:#,0.00}", item.Dbl_TipoCambio)</small>
 
-                            <th>
-                                <small>Pagaste</small>
-                            </th>
-                            <th>
-                                <small>Entregaste</small>
-                            </th>
+                            </td>
+                            <td>
+                                <small>$@string.Format("{0:#,0.00}", item.Dbl_MontoRecibir)</small>
+                            </td>
 
-                            <th>
-                                <small>Cambio pesos</small>
-                            </th>
-                            <th>
-                                <small>Fecha</small>
-                            </th>
-                            <th></th>
+                            <td>
+                                <small>@item.Monedaven</small>
+                            </td>
+
+                            <td>
+                                <small>$@string.Format("{0:#,0.00}", item.Dbl_TipoCambioven)</small>
+                            </td>
+
+                            <td>
+                                <small>$@string.Format("{0:#,0.00}", item.Dbl_MontoPagar)</small>
+                            </td>
+                            <td>
+                                <small>$@string.Format("{0:#,0.00}", item.Dbl_Entregar)</small>
+
+                            </td>
+
+                            <td>
+                                <small>$@string.Format("{0:#,0.00}", item.Dbl_Cambio)</small>
+                            </td>
+
+                            <td>
+                                <small>@item.Fec_Fecha.ToString("dd/MM/yyyy")</small>
+                            </td>
+
+                            <td>
+                                <button type="button" ata-toggle="tooltip" onclick="cancelar()" data-placement="top" title="Cancelar" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#cancelacion">
+                                    <i class="fas fa-strikethrough"></i>
+                                </button>
+                            </td>
+
+                            <td>
+                                <button type="button" ata-toggle="tooltip" data-placement="top" title="Imprimir Ticket" class="btn btn-primary btn-sm" onclick="impresionticket()">
+                                    <i class="fas fa-print"></i>
+                                </button>
+                            </td>
                         </tr>
-                    </thead>
+                    </tbody>
+                }
 
+            </table>
 
-                    @foreach (var item in Model)
-                    {
-
-                        <tbody>
-
-                            <tr>
-
-                                <td>
-                                    <small>@item.Txt_TipoTran</small>
-                                </td>
-                                <td>
-                                    <small>@item.Moneda</small>
-                                </td>
-                                <td>
-                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_TipoCambio)</small>
-
-                                </td>
-                                <td>
-                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_MontoRecibir)</small>
-                                </td>
-
-                                <td>
-                                    <small>@item.Monedaven</small>
-                                </td>
-
-                                <td>
-                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_TipoCambioven)</small>
-                                </td>
-
-                                <td>
-                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_MontoPagar)</small>
-                                </td>
-                                <td>
-                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_Entregar)</small>
-
-                                </td>
-
-                                <td>
-                                    <small>$@string.Format("{0:#,0.00}", item.Dbl_Cambio)</small>
-                                </td>
-
-                                <td>
-                                    <small>@item.Fec_Fecha.ToString("dd/MM/yyyy")</small>
-                                </td>
-
-                                <td>
-                                    <button type="button" data-toggle="tooltip" data-placement="top" title="Archivo Pdf" class="btn btn-info btn-sm" target="_blank" onclick="window.open('@Url.Action("actualizar", "profile" , new { registro = item.Lng_IdRegistro })')"> <i class="fas fa-strikethrough"></i></button>
-                                    
-                                </td>
-                            </tr>
-                        </tbody>
-                    }
-
-                </table>
-
-            </div>
         </div>
     </div>
+</div>
 
+<div class="modal fade" id="cancelacion" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("cancelar", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnComplete = "Complet()"
+
+            }))
+            {
+            <div class="modal-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="col-sm-12">
+                    <div style="display: none">
+                        <input type="text" id="id" class="form-control form-control-sm" name="id" />
+                    </div>
+                    <label> Motivo de cancelacion </label>
+                    <input type="text" class="form-control" name="motivo"/>
+                    
+                </div>
+
+
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Cancelar" class="btn btn-warning" />
+                </div>
+
+                <script>
+                    function Complet()
+                    {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Registro Cancelado',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+
+                        location.reload();
+                    }
+                </script>
+            }
+            </div>
+    </div>
+</div>
+
+@*modulo impresion de ticket Compra*@
+<div class="modal fade " id="ticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel"> <strong>Detalles de Compra</strong> </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="tickete" class="modal-body text-center">
+
+                <p class="h6 margin1"><small> Brazil Money Exchange Centro Cambiario</small></p>
+                <p class="h6 margin1"><small> CENTRO CAMBIARIO SA DE CV</small></p>
+                <p class="h6 margin1"><small>RFC: BME1112161K1</small></p>
+                <p class="h6 margin1"><small>SUCURSAL: @Session["sucursaledelusuario"]</small></p>
+                <p class="h6 margin1"><small>@Session["direccion"]</small></p>
+
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <p class="h6 margin1"><small>Compra De Divisas</small></p>
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <table class="table table-sm table-bordered margin1">
+                    <thead class="table table-striped">
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"><small>Folio</small></th>
+                            <td id="Idticket"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Cajero</small></th>
+                            <td id="Nombre"><small>@Session["usuario"] @Session["apellido"]</small></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Fecha de Compra</small></th>
+                            <td id="fecha"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Moneda</small></th>
+                            <td id="moneda"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Monto</small></th>
+                            <td><span>$</span><span id="monto"></span></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Tipo De Cambio</small></th>
+                            <td><span>$</span><span id="cambio"></span></td>
+
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Total a Pagar:</small></th>
+                            <td><span>$</span><span id="pago"></span> </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <p class="h6 margin1"><small>Cliente</small></p>
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <p class="h6 margin1">
+                    <small>
+                        El cliente Declara Bajo Protesta de Decir La
+                        Verdad Que Esta Operacion Se Realiza Con
+                        Recursos De Procedencia Y Destino Licitos
+                    </small>
+                </p>
+                <p class="h6 margin1"><small>------------------------------------------</small></p>
+                <p class="h6 margin1"><small>Un Buen Viajante No Tiene Planes(Confusio)</small></p>
+                <p class="h6 margin1"><small>A Good Traveler Has No Plans(Confusio)</small></p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button onclick="printJS('tickete', 'html')" type="button" class="btn btn-primary">Imprimir</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- modulo impresion de ticket Compra -->
+<div class="modal fade " id="ticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel"> <strong>Detalles de Venta</strong> </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="ticketventa" class="modal-body text-center">
+
+                <p class="h6 margin1"><small> Brazil Money Exchange Centro Cambiario</small></p>
+                <p class="h6 margin1"><small> CENTRO CAMBIARIO SA DE CV</small></p>
+                <p class="h6 margin1"><small>RFC: BME1112161K1</small></p>
+                <p class="h6 margin1"><small>SUCURSAL: @Session["sucursaledelusuario"]</small></p>
+                <p class="h6 margin1"><small>@Session["direccion"]</small></p>
+
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <p class="h6 margin1"><small>Venta De Divisas</small></p>
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <table class="table table-sm table-bordered margin1">
+                    <thead class="table table-striped">
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"><small>Folio</small></th>
+                            <td id="Idticket"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Cajero</small></th>
+                            <td id="Nombre"><small>@Session["usuario"] @Session["apellido"]</small></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Fecha de Compra</small></th>
+                            <td id="fecha"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Moneda</small></th>
+                            <td id="moneda"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Monto</small></th>
+                            <td><span>$</span><span id="monto"></span> </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"><small>Tipo De Cambio</small></th>
+                            <td><span>$</span><span id="rt"></span></td>
+
+                        </tr>
+
+                        <tr id="mv" style="display: none">
+                            <th scope="row"><small>Moneda de Venta</small></th>
+                            <td id="monedav"></td>
+                        </tr>
+
+                        <tr id="cv" style="display: none">
+                            <th scope="row"><small>Tipo De Cambio Venta</small></th>
+                            <td><span>$</span><span id="rtv"></span></td>
+
+                        </tr>
+
+
+                        <tr>
+                            <th scope="row"><small>Total a Pagar:</small></th>
+                            <td> <span>$</span><span id="pago"></span></td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <p class="h6 margin1"><small>Cliente</small></p>
+                <p class="h6 margin1"><small>-----------------------------------------</small></p>
+                <p class="h6 margin1">
+                    <small>
+                        El cliente Declara Bajo Protesta de Decir La
+                        Verdad Que Esta Operacion Se Realiza Con
+                        Recursos De Procedencia Y Destino Licitos
+                    </small>
+                </p>
+                <p class="h6 margin1"><small>------------------------------------------</small></p>
+                <p class="h6 margin1"><small>Un Buen Viajante No Tiene Planes(Confusio)</small></p>
+                <p class="h6 margin1"><small>A Good Traveler Has No Plans(Confusio)</small></p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button onclick="printJS('ticketventa', 'html')" type="button" class="btn btn-primary">Imprimir</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function cancelar()
+    {
+
+        var id = document.getElementById("idregistro").value
+
+        document.getElementById("id").value = id;
+
+    }
+
+</script>
+
+<script>
+    (function () {
+        drt();
+    })();
+
+    function drt() {
+        var a = document.getElementById("idregistro").value;
+        document.getElementById("idpost").value = a;
+
+    }
+
+
+</script>
+
+<script>
+
+    function impresionticket() {
+
+        var dr = document.getElementById("idregistro").value;
+        var tipotransaccion = document.getElementById("idTransaccion").value;
+
+
+        if (tipotransaccion == "1") {
+
+            $('#ticket').modal('show');
+
+            fetch("/profile/returnticket" + "?registro=" + dr)
+                .then(function (result) {
+                    if (result.ok != null) {
+
+                        return result.json();
+
+                    }
+                }).then(function (Tjson) {
+
+                    let Idticket = "";
+                    let fecha = "";
+                    let moneda = "";
+                    let monto = "";
+                    let cambio = "";
+                    let importe = "";
+
+                    for (let i = 0; i < Tjson.length; i++) {
+                        Idticket += Tjson[i].Lng_IdRegistro
+                        fecha += Tjson[i].Fec_Fecha
+                        moneda += Tjson[i].Moneda
+                        monto += Tjson[i].Dbl_MontoRecibir
+                        cambio += Tjson[i].Dbl_TipoCambio
+                        importe += Tjson[i].Dbl_MontoPagar
+
+                    }
+
+
+                    var b = new Intl.NumberFormat().format(monto);
+                    var c = new Intl.NumberFormat().format(cambio);
+                    var d = new Intl.NumberFormat().format(importe);
+
+
+
+                    document.getElementById("Idticket").innerHTML = Idticket;
+                    document.getElementById("fecha").innerHTML = getDateIfDate(fecha);
+                    document.getElementById("moneda").innerHTML = moneda;
+                    document.getElementById("monto").innerHTML = b;
+                    document.getElementById("cambio").innerHTML = c;
+                    document.getElementById("pago").innerHTML = d;
+
+
+                })
+
+        }
+
+        else if (tipotransaccion == "2") {
+
+
+            fetch("/profile/returnticketventa" + "?alt=" + mir)
+                .then(function (result) {
+                    if (result.ok != null) {
+                        return result.json();
+                    }
+                }).then(function (Tjson) {
+                    let Idticket = "";
+                    let fecha = "";
+                    let moneda = "";
+                    let monto = "";
+                    let cambio = "";
+                    let cambioventa = "";
+                    let monedaventa = "";
+                    let importe = "";
+
+                    for (let i = 0; i < Tjson.length; i++) {
+
+                        Idticket += Tjson[i].Lng_IdRegistro
+                        fecha += Tjson[i].Fec_Fecha
+                        moneda += Tjson[i].Moneda
+                        monto += Tjson[i].Dbl_MontoRecibir
+                        cambio += Tjson[i].Dbl_TipoCambio
+                        monedaventa += Tjson[i].Monedaventa
+                        cambioventa += Tjson[i].Dbl_TipoCambioven
+                        importe += Tjson[i].Dbl_MontoPagar
+                    }
+
+
+                    var a = new Intl.NumberFormat().format(monto);
+                    var b = new Intl.NumberFormat().format(importe);
+
+
+                    document.getElementById("Idticket").innerHTML = Idticket;
+                    document.getElementById("fecha").innerHTML = getDateIfDate(fecha);
+                    document.getElementById("moneda").innerHTML = moneda;
+                    document.getElementById("monto").innerHTML = a;
+                    document.getElementById("pago").innerHTML = b;
+                    document.getElementById("rt").innerHTML = cambio;
+
+                    var a = cambioventa;
+                    if (a != "") {
+                        document.getElementById("mv").style.display = "";
+                        document.getElementById("cv").style.display = "";
+                    }
+                    else {
+                        document.getElementById("mv").style.display = "none";
+                        document.getElementById("cv").style.display = "none";
+                    }
+
+                    document.getElementById("monedav").innerHTML = monedaventa;
+                    document.getElementById("rtv").innerHTML = cambioventa;
+
+                })
+
+
+        }
+
+
+
+
+
+
+    }
+
+</script>

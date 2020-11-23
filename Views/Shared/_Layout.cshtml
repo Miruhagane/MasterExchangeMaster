@@ -29,6 +29,9 @@
     <!-- Print.js-->
     <script src="  https://printjs-4de6.kxcdn.com/print.min.js"></script>
     <link href="~/Content/Usuarios.css" rel="stylesheet" />
+    <script src="~/Scripts/push.min.js"></script>
+    <!-- libreria de notificaciones -->
+    
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -36,13 +39,14 @@
 <body class="" >
     <div style="display: none">
         <input id="uservalue" value="@Session["intareadeusurio"]" />
+           <input id="nameuser1" value="@Session["usuario"]"/>
     </div>
     
     <div class="d-flex " id="content-wrapper">
         <div id="sidebar-container" class="fondo ">
 
             <div class="logo">
-
+               
             </div>
 
             <div class="menu">
@@ -62,17 +66,14 @@
                 </div>
 
                 <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-warning menubtn" onclick="location.href='@Url.Action("cancelaciones", "Profile")'">Cancelación</button>
+                    <button type="button" id="cancelaciones" class="btn btn-warning menubtn" onclick="location.href='@Url.Action("cancelaciones", "Profile")'">Cancelación</button>
                 </div>
 
                 <div class="d-block text-light p-1 border-0">
-                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "Administracion")'">
+                    <button type="button" id="panel" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "Administracion")'">
                         Panel De Control
                     </button>
                 </div>
-
-
-
 
 
                 <div class="d-block text-light p-1 border-0">
@@ -88,24 +89,38 @@
                     <div class="dropdown-menu bg-dark">
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Create", "Usuarios")'">Crear Usuario </button>
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Index", "Usuarios")'">Buscar Usuario</button>
+                        <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("actualizaruser", "Usuarios")'">Actualizar Sucursal de Usuario</button>
                     </div>
                 </div>
 
                 <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("actualizar", "EntradaCaja")'">Entrada de Caja</button>
+                    <button type="button" class="btn btn-dark menubtn" id="cajas" style="display: none" onclick="location.href='@Url.Action("actualizar", "EntradaCaja")'">Dotaciones</button>
                 </div>
+
+
                 <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Index", "SalidaSuc")'">Salida de Caja</button>
+                    <button type="button" class="btn btn-dark menubtn" id="admins" style="display: none" onclick="location.href='@Url.Action("dotaciones", "EntradaCaja")'">Dotaciones</button>
                 </div>
 
-                <div class="btn-group  d-block text-light p-1 border-0">
-                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="arqueo" onclick="arqueo()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Administracion
-                    </button>
-                    <div class="dropdown-menu bg-dark">
 
-                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("cerrararqueo", "Arqueo")'">Arqueo Final</button>
-                    </div>
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-dark menubtn" id="sucadmin" style="display: none" onclick="location.href='@Url.Action("Index", "sucadmin")'">Dotaciones iniciales</button>
+                </div>
+
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-dark menubtn"  onclick="location.href='@Url.Action("datosvr", "SalidaSuc")'">Agrupacion</button>
+                </div>
+
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-dark menubtn" id="salidacaja" onclick="location.href='@Url.Action("Index", "SalidaSuc")'">Salida de Caja</button>
+                </div>
+
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-dark menubtn" id="salidaadmin" onclick="location.href='@Url.Action("indexsalidas", "SalidaSuc")'">Salida de Caja</button>
+                </div>
+
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("cerrararqueo", "Arqueo")'">Arqueo Final</button>
                 </div>
 
                 <div class="btn-group  d-block text-light p-1 border-0">
@@ -115,6 +130,7 @@
                     <div class="dropdown-menu bg-dark">
                         <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Taxacompras", "Administracion")'">Tasas de Compra</button>
                         <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("TazasVentas", "Administracion")'">Tasas de Venta</button>
+                        <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Historial", "Administracion")'">Tasas por sucursal</button>
                     </div>
                 </div>
 
@@ -216,7 +232,16 @@
             switch (userside) {
                 //administrativo
                 case "1":
-                    console.log("administrativo");              
+                    console.log("administrativo");     
+                    document.getElementById("cajas").style.display = "none";
+                    document.getElementById("admins").style.display = "";
+                   
+                    document.getElementById("cancelaciones").style.display = "none";
+                    document.getElementById("sucadmin").style.display = "";
+                    document.getElementById("salidaadmin").style.display = "";
+                    document.getElementById("salidacaja").style.display = "none";
+
+                 
                     break;
 
                 // cajero
@@ -224,6 +249,15 @@
                     console.log("cajero");
                     document.getElementById("usuarios").style.display = "none";
                     document.getElementById("tazas").style.display = "none";
+
+                    document.getElementById("cajas").style.display = "";
+                    document.getElementById("admins").style.display = "none";
+
+                    document.getElementById("cancelaciones").style.display = "";
+                    document.getElementById("sucadmin").style.display = "none";
+                    document.getElementById("salidaadmin").style.display = "none";
+                    document.getElementById("salidacaja").style.display = "";
+
                     
                     break;
 
@@ -260,5 +294,111 @@
     
 
     </script>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+    $("form").keypress(function(e) {
+        if (e.which == 13) {
+            return false;
+        }
+    });
+    });
+     
+</script>
+
+   <script>
+       var timeout;
+       document.onmousemove = function () {
+           clearTimeout(timeout);
+          
+           timeout = setTimeout(function () {
+               location.reload();
+           }, 300000);
+       }
+   </script>
+
+
+    <script>
+
+       
+
+        function notificaciones() {
+            fetch("/notificaciones/notsalidas")
+                .then(function (result) {
+                    if (result.ok) {
+                        return result.json();
+                    }
+                })
+                .then(function (tjson) {
+
+                    let status = "";
+                    var nombre = document.getElementById("nameuser1").value;
+
+                    for (let item of tjson) {
+                        status += item.Int_estatus
+                   
+                        if (status == "1") {
+
+                            Push.create("Buen dia " + nombre + "", {
+                                tag: 'foo',
+                                body: "Tienes una dotación inicial en espera. Por favor, cambie el estatus en Salida de Caja.",
+                                icon: '../../Content/img/logo.png',
+                                requireInteraction: true,
+                                onClick: function () {
+                                    window.focus();
+                                    this.close();
+
+                                    Push.close('foo');
+                                }
+                                
+                            });
+
+
+                        }
+
+                    }
+                })
+
+        }
+
+        (function () {
+            caja();
+        })();
+
+        //validacion de usuarios
+        function caja() {
+            var userside = document.getElementById("uservalue").value;
+    
+            // comprar tipo de usuario
+            switch (userside) {
+                //administrativo
+                case "1":
+
+
+
+                    break;
+
+                // cajero
+                case "2":
+
+
+
+                    notificaciones();
+
+
+                    break;
+
+                // tipo de usuario no detectado
+                default:
+                    console.log("no detectado");
+                    break;
+            }
+        }
+
+        setInterval(function () { notificaciones(); }, 300000);
+
+    </script>
+
+
 </body>
 </html>
