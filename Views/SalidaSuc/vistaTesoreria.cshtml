@@ -1,0 +1,137 @@
+﻿@model WebApplication2.Models.Tb_ArqueoMoneda
+
+@{
+    ViewBag.Title = "vistaTesoreria";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<SelectListItem> suc = (List<SelectListItem>)ViewBag.suc;
+}
+
+<div class="col-sm-11 mt-3 pl-5">
+    <div class="card shadow-lg rounded">
+
+       
+            <div class="card-header bg-dark text-white row">
+                <div class="col-sm-4">
+                    <h5>Historia de Remesas</h5>
+                </div>
+
+                <div class="col-sm-4">
+                    <span>Fecha</span>
+                    <input type="date" id="fecha1" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-sm-4">
+                    <span>Sucursales</span>
+                    @Html.DropDownList("Datos", suc, "Selecciona una sucursal", new { @type = "number", @class = "form-control form-control-sm", @id = "sucursales" })
+                </div>
+
+
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Moneda</th>
+                            <th scope="col">Monto a ingresar</th>
+                            <th scope="col">Validar</th>
+                            <th scope="col">Monto de la sucursal</th>
+                            <th scope="col">Usuario </th>
+                            <th scope="col">Fecha </th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo">
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="card-footer">
+             
+            </div>
+
+       
+
+     
+    </div>
+
+</div>
+
+ <script>
+
+     function getDateIfDate(d) {
+         var m = d.match(/\/Date\((\d+)\)\//);
+         return m ? (new Date(+m[1])).toLocaleDateString('en-US', { day: '2-digit', month: '2-digit',  year: 'numeric' }) : d;
+     }
+
+     var sucselect = document.getElementById("sucursales");
+     var andselect = document.getElementById("fecha1");
+
+     sucselect.addEventListener("change", obtarqueo);
+     andselect.addEventListener("change", obtarqueo);
+
+     obtarqueo();
+
+     function obtarqueo() {
+         var sucid = document.getElementById("sucursales").value;
+         let fecha = document.getElementById("fecha1").value;
+
+   
+
+         const post = {
+             sucursal: sucid,
+             fec: fecha
+         }
+
+
+         fetch("/SalidaSuc/ObtVista",
+             {
+
+                 method: 'POST',
+                 body: JSON.stringify(post),
+                 headers: {
+                     'Accept': "application/json",
+                     "Content-Type": "application/json"
+                 }
+             })
+             .then(function (result) {
+                 if (result.ok) {
+                     return result.json();
+                 }
+             })
+             .then(function (tjson) {
+
+                 console.log(tjson);
+
+                 var cuerpo = document.getElementById("cuerpo");
+                 let a = 1;
+                 cuerpo.innerHTML = "";
+
+                 for (let item of tjson) {
+
+                     if (item.Bol_Ok != true) {
+                         cuerpo.innerHTML += `
+                         <th>${item.moneda} </th>
+                         <th><input id="montoposts${a}" type="number" name="post${a}"  readonly class="form-control form-control-sm" style="background: #ffb8b0" value="${item.monto}"/> </th>
+                         <th><input type="checkbox" class="form-check-input ml-3" id="checks${a}" disabled > </th>
+                         <th> <input id="montoget${a}" type="number" name="cast${a}" class="form-control form-control-sm" readonly style="background: #ffb8b0" value="${item.montosuc}"/></th>
+                         <th>${item.nusuario + " " + item.pusuario}</th>
+                         <th> ${ getDateIfDate(item.fecha)} </th>
+                      `
+                     }
+                     else
+                     {
+                         cuerpo.innerHTML += `
+                         <th>${item.moneda} </th>
+                         <th><input id="montoposts${a}" type="number" name="post${a}"  readonly style="background: #a7ffaa" class="form-control form-control-sm" value="${item.monto}"/> </th>
+                         <th><input type="checkbox" class="form-check-input ml-3" id="checks${a}" disabled checked> </th>
+                         <th> <input id="montoget${a}" type="number" name="cast${a}" class="form-control form-control-sm" readonly style="background: #a7ffaa" value="${item.montosuc}"/></th>
+                         <th>${item.nusuario + " " + item.pusuario}</th>
+                         <th> ${getDateIfDate(item.fecha)} </th>
+                      `
+                     }
+                     a = a + 1;
+                 }
+
+             })
+     }
+ </script>

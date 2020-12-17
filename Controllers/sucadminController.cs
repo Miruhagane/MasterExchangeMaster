@@ -59,7 +59,7 @@ namespace WebApplication2.Controllers
                     tbpaso.Fill(ids);
                     ids.Reset();
 
-                    SqlDataAdapter tbdot = new SqlDataAdapter("insert into Tb_DotGrupo (Lng_IdDotacion , Int_IdGrupo) values ( " + iddotaciones + " ," + sumgrup + " ) ", con);
+                    SqlDataAdapter tbdot = new SqlDataAdapter("insert into Tb_DotGrupo (Lng_IdDotacion , Int_IdGrupo, Bol_Activo) values ( " + iddotaciones + " ," + sumgrup + ", 0  ) ", con);
                     DataSet iddot = new DataSet();
                     tbdot.Fill(iddot);
                     iddot.Reset();

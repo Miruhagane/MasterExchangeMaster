@@ -3,75 +3,118 @@
 @{
     ViewBag.Title = "Clientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<SelectListItem> suc = (List<SelectListItem>)ViewBag.suc;
 }
+<div class="col-sm-11 mt-3 pl-5">
+    <div class="card shadow-lg rounded">
 
-<div class="col-sm-11 pt-5 pl-5 table-responsive">
-    <table class="table table-bordered table-hover table-sm table-striped">
-        <thead class="thead-dark">
-            <tr>
 
-                <th scope="col">
-                    Nombre 
-                </th>
-                <th scope="col">
-                    Nacionalidad
-                </th>
-                <th scope="col">
-                    Identificacion
-                </th>
-                <th scope="col">
-                   Telefono
-                </th>
-                <th scope="col">
-                    E-Mail
-                </th>
-                <th scope="col">
-                    Fecha de Registro
-                </th>
-                <th scope="col">
-                    Documento
-                </th>
+        <div class="card-header bg-dark text-white row">
+            <div class="col-sm-4">
+                <h5>Lista de Clientes</h5>
+            </div>
 
-                <th scope="col"></th>
-            </tr>
-        </thead>
+            <div class="col-sm-4">
+               <span>Buscar Por Nombre</span>
+                <input type="text"  id="datos" oninput="buscarcliente()" class="form-control form-control-sm" />
+            </div>
 
-        @foreach (var item in Model)
-        {
-            <tbody>
-                <tr class="table-secondary">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Txt_Cliente)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Txt_Direccion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Txt_Identificacion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Txt_Telefono)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Txt_Email)
-                    </td>
-                    <td>
-                        @item.Fec_Alta.ToString("dd/MM/yyyy")
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.File_Nombre)
-                    </td>
+        </div>
+        <div class="card-body">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Direccion</th>
+                        <th scope="col">No. Identificacion</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Correo </th>
+                        <th scope="col">Archivo</th>
+                       
 
-                    <td>
-                        <button type="button" data-toggle="tooltip" data-placement="top" title="Archivo Pdf" class="btn btn-info btn-sm" target="_blank" onclick="window.open('@Url.Action("PDF", "Clientes", new { cliente = item.Lng_IdCliente })')"> <i class="fas fa-file-pdf"></i></button>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo">
+                </tbody>
+            </table>
 
-                        
-                    </td>
-                </tr>
-            </tbody>
+        </div>
+        <div class="card-footer">
+
+        </div>
+
+
+
+
+    </div>
+
+</div>
+
+@*<td>
+        <button type="button" data-toggle="tooltip" data-placement="top" title="Archivo Pdf" class="btn btn-sm" target="_blank" onclick="window.open('@Url.Action("PDF", "Clientes", new { cliente = item.Lng_IdCliente })')"> <img src="~/Content/iconos/pdfcliente.png" /> </button>
+    </td>*@
+
+
+<script>
+
+
+    function buscarcliente()
+    {
+        var data = document.getElementById("datos").value;
+        const post = {
+            datos: data
         }
 
-    </table>     
-</div>
+        fetch("Clientes/litaclientes",
+            {
+                method: 'POST',
+                body: JSON.stringify(post),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then(function (tjson)
+            {
+                var cuerpo = document.getElementById("cuerpo");
+                let a = 1;
+                cuerpo.innerHTML = "";
+
+
+
+
+                for (let item of tjson) {
+
+                    let id = item.Lng_IdCliente;
+
+                    var url = '@Html.Raw(@Url.Action("PDF", "Clientes"))' + '?cliente=' + id; 
+
+                    cuerpo.innerHTML += `
+                              <th style= "display: none"><input id="registro${a}" type="number" name="registro${a}" class="form-control form-control-sm" value="${item.Lng_IdCliente}"/></th>
+                              <th><small> ${item.Txt_Cliente}</small></th>
+                              <th><small>${item.Txt_Direccion}</small></th>
+                              <th><small>${item.Txt_Identificacion}</small></th>
+                              <th><small>${item.Txt_Telefono} </small></th>
+                              <th><small>${item.Txt_Email}</small></th>
+                              <th><button type="button" data-toggle="tooltip" data-placement="top" title="Archivo Pdf" class="btn btn-sm" target="_blank" onclick="window.open('${url}')"> <img src="../../Content/iconos/pdfcliente.png" /> </button></th>
+
+
+                              `
+
+
+                    a = a + 1;
+                                  }
+
+                              })
+    }
+
+
+</script>
 
 

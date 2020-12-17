@@ -1,5 +1,10 @@
 ﻿@model IEnumerable<WebApplication2.Models.ViewModels.registrosall>
 
+@{ 
+
+    int a = 1;
+}
+
 <div class="col-sm-12">
     <div class="card">
         <div class="card-body">
@@ -57,7 +62,7 @@
                         <tr>
 
                             <td style="display: none">
-                                <input class="form-control form-control-sm" id="idregistro" value="@item.Lng_IdRegistro" />
+                                <input class="form-control form-control-sm" id="idregistro_@a" value="@item.Lng_IdRegistro" />
                             </td>
 
                             <td style="display: none">
@@ -103,18 +108,21 @@
                             </td>
 
                             <td>
-                                <button type="button" ata-toggle="tooltip" onclick="cancelar()" data-placement="top" title="Cancelar" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#cancelacion">
-                                    <i class="fas fa-strikethrough"></i>
+                                <button type="button" ata-toggle="tooltip" onclick="cancelar(@a)" data-placement="top" title="Cancelar" class="btn btn-sm" data-toggle="modal" data-target="#cancelacion">
+
+                                    <img src="~/Content/iconos/eliminardoc.png" />
                                 </button>
                             </td>
 
                             <td>
-                                <button type="button" ata-toggle="tooltip" data-placement="top" title="Imprimir Ticket" class="btn btn-primary btn-sm" onclick="impresionticket()">
-                                    <i class="fas fa-print"></i>
+                                <button type="button" ata-toggle="tooltip" data-placement="top" title="Imprimir Ticket" class="btn btn-sm" onclick="impresionticket()">
+                                    <img src="~/Content/iconos/impresion.png" />
                                 </button>
                             </td>
                         </tr>
                     </tbody>
+
+                    a = a + 1;
                 }
 
             </table>
@@ -179,7 +187,7 @@
 </div>
 
 @*modulo impresion de ticket Compra*@
-<div class="modal fade " id="ticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--<div class="modal fade " id="ticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -264,11 +272,11 @@
 
         </div>
     </div>
-</div>
+</div>-->
 
 
 <!-- modulo impresion de ticket Compra -->
-<div class="modal fade " id="ticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--<div class="modal fade " id="ticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -365,14 +373,14 @@
 
         </div>
     </div>
-</div>
+</div>-->
 
 
 <script>
-    function cancelar()
+    function cancelar(d)
     {
 
-        var id = document.getElementById("idregistro").value
+        var id = document.getElementById("idregistro_" + d + "").value
 
         document.getElementById("id").value = id;
 
@@ -381,15 +389,15 @@
 </script>
 
 <script>
-    (function () {
-        drt();
-    })();
+    //(function () {
+    //    drt();
+    //})();
 
-    function drt() {
-        var a = document.getElementById("idregistro").value;
-        document.getElementById("idpost").value = a;
+    //function drt() {
+    //    var a = document.getElementById("idregistro").value;
+    //    document.getElementById("idpost").value = a;
 
-    }
+    //}
 
 
 </script>

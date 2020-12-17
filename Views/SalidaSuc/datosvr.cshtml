@@ -8,8 +8,20 @@
 
 <div class="col-sm-10 mt-3 ">
     <div class="card shadow-lg rounded">
-        <div class="card-header bg-dark text-white">
-            <h5>Saldo actual</h5>
+        <div class="card-header bg-dark text-white row">
+            <div class="col-sm-4">
+                <h5>Saldo actual</h5>
+            </div>
+
+            <div class="col-sm-4">
+                <label>Fecha de inicio</label>
+                <input type="datetime-local" id="fecha1" class="form-control form-control-sm" />
+            </div>
+
+            <div class="col-sm-4">
+                 <label>Fecha Final</label>
+                <input type="datetime-local" id="fecha2" class="form-control form-control-sm" />
+            </div>
         </div>
         <div class="card-body">
             <table class="table table-sm">
@@ -19,7 +31,7 @@
                         <th scope="col"><small>Fecha</small></th>
                         <th scope="col"><small>Usuario</small></th>
                         <th><small></small></th>
-                        <th><small></small></th>
+                       
                     </tr>
                 </thead>
                 <tbody id="cuerpo">
@@ -39,30 +51,19 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Cambio de Estatus</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Cancelar ticket</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @using (Ajax.BeginForm("status", new AjaxOptions
-            {
-                HttpMethod = "POST",
-                OnComplete = "Complet()"
-
-            }))
-            {
+         
                 <div class="modal-body">
 
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
                     <div class="col-sm-12">
-                        <label>Actualizar estados</label>
-
-
+                        
                         <div style="display: none">
-                            <input type="text" id="idregistro" class="form-control form-control-sm" name="idregistro" />
-                            <input type="text" id="estatus" name="estatus" value="5" class="form-control form-control-sm" />
+                            <input type="text" id="idregistro" class="form-control form-control-sm"  />
+                            <input type="text" id="estatus" value="5" class="form-control form-control-sm" />
                         </div>
 
                         <div id="motivo" class="col-sm-12">
@@ -73,22 +74,11 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="submit" class="btn btn-primary">Proceso Cancelado</button>
+                    <button type="button" onclick="cancelaciones()" class="btn btn-primary">Cancelar</button>
                 </div>
 
-                <script>
-                    function Complet() {
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Datos Actualizados',
-                        })
-
-                        location.reload();
-                    }
-
-                </script>
-            }
+             
+          
         </div>
     </div>
 </div>
@@ -102,10 +92,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @using (Ajax.BeginForm("datosvr", null,  new AjaxOptions
+            @using (Ajax.BeginForm("datosvr", null, new AjaxOptions
             {
                 HttpMethod = "POST",
-                OnComplete = "Complet()"
+              
+
+
 
             }, new { enctype = "multipart/form-data" }))
             {
@@ -121,7 +113,7 @@
                         <div style="display: none">
 
                             <label>Actualizar estados</label>
-                            <input type="text" id="idgrupopost" class="form-control form-control-sm" name="idregistro" />
+                            <input type="text" id="idgrupopost" class="form-control form-control-sm" name="grupo" />
 
                         </div>
 
@@ -129,7 +121,7 @@
                             <label>Archivo de Ticket</label>
                             <div class="col-sm-10">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input form-control-sm" name="archivo" id="archivo" required>
+                                    <input type="file" class="custom-file-input form-control-sm" name="archivo" id="archivo">
                                     <label class="custom-file-label" for="archivo">Agrega un archivo</label>
                                 </div>
 
@@ -142,11 +134,7 @@
                                         }
                                     });
 
-                                    document.getElementById("archivo").onchange = function () {
-                                        var rt = document.getElementById("archivo").files[0].name;
-                                        console.log(rt);
-                                        document.getElementById("nombrearchivo").value = rt;
-                                    }
+
                                 </script>
                             </div>
                         </div>
@@ -175,13 +163,39 @@
 </div>
 
 <script>
-    (function () {
-        agrupacion();
-    })();
 
+    var funselect = document.getElementById("fecha1");
+    var andselect = document.getElementById("fecha2");
+
+    funselect.addEventListener("change", agrupacion);
+    andselect.addEventListener("change", agrupacion);
+
+                                                                                                                                    
+    agrupacion();
 
     function agrupacion() {
-        fetch("/SalidaSuc/agrupar")
+
+        let f1 = document.getElementById("fecha1").value;
+        let f2 = document.getElementById("fecha2").value;
+
+   
+
+        const post = {
+            fe1: f1,
+            fe2: f2
+        }
+
+        console.log(post);
+          urlget = "@Url.Content("~/SalidaSuc/agrupar")";
+        fetch(urlget,
+            {
+                method: 'POST',
+                body: JSON.stringify(post),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                         }
+            })
             .then(function (result) {
 
                 if (result.ok) {
@@ -211,8 +225,10 @@
                             <td><small>$ ${item.total}</small></td>
                             <td><small>${fecha}</small></td>
                             <td><small>${item.Usuario}</small></td>
-                            <td><button data-toggle="modal" data-target="#actualizarstatus type="button" class="btn btn-sm btn-danger"><i class="fas fa-strikethrough"></i></button> </td>
-                            <td><button data-toggle="modal" data-placement="bottom" title="Ingresar Ticket"  data-toggle="modal" data-target="#postticket" onclick="obtgrupo(${valor})" type="button" class="btn btn-sm btn-danger"><i class="fas fa-ticket-alt"></i></button> </td>
+                            <td><button data-toggle="modal" data-target="#actualizarstatus" type="button" class="btn btn-sm" onclick="obtgrupocancelacion(${valor})"><img src="../../Content/iconos/eliminar.png" /> </button>
+                               <button data-toggle="modal" data-placement="bottom" title="Ingresar Ticket"  data-toggle="modal" data-target="#postticket" onclick="obtgrupoticket(${valor})" type="button" class="btn btn-sm  pdf">
+                                <img src="../../Content/iconos/pdf.png" /></button></td>
+                        
                         </tr>
                         `
                     valor = valor + 1;
@@ -221,13 +237,83 @@
     }
 
 
-    function obtgrupo(idregistro) {
+    function obtgrupoticket(idregistro) {
         var id = document.getElementById("idgrupo" + idregistro).value;
 
         document.getElementById("idgrupopost").value = id;
     }
 
+    function obtgrupocancelacion(idregistro)
+    {
+        var id = document.getElementById("idgrupo" + idregistro).value;
+        document.getElementById("idregistro").value = id;
+
+    }
+
+
+    function cancelaciones() {
+        var idregistro = document.getElementById("idregistro").value;
+        var mensaje = document.getElementById("mtc").value;
+        const post = {
+            id: idregistro,
+            mnsn: mensaje
+        }
+
+
+        fetch("/SalidaSuc/cancelaciontickets",
+            {
+
+                method: 'POST',
+                body: JSON.stringify(post),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+            })
+
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+
+            .then(function (tjson) {
+                console.log(tjson);
+
+                if (tjson == 500) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Dotacion Cancelada',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                    agrupacion();
+
+                } else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Hubo un error',
+                        text: 'Contacte con Sistemas para Obtener Mas Informacion',
+                        showConfirmButton: false,
+                        timer: 3500
+                    })
+                }
+
+               
+
+
+            })
+
+
+    }
+
 </script>
+
+
+
 
 @*necesario para ajaxdocumentos*@
 <script>

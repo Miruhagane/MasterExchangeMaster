@@ -117,7 +117,7 @@
                                 <div class="col-sm-6 mb-3" style="display: none">
                                     <label>Fecha Entrada</label>
                                     <div class="col-md-10">
-                                        @Html.TextBoxFor(model => model.Fec_Ini, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
+                                        @Html.TextBoxFor(model => model.Fec_Ini, new { @Value = @DateTime.Now.AddHours(-5).ToString("yyyy-MM-dd HH:mm:ss") })
                                         @Html.ValidationMessageFor(model => model.Fec_Ini, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                @using (Ajax.BeginForm("status", new AjaxOptions
+                @using (Ajax.BeginForm("postarqueo", new AjaxOptions
                 {
                     HttpMethod = "POST",
                     OnComplete = "Complet()"

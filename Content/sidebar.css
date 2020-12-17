@@ -57,3 +57,10 @@ a:hover {
 .stat {
     border-right: 1px solid var(--grey);
 }
+
+.alerta {
+    background: #ffb8b0;
+}
+.possible {
+    background: #a7ffaa;
+}

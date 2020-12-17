@@ -16,8 +16,8 @@ namespace WebApplication2.aspx
 
         string con = ConfigurationManager.ConnectionStrings["server2"].ConnectionString;
         
-        string[] valoresmoneda = {"","","","","",""};
-        int[] idmonedas = { 1, 2, 3, 4, 5, 6 };
+        string[] valoresmoneda = {"","","","","","",""};
+        int[] idmonedas = { 1, 2, 3, 4, 5, 6, 8 };
 
    
 
@@ -34,7 +34,7 @@ namespace WebApplication2.aspx
         private void obtndivisa()
         {
             //int sucursalid = Convert.ToInt32(sucursalselect.SelectedValue);
-            SqlDataAdapter compras = new SqlDataAdapter("SELECT DISTINCT a.Int_IdMoneda AS IdTaxa, b.Txt_Moneda AS Moneda, a.dbl_Valor AS Valor, a.Fec_Dia AS Dia, a.Lng_IdTaxa, b.Int_IdMoneda FROM dbo.Tb_Taxas AS a INNER JOIN dbo.Ct_Moneda AS b ON a.Int_IdMoneda = b.Int_IdMoneda inner join dbo.Tb_TaxSuc as c on a.Lng_IdTaxa = c.Lng_IdTaxSuc where(a.Int_IdMoneda IN (1, 2, 3, 4, 5, 6)) and a.Lng_IdTaxa in (SELECT TOP (6) Lng_IdTaxa from Tb_Taxas as d inner join dbo.Tb_TaxSuc as c on d.Lng_IdTaxa = c.Lng_IdTaxSuc where Bol_Tipo = 0 and c.Lng_IdSucursal = 1 order by 1 desc) and a.Bol_Tipo = 0 order by 1", con);
+            SqlDataAdapter compras = new SqlDataAdapter("SELECT DISTINCT a.Int_IdMoneda AS IdTaxa, b.Txt_Moneda AS Moneda, a.dbl_Valor AS Valor, a.Fec_Dia AS Dia, a.Lng_IdTaxa, b.Int_IdMoneda FROM dbo.Tb_Taxas AS a INNER JOIN dbo.Ct_Moneda AS b ON a.Int_IdMoneda = b.Int_IdMoneda inner join dbo.Tb_TaxSuc as c on a.Lng_IdTaxa = c.Lng_IdTaxSuc where a.Int_IdMoneda <> 7 and a.Lng_IdTaxa in (SELECT TOP (7) Lng_IdTaxa from Tb_Taxas as d inner join dbo.Tb_TaxSuc as c on d.Lng_IdTaxa = c.Lng_IdTaxSuc where Bol_Tipo = 0 and c.Lng_IdSucursal = 1 order by 1 desc) and a.Bol_Tipo = 0 order by 1", con);
             DataTable tabla = new DataTable();
             compras.Fill(tabla);
             this.Tb_taxaCompras.DataSource = (tabla);
@@ -69,7 +69,7 @@ namespace WebApplication2.aspx
                     int valor = 0;
                     int v = 0;
 
-                    for (int tb = 0; tb < 6; tb++)
+                    for (int tb = 0; tb < 7; tb++)
                     {
 
                         if (valoresmoneda[v] == "")
@@ -86,7 +86,7 @@ namespace WebApplication2.aspx
                         v = v + 1;
                     }
 
-                    for (int b = 0; b < 6; b++)
+                    for (int b = 0; b < 7; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
                         SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + idmonedas[valor] + "," + valoresmoneda[valor] + ", 0, GETDATE(), '', 1)", conectorbd);
@@ -101,7 +101,7 @@ namespace WebApplication2.aspx
 
                         valor = valor + 1;
                     }
-                    for (int l = 0; l < 6; l++)
+                    for (int l = 0; l < 7; l++)
                     {
                         valoresmoneda[val] = "";
                         val = val + 1;
@@ -132,7 +132,7 @@ namespace WebApplication2.aspx
                     int val = 0;
                     int v = 0;
                     int valor = 0;
-                    for (int tb = 0; tb < 6; tb++)
+                    for (int tb = 0; tb < 7; tb++)
                     {
 
                         if (valoresmoneda[v] == "")
@@ -149,7 +149,7 @@ namespace WebApplication2.aspx
                         v = v + 1;
                     }
 
-                    for (int b = 0; b < 6; b++)
+                    for (int b = 0; b < 7; b++)
                   {
                     SqlConnection conectorbd = new SqlConnection(con);
                     SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( "+ idmonedas[valor]+ "," + valoresmoneda[valor]+ ", 0, GETDATE(), '', 1)", conectorbd);
@@ -165,7 +165,7 @@ namespace WebApplication2.aspx
                         valor = valor + 1;
                     }
 
-                    for (int l = 0; l < 6; l++)
+                    for (int l = 0; l < 7; l++)
                     {
                         valoresmoneda[val] = "";
                         val = val + 1;
@@ -204,7 +204,7 @@ namespace WebApplication2.aspx
                     int valor = 0;
                     int v = 0;
 
-                    for (int tb = 0; tb < 6; tb++)
+                    for (int tb = 0; tb < 7; tb++)
                     {
 
                         if (valoresmoneda[v] == "")
@@ -221,7 +221,7 @@ namespace WebApplication2.aspx
                         v = v + 1;
                     }
 
-                    for (int b = 0; b < 6; b++)
+                    for (int b = 0; b < 7; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
                         SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 0, GETDATE(), '', 1)", conectorbd);
@@ -236,7 +236,7 @@ namespace WebApplication2.aspx
                         valor = valor + 1;
 
                     }
-                    for (int l = 0; l < 6; l++)
+                    for (int l = 0; l < 7; l++)
                     {
                         valoresmoneda[val] = "";
                         val = val + 1;
@@ -274,7 +274,7 @@ namespace WebApplication2.aspx
                     int v = 0;
                     int valor = 0;
 
-                    for (int tb = 0; tb < 6; tb++)
+                    for (int tb = 0; tb < 7; tb++)
                     {
 
                         if (valoresmoneda[v] == "")
@@ -291,7 +291,7 @@ namespace WebApplication2.aspx
                         v = v + 1;
                     }
 
-                    for (int b = 0; b < 6; b++)
+                    for (int b = 0; b < 7; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
                         SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + idmonedas[valor] + "," + valoresmoneda[valor] + ", 0, GETDATE(), '', 1)", conectorbd);
@@ -305,7 +305,7 @@ namespace WebApplication2.aspx
                         conectorbd.Close();
                         valor = valor + 1;
                     }
-                    for (int l = 0; l < 6; l++)
+                    for (int l = 0; l < 7; l++)
                     {
                         valoresmoneda[val] = "";
                         val = val + 1;
@@ -343,7 +343,7 @@ namespace WebApplication2.aspx
 
                     int v = 0;
 
-                    for (int tb = 0; tb < 6; tb++)
+                    for (int tb = 0; tb < 7; tb++)
                     {
 
                         if (valoresmoneda[v] == "")
@@ -360,7 +360,7 @@ namespace WebApplication2.aspx
                         v = v + 1;
                     }
 
-                    for (int b = 0; b < 6; b++)
+                    for (int b = 0; b < 7; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
                         SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + ", " + valoresmoneda[valor] + ", 0, GETDATE(), '', 1)", conectorbd);
@@ -374,7 +374,7 @@ namespace WebApplication2.aspx
                         conectorbd.Close();
                         valor = valor + 1;
                     }
-                    for (int l = 0; l < 6; l++)
+                    for (int l = 0; l < 7; l++)
                     {
                         valoresmoneda[val] = "";
                         val = val + 1;
@@ -410,7 +410,7 @@ namespace WebApplication2.aspx
                     int v = 0;
                     int valor = 0;
 
-                    for (int tb = 0; tb < 6; tb++)
+                    for (int tb = 0; tb < 7; tb++)
                     {
 
                         if (valoresmoneda[v] == "")
@@ -427,7 +427,7 @@ namespace WebApplication2.aspx
                         v = v + 1;
                     }
 
-                    for (int b = 0; b < 6; b++)
+                    for (int b = 0; b < 7; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
                         SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES ( " + idmonedas[valor] + "," + valoresmoneda[valor] + ", 0, GETDATE(), '', 1)", conectorbd);
@@ -442,7 +442,7 @@ namespace WebApplication2.aspx
                         valor = valor + 1;
                     }
 
-                    for (int l = 0; l < 6; l++)
+                    for (int l = 0; l < 7; l++)
                     {
                         valoresmoneda[val] = "";
                         val = val + 1;

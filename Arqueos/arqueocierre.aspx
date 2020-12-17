@@ -440,9 +440,6 @@
            var a = new Intl.NumberFormat().format(resultado);
            document.getElementById("valor").innerHTML = a;
         
-        
-           
-
        }
    </script>
 

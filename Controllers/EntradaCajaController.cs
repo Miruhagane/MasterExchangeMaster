@@ -129,9 +129,10 @@ namespace WebApplication2.Controllers
             return Json(querty, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult admins()
+        public JsonResult admins(DateTime fec)
         {
-            DateTime fecha = Convert.ToDateTime(Session["fecha"]);
+            DateTime fecha = fec;
+            DateTime fec1 = fecha.AddHours(23);
 
             List<inventario> querty;
 
@@ -142,7 +143,7 @@ namespace WebApplication2.Controllers
                           join cb in dc.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
                           join cc in dc.Tb_Sucursal on c.Int_Sucursal equals cc.Lng_IdSucursal
                           join cd in dc.Tb_Usuarios on ca.Int_IdUsuario equals cd.Int_Idusuario
-                          where c.Int_Estatus == 2 || c.Int_Estatus == 3 && c.Fec_Ini > fecha 
+                          where c.Fec_Ini > fecha && c.Fec_Ini < fec1 && c.Int_Estatus >= 2 
                           select new inventario
                           {
                               Lng_IdEntrada = c.Lng_IdEntrada,

@@ -43,13 +43,13 @@
     </div>
     
     <div class="d-flex " id="content-wrapper">
-        <div id="sidebar-container" class="fondo ">
+        <div style="display: none" id="sidebar-container" class="fondo ">
 
             <div class="logo">
                
             </div>
 
-            <div class="menu">
+            <div  class="menu">
                 <div class="d-block text-light p-1 border-0">
 
                     <button type="button" class="btn btn-success menubtn" onclick="location.href='@Url.Action("Index", "profile")'">
@@ -97,27 +97,47 @@
                     <button type="button" class="btn btn-dark menubtn" id="cajas" style="display: none" onclick="location.href='@Url.Action("actualizar", "EntradaCaja")'">Dotaciones</button>
                 </div>
 
-
-                <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn" id="admins" style="display: none" onclick="location.href='@Url.Action("dotaciones", "EntradaCaja")'">Dotaciones</button>
+                <div class="btn-group  d-block text-light p-1 border-0">
+                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="dotaciones" onclick="dotaciones()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dotaciones
+                    </button>
+                    <div class="dropdown-menu bg-dark">
+                        <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("Index", "sucadmin")'">Dotaciones iniciales</button>
+                        <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("dotaciones", "EntradaCaja")'">Solicitudes de Caja</button>
+                        <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("indexsalidas", "SalidaSuc")'">Historico de Dotaciones</button>
+                    </div>
                 </div>
 
 
-                <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn" id="sucadmin" style="display: none" onclick="location.href='@Url.Action("Index", "sucadmin")'">Dotaciones iniciales</button>
+                <div class="btn-group  d-block text-light p-1 border-0">
+                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="tesoreria" onclick="tesoreria()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tesoreria
+                    </button>
+                    <div class="dropdown-menu bg-dark">
+                        <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("datosvr", "SalidaSuc")'">Comprobantes </button>
+                        <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("ArqueoTesoreria", "SalidaSuc")'">Arqueo Tesoreria</button>
+                        <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("vistaTesoreria", "SalidaSuc")'">Historial de Arqueos</button>
+                    </div>
                 </div>
 
-                <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn"  onclick="location.href='@Url.Action("datosvr", "SalidaSuc")'">Agrupacion</button>
+                <div class="btn-group  d-block text-light p-1 border-0">
+                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="reportes" onclick="reportes()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Reportes
+                    </button>
+                    <div class="dropdown-menu bg-dark">
+                        <button type="button" class="btn btn-dark menubtn"  onclick="location.href='@Url.Action("reportes", "Reportes", new { id = 1 })'">Compras</button>
+                        <button type="button" class="btn btn-dark menubtn"  onclick="location.href='@Url.Action("reportes", "Reportes", new { id = 2 })'">Ventas</button>
+                        <button type="button" class="btn btn-dark menubtn"  onclick="location.href='@Url.Action("reportes", "Reportes", new { id = 3 })'">Arqueo Cajeros</button>
+                        <button type="button" class="btn btn-dark menubtn"  onclick="location.href='@Url.Action("reportes", "Reportes", new { id = 4 })'">Arqueo Tesoreria</button>
+                    </div>
                 </div>
+
+              
 
                 <div class="d-block text-light  border-0">
                     <button type="button" class="btn btn-dark menubtn" id="salidacaja" onclick="location.href='@Url.Action("Index", "SalidaSuc")'">Salida de Caja</button>
                 </div>
 
-                <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn" id="salidaadmin" onclick="location.href='@Url.Action("indexsalidas", "SalidaSuc")'">Salida de Caja</button>
-                </div>
 
                 <div class="d-block text-light  border-0">
                     <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("cerrararqueo", "Arqueo")'">Arqueo Final</button>
@@ -170,7 +190,7 @@
                         <li class="nav-item avatar dropdown">
                             <a class="nav-link dropdown-toggle " onclick="Profile()" id="Profile" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user-alt"></i>
+                                <i class="fas fa-user-tie"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                                  aria-labelledby="navbarDropdownMenuLink-55">
@@ -234,13 +254,12 @@
                 case "1":
                     console.log("administrativo");     
                     document.getElementById("cajas").style.display = "none";
-                    document.getElementById("admins").style.display = "";
-                   
+                
                     document.getElementById("cancelaciones").style.display = "none";
-                    document.getElementById("sucadmin").style.display = "";
-                    document.getElementById("salidaadmin").style.display = "";
+                    
                     document.getElementById("salidacaja").style.display = "none";
-
+                    document.getElementById("tesoreria").style.display = "";
+                    document.getElementById("reportes").style.display = "";
                  
                     break;
 
@@ -249,15 +268,15 @@
                     console.log("cajero");
                     document.getElementById("usuarios").style.display = "none";
                     document.getElementById("tazas").style.display = "none";
-
+                    document.getElementById("dotaciones").style.display = "none";
                     document.getElementById("cajas").style.display = "";
-                    document.getElementById("admins").style.display = "none";
+            
 
                     document.getElementById("cancelaciones").style.display = "";
-                    document.getElementById("sucadmin").style.display = "none";
-                    document.getElementById("salidaadmin").style.display = "none";
+            
                     document.getElementById("salidacaja").style.display = "";
-
+                    document.getElementById("tesoreria").style.display = "none";
+                    document.getElementById("reportes").style.display = "none";
                     
                     break;
 
@@ -285,12 +304,26 @@
 
         }
 
+        function tesoreria()
+        {
+
+            $('#tesoreria').dropdown('toggle')
+        }
+
 
         function Profile() {
             $('#Profile').dropdown('toggle')
-            console.log("btn_funciona");
+            
         }
 
+        function dotaciones()
+        {
+            $('#dotaciones').dropdown('toggle')
+        }
+
+        function reportes() {
+            $('#reportes').dropdown('toggle')
+        }
     
 
     </script>

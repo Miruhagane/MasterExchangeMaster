@@ -13,7 +13,6 @@
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_RegUsu" Width="1.5" PointX="0.75" PointY="9.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Ct_Areas" Width="1.5" PointX="11.375" PointY="0.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Ct_TipoTran" Width="1.5" PointX="11.375" PointY="3.75" />
-        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Sucursal" Width="1.5" PointX="3.375" PointY="11.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Taxacompcomb" Width="1.5" PointX="7.375" PointY="11.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_TaxSuc" Width="1.5" PointX="0.75" PointY="12.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_EntEmp" Width="1.5" PointX="9.375" PointY="12.75" />
@@ -35,6 +34,8 @@
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_DotGrupo" Width="1.5" PointX="3.25" PointY="9.25" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_EstatusTesoreria" Width="1.5" PointX="13.375" PointY="0.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_TicketTesoreria" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_ArqueoTesoria" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Sucursal" Width="1.5" PointX="3.375" PointY="11.75" />
 
       </Diagram>
     </edmx:Diagrams>

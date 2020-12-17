@@ -37,16 +37,22 @@ namespace WebApplication2.Controllers
         [HttpPost]
         public ActionResult Index(string usuario, string Pass, string turno, DateTime fecha)
         {
+         
            
             if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(Pass))
             {
                        //validacion de usuario
                MasterExchangeEntities db = new MasterExchangeEntities();
 
-                var userv = db.Tb_Usuarios.FirstOrDefault(e => e.Txt_NomCorto == usuario && e.Txt_Password == Pass);
+                var userv = db.Tb_Usuarios.FirstOrDefault(e => e.Txt_NomCorto == usuario && e.Txt_Password == Pass && e.Bol_Activo == 0);
+
+                
 
                 Session["fecha"] = fecha;
                 Session["turno"] = turno;
+
+                DateTime fecha1 = Convert.ToDateTime(fecha);
+                DateTime fecha2 = fecha1.AddHours(23);
 
                 if (userv != null)
                 {
@@ -95,7 +101,7 @@ namespace WebApplication2.Controllers
 
                     var userval = (from c in db.Tb_EntradaSuc
                                    join ca in db.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
-                                   where c.Int_Sucursal == Sucursal && c.Bol_Activo == status && ca.Int_IdTurno == idturno && ca.Int_IdUsuario == userv.Int_Idusuario
+                                   where c.Int_Sucursal == Sucursal && c.Bol_Activo == status && ca.Int_IdTurno == idturno && ca.Int_IdUsuario == userv.Int_Idusuario && c.Fec_Ini > fecha1 && c.Fec_Ini < fecha2
                                    select c
                                    ).FirstOrDefault();
 

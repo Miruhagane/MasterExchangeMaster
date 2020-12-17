@@ -17,5 +17,7 @@ namespace WebApplication2.Models
         public int Lng_IdotGrupo { get; set; }
         public Nullable<int> Lng_IdDotacion { get; set; }
         public Nullable<int> Int_IdGrupo { get; set; }
+        public Nullable<bool> Bol_Activo { get; set; }
+        public string Txt_Motivo { get; set; }
     }
 }

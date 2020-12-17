@@ -70,7 +70,7 @@ namespace WebApplication2.Arqueos
             int valor = 0;
 
             int v = 0;
-            for (int a = 0; a < 11; a++)
+            for (int a = 0; a < 11; a++)    
             {
                 if (valoredenominacion[v] == "")
                 {

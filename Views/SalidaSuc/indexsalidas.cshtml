@@ -11,8 +11,17 @@
 
 <div class="col-sm-10 mt-3 pl-5">
     <div class="card shadow-lg rounded">
-        <div class="card-header bg-dark text-white">
-            <h5>Saldo actual</h5>
+        <div class="card-header bg-dark text-white row">
+            <div class="col-sm-8">
+                <h5>Dotaciones de las sucursales</h5>
+            </div>
+
+            <div class="col-sm-4">
+                <label>Fecha de inicio</label>
+                <input type="date" id="fecha1"  value="2020-11-01" class="form-control form-control-sm" />
+            </div>
+
+          
         </div>
         <div class="card-body">
             <table class="table table-sm">
@@ -23,6 +32,7 @@
                         <th scope="col">Sucursal</th>
                         <th scope="col">Usuario</th>
                         <th scope="col">Mensaje </th>
+                        <th scope="col">Fecha</th>
                         <th scope="col">Estatus</th>
 
 
@@ -110,7 +120,7 @@
 
                             <div class="col-sm-6 mb-3">
                                 <label>Turno de apliacion</label>
-                                <select class="form-control btn-light" id="turnos" >
+                                <select class="form-control btn-light" id="turnos">
                                     <option value="0"> Seleciona un Turno de Aplicacion </option>
                                     <option value="1">Turno 1</option>
                                     <option value="2">Turno 2</option>
@@ -134,7 +144,12 @@
 
 
                             <div class="col-sm-12 mt-4">
-                                <button type="submit" class="btn btn-success">Guardar </button>
+                                <button  type="submit" class="btn btn-success">Guardar </button>
+
+                                <div style="display: none"> 
+                                    <button  type="button" id="closemodal" data-dismiss="modal"></button>
+                                </div>
+
                             </div>
 
                         </div>
@@ -151,8 +166,8 @@
                                 showConfirmButton: false,
                                 timer: 3000
                             })
-
-                            location.reload();
+                            document.getElementById("closemodal").click();
+                            estados();
                         }
                     </script>
 
@@ -194,7 +209,7 @@
                                 <option value="5">Cancelado</option>
 
                             </select>
-
+                            <img src="" />
                         </div>
 
                         <div style="display: none">
@@ -214,7 +229,10 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <button  type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <div style="display: none">
+                       <button id="closeinput"  type="button" data-dismiss="modal"></button>
+                    </div>
                 </div>
 
                 <script>
@@ -225,7 +243,10 @@
                             title: 'Datos Actualizados',
                         })
 
-                        location.reload();
+                     
+
+                        estados();
+                        document.getElementById("closeinput").click();
                     }
 
                 </script>
@@ -263,8 +284,7 @@
 
     cambio();
 
-    function cambio()
-    {
+    function cambio() {
         var idsucursal = document.getElementById("sucursal").value;
         document.getElementById("intsucursal").value = idsucursal;
     }
@@ -272,37 +292,61 @@
     var t1 = document.getElementById("turnos");
     t1.addEventListener("change", turno)
 
-    function turno()
-    {
+    function turno() {
         var turno = document.getElementById("turnos").value;
         document.getElementById("turnopost").value = turno;
     }
-
 </script>
 
 <script>
 
-    (function () {
-        estados();
-    })();
+    var funselect = document.getElementById("fecha1");
 
 
-    setInterval(function () { estados(); }, 1000);
+    funselect.addEventListener("change", estados);
+
+    estados();
+
+    function getDateIfDate(d) {
+        var m = d.match(/\/Date\((\d+)\)\//);
+        return m ? (new Date(+m[1])).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : d;
+    }
+
 
     function estados()
     {
-        fetch("/SalidaSuc/salidas")
-            .then(function (result) {
-                if (result.ok) {
-                    return result.json();
-                }
+        let date = document.getElementById("fecha1").value;
+
+        console.log(date);
+
+        const query = {
+            fecha1: date
+   
+        }
+
+        console.log(query);
+         
+        fetch("/SalidaSuc/obthistorial",
+            {
+                method: 'POST',
+                body: JSON.stringify(query),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                         }
             })
 
+            .then(function (result) {
+                if (result.ok) {
+                    console.log(result);
+                    return result.json();
+
+                }
+            })
+           
             .then(function (tjson)
             {
-
-
-
+                console.log(tjson);
                 var cuerpo = document.getElementById("cuerpo");
 
                 cuerpo.innerHTML = "";
@@ -311,19 +355,15 @@
                 let estatus = "";
 
                 let cambio = "";
+         
 
                 for (let item of tjson)
                 {
-
                     estatus += item.Int_estatus
-
-
-
                     //Estatus de entradas creadas
                     if (estatus == "1") {
                         cambio += item.Dbl_SaldoSalida
                         var a = new Intl.NumberFormat().format(cambio);
-
 
 
                         cuerpo.innerHTML += `
@@ -332,9 +372,10 @@
                             <td>$ ${a}</td>
                             <td>${item.Txt_Moneda} </td>
                             <td>${item.Txt_sucursal}</td>
-                            <td>${item.username}</td>
-                             <td>${item.Txt_Motivo}</td>
-                              <td> <button onclick="obtid(${valor})" class="btn btn-sm btn-secondary">Dotacion Inicial</button> </td>
+                            <td>${item.username} </td>
+                            <td>${item.Txt_Motivo}</td>
+                            <td>${getDateIfDate(item.fecha)} </td>
+                              <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-secondary">Dotacion Inicial</button> </td>
                         </tr>
                        `
                         estatus = "";
@@ -346,13 +387,18 @@
                         cambio += item.Dbl_SaldoSalida
                         var b = new Intl.NumberFormat().format(cambio);
 
+                        var f1 = new Date(item.fecha);
+                        var fec = f1.toLocaleDateString();
+
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
                             <td>$ ${b}</td>
-                            <td>${item.Txt_Moneda} </td>
+                              <td>${item.Txt_Moneda} </td>
                             <td>${item.Txt_sucursal}</td>
-                            <td>${item.username}</td>
+                            <td>${item.username} </td>
+                            <td>${item.Txt_Motivo}</td>
+                            <td>${getDateIfDate(item.fecha)} </td>
 
                             <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-info">Solicitado</button> </td>
                         </tr>
@@ -367,14 +413,18 @@
                         cambio += item.Dbl_SaldoSalida
                         var c = new Intl.NumberFormat().format(cambio);
 
+                        var f1 = new Date(item.fecha);
+                        var fec = f1.toLocaleDateString();
+
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
                             <td>$ ${c}</td>
-                            <td>${item.Txt_Moneda} </td>
+                               <td>${item.Txt_Moneda} </td>
                             <td>${item.Txt_sucursal}</td>
-                            <td>${item.username}</td>
+                            <td>${item.username} </td>
                             <td>${item.Txt_Motivo}</td>
+                            <td>${getDateIfDate(item.fecha)} </td>
                            <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-primary">En Proceso</button> </td>
                         </tr>
                        `
@@ -387,14 +437,18 @@
                         cambio += item.Dbl_SaldoSalida
                         var d = new Intl.NumberFormat().format(cambio);
 
+                        var f1 = new Date(item.fecha);
+                        var fec = f1.toLocaleDateString();
+
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
                             <td>$ ${d}</td>
-                            <td>${item.Txt_Moneda} </td>
+                              <td>${item.Txt_Moneda} </td>
                             <td>${item.Txt_sucursal}</td>
-                            <td>${item.username}</td>
+                            <td>${item.username} </td>
                             <td>${item.Txt_Motivo}</td>
+                            <td>${getDateIfDate(item.fecha)} </td>
                             <td> <button  type="button" class="btn btn-sm btn-success">Recibido</button> </td>
                         </tr>
                        `
@@ -407,15 +461,19 @@
                         cambio += item.Dbl_SaldoSalida
                         var e = new Intl.NumberFormat().format(cambio);
 
+                        var f1 = new Date(item.fecha);
+                        var fec = f1.toLocaleDateString();
+
 
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
                             <td>$ ${e}</td>
-                            <td>${item.Txt_Moneda} </td>
+                              <td>${item.Txt_Moneda} </td>
                             <td>${item.Txt_sucursal}</td>
-                            <td>${item.username}</td>
+                            <td>${item.username} </td>
                             <td>${item.Txt_Motivo}</td>
+                            <td>${getDateIfDate(item.fecha)} </td>
                              <td> <button class="btn btn-sm btn-danger">Cancelado</button> </td>
                         </tr>
                        `

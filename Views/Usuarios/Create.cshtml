@@ -50,7 +50,7 @@
 
                 <div class="col-sm-6">
                     <label class="h6">Contraseña</label>
-                    @Html.EditorFor(model => model.Txt_Password, new { htmlAttributes = new { @type="text" @class = "form-control form-control-sm" } })
+                    @Html.EditorFor(model => model.Txt_Password, new { htmlAttributes = new { @type="text", @class = "form-control form-control-sm" } })
                     @Html.ValidationMessageFor(model => model.Txt_Password, "", new { @class = "text-danger" })
                 </div>
 

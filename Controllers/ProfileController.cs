@@ -110,7 +110,7 @@ namespace WebApplication2.Controllers
             List<Elementos> lst = new List<Elementos>();
             using (Models.MasterExchangeEntities dk = new Models.MasterExchangeEntities())
             {
-                lst = (from d in dk.Taxacompcombs
+                lst = (from d in dk.TaxaCompras
                        join db in dk.Tb_TaxSuc on d.Lng_IdTaxa equals db.Lng_IdTaxSuc
                        where d.Int_IdMoneda == idmoneda && db.Lng_IdSucursal == sucursalid
                        orderby d.Int_IdMoneda
@@ -403,9 +403,13 @@ namespace WebApplication2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli, Lng_IdSucursal")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
+        public async Task<ActionResult> Index([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli, Lng_IdSucursal")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente, string Compraespecial, string msgspecial)
         {
-
+            int especial = 0;
+            if (Compraespecial != "" && Compraespecial != null && Compraespecial != "0")
+            {
+                especial = 1;
+            }
 
             if (ModelState.IsValid)
             {
@@ -427,7 +431,7 @@ namespace WebApplication2.Controllers
                 otr.Fill(b);
                 b.Reset();
 
-                SqlDataAdapter historial = new SqlDataAdapter("UPDATE [dbo].[Tb_Registros] SET [Bol_Cancelar] = 0 where Lng_IdRegistro = " + tb_Registros.Lng_IdRegistro + "", con);
+                SqlDataAdapter historial = new SqlDataAdapter("UPDATE [dbo].[Tb_Registros] SET [Bol_Cancelar] = 0, Bol_Especial = " + especial + ", Txt_MsgEspecial = '" + msgspecial + "' where Lng_IdRegistro = " + tb_Registros.Lng_IdRegistro + "", con);
                 DataSet h = new DataSet();
                 historial.Fill(h);
                 h.Reset();
@@ -455,9 +459,14 @@ namespace WebApplication2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Venta([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,int_idmonventa,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli, Bol_multimoneda, Lng_IdSucursal")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente)
+        public async Task<ActionResult> Venta([Bind(Include = "Lng_IdRegistro,Int_IdTipoTran,Int_IdMoneda,int_idmonventa,Dbl_MontoRecibir,Dbl_MontoPagar,Dbl_TipoCambio,Dbl_TipoCambioven,Dbl_TipoCambioEsp,Bol_Especial,Dbl_Entregar,Dbl_Cambio,Int_IdTpv,Fec_Fecha,Lng_IdCliente, Lng_IdRegCli, Bol_multimoneda, Lng_IdSucursal")] Tb_Registros tb_Registros, Tb_RegCli Tb_RegCli, string idcliente, string ventaespecial, string msgspecial)
         {
             divisasCompra_venta();
+            int especial = 0;
+            if (ventaespecial != "" && ventaespecial != null && ventaespecial != "0")
+            {
+                especial = 1;
+            }
 
             if (ModelState.IsValid)
             {
@@ -482,7 +491,7 @@ namespace WebApplication2.Controllers
                 otr.Fill(b);
                 b.Reset();
 
-                SqlDataAdapter historial = new SqlDataAdapter("UPDATE [dbo].[Tb_Registros] SET [Bol_Cancelar] = 0 where Lng_IdRegistro = " + tb_Registros.Lng_IdRegistro + "", con);
+                SqlDataAdapter historial = new SqlDataAdapter("UPDATE [dbo].[Tb_Registros] SET [Bol_Cancelar] = 0, Bol_Especial = " + especial + ", Txt_MsgEspecial = '" + msgspecial + "'  where Lng_IdRegistro =  " + tb_Registros.Lng_IdRegistro + "", con);
                 DataSet h = new DataSet();
                 historial.Fill(h);
                 h.Reset();
@@ -581,8 +590,6 @@ namespace WebApplication2.Controllers
         [HttpGet]
         public JsonResult returnticketventa(int alt)
         {
-            
-
             List<registrosall> ticket = new List<registrosall>();
             using (MasterExchangeEntities db = new MasterExchangeEntities())
             {
@@ -628,10 +635,10 @@ namespace WebApplication2.Controllers
             {
 
                 lst1 = (from d in dr.Tb_Registros
-                        join da in dr.Ct_Moneda on d.Int_IdMoneda equals+ da.Int_IdMoneda into df
+                        join da in dr.Ct_Moneda on d.Int_IdMoneda equals da.Int_IdMoneda into df
                         from da in df.DefaultIfEmpty()
-                        join db in dr.Tb_RegUsu on d.Lng_IdRegistro equals+ db.Lng_IdRegistro
-                        join dc in dr.Ct_TipoTran on d.Int_IdTipoTran equals+ dc.Int_IdTipoTran
+                        join db in dr.Tb_RegUsu on d.Lng_IdRegistro equals db.Lng_IdRegistro
+                        join dc in dr.Ct_TipoTran on d.Int_IdTipoTran equals dc.Int_IdTipoTran
                         
                         where db.Int_IdUsuario == iduser && d.Bol_Cancelar == t && d.Fec_Fecha > fecha
                         select new registrosall

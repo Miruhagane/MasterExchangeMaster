@@ -29,7 +29,7 @@
             
             <div class="card">
   <div class="card-header">
-  <h3>Listado de ventas Por Usuario</h3>
+  <h3>Listado de movimientos Por Usuario</h3>
   </div>
   <div class="card-body">
     <form id="form1" runat="server" class="form-group">

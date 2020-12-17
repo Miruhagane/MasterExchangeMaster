@@ -1,0 +1,416 @@
+﻿
+@{
+    ViewBag.Title = "arqueo recibidos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<SelectListItem> suc = (List<SelectListItem>)ViewBag.suc;
+}
+
+<div class="col-sm-11 mt-3 pl-5">
+    <div class="card shadow-lg rounded">
+
+        @using (Ajax.BeginForm("postarqueo", new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnComplete = "Complet()"
+
+        }))
+        {
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="card-header bg-dark text-white row">
+                <div class="col-sm-">
+                    <h5>Remesas por Sucursal</h5>
+                </div>
+
+                <div class="col-sm-3">
+                    <span>Fecha</span>
+                    <input type="date" id="fecha1" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-sm-3">
+                    <span>Sucursales</span>
+                    @Html.DropDownList("Datos", suc, "Selecciona una sucursal", new { @type = "number", @class = "form-control form-control-sm", @id = "sucursales" })
+               
+                <div style="display: none">
+                    <input class="form-control form-control-sm" id="idsucursal" name="idsucursal" />
+                    <input id="txtvalidado1" name="check1" />
+                    <input id="txtvalidado2" name="check2" />
+                    <input id="txtvalidado3" name="check3" />
+                    <input id="txtvalidado4" name="check4" />
+                    <input id="txtvalidado5" name="check5" />
+                    <input id="txtvalidado6" name="check6" />        
+                    
+       
+
+                </div>
+                
+                </div>
+
+
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Moneda</th>
+                            <th scope="col">Monto a ingresar</th>
+                            <th scope="col">Validar</th>
+                            <th scope="col">Monto de la sucursal</th>
+                            <th scope="col">Fecha </th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo">
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="card-footer">
+                    <button class="btn-success btn btn-sm" onclick="crear()" type="button">Guardar</button>
+
+                <div style="display: none">
+                    <input class="btn btn-sm btn-secondary" id="postguardado" type="submit" value="crear" />
+                </div>
+            </div>
+
+            <script>
+                function Complet()
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Datos Guardados',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+
+            </script>
+
+        }
+    </div>
+
+</div>
+
+<script>
+    function getDateIfDate(d) {
+        var m = d.match(/\/Date\((\d+)\)\//);
+        return m ? (new Date(+m[1])).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : d;
+    }
+
+    var sucselect = document.getElementById("sucursales");
+    sucselect.addEventListener("change", obtarqueo);
+
+    var andselect = document.getElementById("fecha1");
+    andselect.addEventListener("change", obtarqueo);
+
+     obtarqueo();
+
+     function obtarqueo()
+     {
+         var sucid = document.getElementById("sucursales").value;
+         document.getElementById("idsucursal").value = sucid;
+
+
+         let fecha = document.getElementById("fecha1").value;
+
+         const post = {
+             sucursal: sucid,
+             fec: fecha
+         }
+
+
+         fetch("/SalidaSuc/atesoria" ,
+             {
+
+                 method: 'POST',
+                 body: JSON.stringify(post),
+                 headers: {
+                     'Accept': "application/json",
+                     "Content-Type": "application/json"
+                 }
+             })
+             .then(function (result) {
+                 if (result.ok) {
+                     return result.json();
+                 }
+             })
+             .then(function (tjson)
+             {
+                
+               
+                 var cuerpo = document.getElementById("cuerpo");
+                 let a = 1;
+                 cuerpo.innerHTML = "";
+
+
+                 console.log(tjson);
+
+                 for (let item of tjson) {
+
+                     if (item.idregistro != 0) {
+                         cuerpo.innerHTML += `
+                         <th style="display: none"><input id="registro${a}" type="number" name="registro${a}" class="form-control form-control-sm" value="${item.idregistro}"/> </th>
+                         <th>${item.moneda} </th>
+                         <th><input id="montoposts${a}" type="number" name="post${a}" oninput="validar()" class="form-control form-control-sm" value="0"/> </th>
+                         <th><input type="checkbox" class="form-check-input ml-3" id="checks${a}"  disabled> </th>
+                         <th> <input id="montoget${a}" type="number" name="cast${a}" class="form-control form-control-sm" readonly value="${item.monto}"/></th>
+                         <th> ${ getDateIfDate(item.fecha)} </th>
+                      `
+                     }
+                     else
+                     {
+                         Swal.fire({
+                             position: 'center',
+                             icon: 'error',
+                             title: item.moneda,
+                             showConfirmButton: false,
+                             timer: 2500
+                         })
+                     }
+
+                   
+                     a = a + 1;
+                 }
+
+             })
+    }
+
+    function validar()
+    {
+        var a1 = document.getElementById("montoposts1").value;
+        var a2 = document.getElementById("montoposts2").value;
+        var a3 = document.getElementById("montoposts3").value;
+        var a4 = document.getElementById("montoposts4").value;
+        var a5 = document.getElementById("montoposts5").value;
+        var a6 = document.getElementById("montoposts6").value;
+
+        var b1 = document.getElementById("montoget1").value;
+        var b2 = document.getElementById("montoget2").value;
+        var b3 = document.getElementById("montoget3").value;
+        var b4 = document.getElementById("montoget4").value;
+        var b5 = document.getElementById("montoget5").value;
+        var b6 = document.getElementById("montoget6").value;
+
+        if (a1 != b1)
+        {
+            var c = document.getElementById("montoposts1");
+            c.style.backgroundColor = "#ffb8b0";
+
+            $("#checks1").prop('checked', false);
+        }
+        else
+        {
+            var c = document.getElementById("montoposts1");
+            c.style.backgroundColor = "#a7ffaa";
+
+            $("#checks1").prop('checked', true);
+        }
+
+        if (a2 != b2) {
+
+            var c = document.getElementById("montoposts2");
+            c.style.backgroundColor = "#ffb8b0";
+
+            $("#checks2").prop('checked', false);
+        }
+        else
+        {
+            var c = document.getElementById("montoposts2");
+            c.style.backgroundColor = "#a7ffaa";
+
+            $("#checks2").prop('checked', true);
+        }
+       
+
+        if (a3 != b3)
+        {
+            var c = document.getElementById("montoposts3");
+            c.style.backgroundColor = "#ffb8b0";
+
+            $("#checks3").prop('checked', false);
+        }
+        else
+        {
+            var c = document.getElementById("montoposts3");
+            c.style.backgroundColor = "#a7ffaa";
+
+            $("#checks3").prop('checked', true);
+        }
+
+        if (a4 != b4)
+        {
+            var c = document.getElementById("montoposts4");
+            c.style.backgroundColor = "#ffb8b0";
+
+            $("#checks4").prop('checked', false);
+        }
+        else
+        {
+            var c = document.getElementById("montoposts4");
+            c.style.backgroundColor = "#a7ffaa";
+
+            $("#checks4").prop('checked', true);
+        }
+
+        if (a5 != b5)
+        {
+            var c = document.getElementById("montoposts5");
+            c.style.backgroundColor = "#ffb8b0";
+
+            $("#checks5").prop('checked', false);
+        }
+        else
+        {
+            var c = document.getElementById("montoposts5");
+            c.style.backgroundColor = "#a7ffaa";
+
+            $("#checks5").prop('checked', true);
+        }
+
+        if (a6 != b6) {
+            var c = document.getElementById("montoposts6");
+            c.style.backgroundColor = "#ffb8b0";
+
+            $("#checks6").prop('checked', false);
+        }
+        else
+        {
+            var c = document.getElementById("montoposts6");
+            c.style.backgroundColor = "#a7ffaa";
+
+            $("#checks6").prop('checked', true);
+        }
+        
+      
+    }
+
+
+    setInterval(function () { validadores(); }, 1000);
+    function validadores()
+    {
+        var c1 = document.getElementById("checks1");
+        var c2 = document.getElementById("checks2");
+        var c3 = document.getElementById("checks3");
+        var c4 = document.getElementById("checks4");
+        var c5 = document.getElementById("checks5");
+        var c6 = document.getElementById("checks6");
+
+        if (c1.checked == true) {
+     
+         
+            document.getElementById("txtvalidado1").value = 1;
+        }
+
+        else {
+    
+          
+            document.getElementById("txtvalidado1").value = 0;
+        }
+
+        if (c2.checked == true) {
+            document.getElementById("txtvalidado2").value = 1;
+        }
+
+        else {
+            document.getElementById("txtvalidado2").value = 0;
+        }
+
+        if (c3.checked == true) {
+            document.getElementById("txtvalidado3").value = 1;
+        }
+
+        else {
+            document.getElementById("txtvalidado3").value = 0;
+        }
+
+        if (c4.checked == true) {
+            document.getElementById("txtvalidado4").value = 1;
+        }
+
+        else {
+            document.getElementById("txtvalidado4").value = 0;
+        }
+
+        if (c5.checked == true) {
+            document.getElementById("txtvalidado5").value = 1;
+        }
+
+        else {
+            document.getElementById("txtvalidado5").value = 0;
+        }
+
+        if (c6.checked == true) {
+            document.getElementById("txtvalidado6").value = 1;
+        }
+
+        else {
+            document.getElementById("txtvalidado6").value = 0;
+        }
+
+    }
+
+
+
+    function crear()
+    {
+        var c1 = document.getElementById("checks1");
+        var c2 = document.getElementById("checks2");
+        var c3 = document.getElementById("checks3");
+        var c4 = document.getElementById("checks4");
+        var c5 = document.getElementById("checks5");
+        var c6 = document.getElementById("checks6");
+
+        if (c1.checked == true && c2.checked == true && c3.checked == true && c4.checked == true && c5.checked == true && c6.checked == true) {
+            document.getElementById("postguardado").click();
+         
+        }
+
+        else
+        {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Espera',
+                text: "Una o Mas valores son diferentes quieres guardarlos asi",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Guardar como esta!',
+                cancelButtonText: 'No, cancelar Proceso!',
+                reverseButtons: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire(
+                        'Entendido',
+                        'Proceso Guardado.',
+                        'success'
+                    )
+
+                    document.getElementById("postguardado").click();
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'OK',
+                        'Proceso Cancelado',
+                        'error'
+                    )
+                }
+            })
+
+         
+        }
+    }
+
+
+</script>

@@ -28,9 +28,12 @@ namespace WebApplication2.Models
         public Nullable<decimal> Dbl_Entregar { get; set; }
         public Nullable<decimal> Dbl_Cambio { get; set; }
         public Nullable<int> Int_IdTpv { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime Fec_Fecha { get; set; }
         public Nullable<bool> Bol_multimoneda { get; set; }
         public Nullable<int> Lng_IdSucursal { get; set; }
+        public Nullable<bool> Bol_Especial { get; set; }
+        public byte[] Txt_MsgEspecial { get; set; }
     }
 }

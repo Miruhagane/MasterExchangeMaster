@@ -23,6 +23,7 @@ namespace WebApplication2.Models.ViewModels
         public Nullable<int> Int_estatus { get; set; }
         public string Txt_Motivo { get; set; }
 
+        public Nullable<System.DateTime> fecha { get; set; }
 
         public string Txt_sucursal { get; set; }
         public string username { get; set; }

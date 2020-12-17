@@ -12,6 +12,7 @@ using WebApplication2.Models.ViewModels;
 using EntityState = System.Data.Entity.EntityState;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.IO;
+using System.Data.Linq.SqlClient;
 
 namespace WebApplication2.Controllers
 {
@@ -20,20 +21,81 @@ namespace WebApplication2.Controllers
     {
         private MasterExchangeEntities db = new MasterExchangeEntities();
 
-        // GET: Clientes
-        public async Task<ActionResult> Index()
+        public void sucursales()
         {
-            return View(await db.Tb_Clientes.ToListAsync());
+            bool activo = false;
+
+
+            List<Sucursal> lst = null;
+            using (MasterExchangeEntities sc = new MasterExchangeEntities())
+            {
+                lst = (
+                       from s in sc.Tb_Sucursal
+                       where s.Bol_Activo == activo
+                       select new Sucursal
+                       {
+
+                           Lng_IdSucursal = s.Lng_IdSucursal,
+                           Txt_Sucursal = s.Txt_Sucursal
+
+                       }).ToList();
+            }
+
+            List<SelectListItem> suc = lst.ConvertAll(df =>
+            {
+                return new SelectListItem()
+                {
+                    Text = df.Txt_Sucursal.ToString(),
+                    Value = df.Lng_IdSucursal.ToString(),
+                    Selected = false
+                };
+            });
+
+            ViewBag.suc = suc;
         }
 
-        public ActionResult PDF(string cliente)
+        // GET: Clientes
+        public ActionResult Index()
         {
-            int id = Convert.ToInt32(cliente);
-            var clientearray = db.Tb_Clientes.FirstOrDefault(e => e.Lng_IdCliente == id);
+
+            sucursales();
+
+            return View();
+  
+        }
+
+        public ActionResult PDF(int cliente)
+        {
+           
+            var clientearray = db.Tb_Clientes.FirstOrDefault(e => e.Lng_IdCliente == cliente);
 
             byte[] archivo = clientearray.Doc_cliente;
             return File(archivo, "application/pdf");
         }
+
+        public JsonResult litaclientes(string datos)
+        { 
+            List<Clientes> lsdt;
+
+            using (MasterExchangeEntities dr = new MasterExchangeEntities())
+            {
+                lsdt = (from a in dr.Tb_Clientes
+                        where a.Txt_Cliente.Contains(datos) || a.Txt_Direccion.Contains(datos) || a.Txt_Identificacion.Contains(datos) || a.Txt_Email.Contains(datos) || a.Txt_Telefono.Contains(datos)
+                        select new Clientes
+                        {
+                           Lng_IdCliente = a.Lng_IdCliente,
+                           Txt_Cliente = a.Txt_Cliente,
+                           Txt_Direccion = a.Txt_Direccion,
+                           Txt_Identificacion = a.Txt_Identificacion,
+                           Txt_Telefono = a.Txt_Telefono,
+                           Txt_Email = a.Txt_Email
+                        }).ToList();
+
+            }
+
+                return Json(lsdt, JsonRequestBehavior.AllowGet);
+        }
+
 
         // GET: Clientes/Details/5
         public async Task<ActionResult> Details(int? id)

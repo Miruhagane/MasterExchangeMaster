@@ -135,10 +135,13 @@ namespace WebApplication2.Controllers
 
         public JsonResult obtsuc()
         {
+            bool activo = false;
+
             List<Elementos> lst = new List<Elementos>();
             using (MasterExchangeEntities sc = new MasterExchangeEntities())
             {
                 lst = (from a in sc.Tb_Sucursal
+                       where a.Bol_Activo == activo
                        select new Elementos
                        {
                            value = a.Lng_IdSucursal,
@@ -156,11 +159,13 @@ namespace WebApplication2.Controllers
         [HttpGet]
         public JsonResult sucursales(int int_plaza)
         {
+            bool activo = false;
+
             List<Elementos> sucursales = new List<Elementos>();
             using (MasterExchangeEntities bd = new MasterExchangeEntities())
             {
                 sucursales = (from c in bd.Tb_Sucursal
-                              where c.Int_IdPlaza == int_plaza
+                              where c.Int_IdPlaza == int_plaza && c.Bol_Activo == activo
                               select new Elementos
                               {
                                   value = c.Lng_IdSucursal,
@@ -275,12 +280,7 @@ namespace WebApplication2.Controllers
                     ViewBag.msn = "2";
                     return View();
                 }
-
-
-
             }
-
-
 
 
             return View();
@@ -396,14 +396,7 @@ namespace WebApplication2.Controllers
 
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+ 
 
         public ActionResult img(int id)
         {
@@ -433,6 +426,15 @@ namespace WebApplication2.Controllers
             set.Reset();
 
             return Json(a, JsonRequestBehavior.AllowGet);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

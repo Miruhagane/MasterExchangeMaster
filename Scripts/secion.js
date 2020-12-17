@@ -40,80 +40,93 @@ function crt() {
     var cantidades = document.getElementById("cantidad").value;
     var usdmax = usddiv * 1000;
 
-    
+    let tuser = document.getElementById("idtipodeusuario").value;
     var totalp = document.getElementById("total_pago").value;
     var t = document.getElementById("cantidad").value;
-    if (totalp >= usdmax) {
-
-        document.getElementById("btn1").style.display = "";
-        document.getElementById("modal1").classList.add("invisible");
 
 
-        Swal.fire({
-            title: 'Espera',
-            text: 'El Total A Pagar Es Mayor A 1000 USD, Por Favor Verifica O Registra Al CLiente',
-            icon: 'warning',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Entendido'
-
-        }).then((result) => {
-            if (result.value) {
-                $('#modalshow').modal('show');
-            }
-        })
-
-    }
-    else if (totalp == "" || totalp == "0" || t == "" || t == "0") {
-
-
-        Swal.fire({
-            title: "Espera",
-            text: "Tienes Que Llenar El Formulario",
-            icon: 'error'
-        });
-
-    }
-
-    else if (cantidades >= 100000)
+    if (tuser == "2")
     {
-        Swal.fire({
-            title: 'Error',
-            text: 'la cantidad no puede superar el Millon',
-            icon: 'warning',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Entendido'
+        console.log("asdasd_" + tuser);   
+        if (totalp >= usdmax) {
 
-        }).then((result) => {
-            if (result.value) {
-                document.getElementById("cantidad").value = "";
-     
-            }
-        })
 
+            console.log("asjbda_:" + tuser);
+            document.getElementById("btn1").style.display = "";
+            document.getElementById("modal1").classList.add("invisible");
+
+
+            Swal.fire({
+                title: 'Espera',
+                text: 'El Total A Pagar Es Mayor A 1000 USD, Por Favor Verifica O Registra Al CLiente',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Entendido'
+
+            }).then((result) => {
+                if (result.value) {
+                    $('#modalshow').modal('show');
+                }
+            })
+
+        }
+        else if (totalp == "" || totalp == "0" || t == "" || t == "0") {
+
+
+            Swal.fire({
+                title: "Espera",
+                text: "Tienes Que Llenar El Formulario",
+                icon: 'error'
+            });
+
+        }
+
+        else if (cantidades >= 100000) {
+            Swal.fire({
+                title: 'Error',
+                text: 'la cantidad no puede superar el Millon',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Entendido'
+
+            }).then((result) => {
+                if (result.value) {
+                    document.getElementById("cantidad").value = "";
+
+                }
+            })
+
+        }
+
+        else {
+
+            console.log("asjbda_:" + tuser);
+            Swal.fire({
+                title: "Verificacion Completa",
+                text: "¿Quieres Registrar o Verificar Al Cliente?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'SI',
+                cancelButtonText: 'no'
+
+            }).then((result) => {
+
+                if (result.value) {
+                    $('#modalshow').modal('show');
+                }
+            })
+            document.getElementById("btn1").style.display = "";
+            document.getElementById("modal1").classList.add("invisible");
+
+        }
     }
-
-    else {
-
-
-        Swal.fire({
-            title: "Verificacion Completa",
-            text: "¿Quieres Registrar o Verificar Al Cliente?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'SI',
-            cancelButtonText: 'no'
-
-        }).then((result) => {
-
-            if (result.value) {
-                $('#modalshow').modal('show');
-            }
-        })
+    else
+    {
+        console.log("asdw_:" + tuser);
         document.getElementById("btn1").style.display = "";
         document.getElementById("modal1").classList.add("invisible");
-
     }
 
 }

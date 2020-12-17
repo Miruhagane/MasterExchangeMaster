@@ -174,6 +174,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Drawing.Common.4.5.0\lib\net461\System.Drawing.Common.dll</HintPath>
@@ -293,8 +294,10 @@
     <Compile Include="Controllers\EntradaCajaController.cs" />
     <Compile Include="Controllers\notificacionesController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\SalidaSucController.cs" />
     <Compile Include="Controllers\sucadminController.cs" />
+    <Compile Include="Controllers\TasasController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValesController.cs" />
     <Compile Include="Models\buscar_Result.cs">
@@ -334,6 +337,9 @@
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tb_ArqueoMoneda.cs">
+      <DependentUpon>dbcambio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tb_ArqueoTesoria.cs">
       <DependentUpon>dbcambio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tb_Cancelaciones.cs">
@@ -401,6 +407,7 @@
     </Compile>
     <Compile Include="Models\ViewModels\agrupacion.cs" />
     <Compile Include="Models\ViewModels\Areas.cs" />
+    <Compile Include="Models\ViewModels\arqueotesoreria.cs" />
     <Compile Include="Models\ViewModels\Clientes.cs" />
     <Compile Include="Models\ViewModels\inventario.cs" />
     <Compile Include="Models\ViewModels\Plazas.cs" />
@@ -480,6 +487,13 @@
     <Content Include="admiinistrativo\dotaciones.aspx" />
     <Content Include="admiinistrativo\VentasUser.aspx" />
     <Content Include="Arqueos\arqueocierre.aspx" />
+    <Content Include="Content\baderas\001-union-europea.png" />
+    <Content Include="Content\baderas\002-brasil.png" />
+    <Content Include="Content\baderas\003-estados-unidos.png" />
+    <Content Include="Content\baderas\004-reino-unido.png" />
+    <Content Include="Content\baderas\005-canada.png" />
+    <Content Include="Content\baderas\006-suiza.png" />
+    <Content Include="Content\baderas\007-australia.png" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -490,6 +504,12 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\checkboxstyles.css" />
     <Content Include="Content\home.css" />
+    <Content Include="Content\iconos\eliminar.png" />
+    <Content Include="Content\iconos\eliminardoc.png" />
+    <Content Include="Content\iconos\impresion.png" />
+    <Content Include="Content\iconos\pdf.png" />
+    <Content Include="Content\iconos\pdfcliente.png" />
+    <Content Include="Content\iconos\perfil.png" />
     <Content Include="Content\img\Cgradientes2.jpg" />
     <Content Include="Content\img\estilo-de-semitonos.jpg" />
     <Content Include="Content\img\fondo-proyecto-creativo.jpg" />
@@ -732,6 +752,10 @@
     <Content Include="Views\SalidaSuc\datosvr.cshtml" />
     <Content Include="Views\SalidaSuc\agrupar.cshtml" />
     <Content Include="Views\Usuarios\actualizaruser.cshtml" />
+    <Content Include="Views\SalidaSuc\ArqueoTesoreria.cshtml" />
+    <Content Include="Views\SalidaSuc\vistaTesoreria.cshtml" />
+    <Content Include="Views\Reportes\reportes.cshtml" />
+    <Content Include="Views\Tasas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

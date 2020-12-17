@@ -18,5 +18,7 @@ namespace WebApplication2.Models
         public Nullable<int> Int_IdPlaza { get; set; }
         public string Txt_Sucursal { get; set; }
         public string Txt_Direccion { get; set; }
+        public string Txt_NomCorto { get; set; }
+        public Nullable<bool> Bol_Activo { get; set; }
     }
 }

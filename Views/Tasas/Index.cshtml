@@ -1,0 +1,131 @@
+﻿@model WebApplication2.Models.Tb_Taxas
+
+@{
+    ViewBag.Title = "Tazas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<SelectListItem> suc = (List<SelectListItem>)ViewBag.suc;
+}
+
+<div class="col-sm-11 mt-3">
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-dark text-white row">
+            <div class="col-sm-8">
+                <h5>Tasas de Compra</h5>
+            </div>
+
+        </div>
+        <div class="card-body">
+
+            <div class="card-group">
+                <div class="card">
+                   
+                    <div class="card-body">
+                      
+                    </div>
+                </div>
+                <div class="card">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Moneda</th>
+                                <th scope="col">TC</th>
+                                <th scope="col"><small><span id="fecha"></span></small></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+           
+
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Entrada">
+                Actualizar
+            </button>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    (function () {
+        compra();
+    })();
+
+    function compra()
+    {
+        let id = 1;
+
+        const post1 = {
+            idsucursal: id
+        }
+
+        fetch("/Tasas/comprastr",
+            {
+
+                method: 'POST',
+                body: JSON.stringify(post1),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then(function (tjson)
+            {
+                var cuerpo = document.getElementById("cuerpo");
+
+                cuerpo.innerHTML = "";
+
+                let query = JSON.parse(tjson);
+
+                console.log(query);
+
+                var a = 1;
+
+
+
+
+
+                for (let item of query)
+                {
+                    var f1 = new Date(item.Dia);
+                    var f1 = f1.toLocaleDateString();
+
+                    document.getElementById("fecha").innerHTML = f1;
+
+                    cuerpo.innerHTML += `
+                    <tr>
+                        <th>  <img id="img_${a}" src="" /></th>
+                        <th><small>${item.Moneda} </small></th>
+                        <th><small>$${item.Valor} </small></th>
+
+
+
+                    </tr>
+                     `
+                    a = a + 1;
+
+                }
+
+
+            })
+
+
+
+    }
+
+
+
+</script>
+

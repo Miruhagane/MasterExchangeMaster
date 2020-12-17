@@ -11,8 +11,14 @@
 
 <div class="col-sm-10 mt-3">
     <div class="card shadow-lg rounded">
-        <div class="card-header bg-dark text-white">
-            <h5>Saldo actual</h5>
+        <div class="card-header bg-dark text-white row">
+            <div class="col-sm-8">
+                <h5>Solicitudes de Caja</h5>
+            </div>
+
+            <div class="col-sm-4">
+               <input type="date" class="form-control form-control-sm" id="fecha" />
+            </div>
         </div>
         <div class="card-body">
 
@@ -233,11 +239,31 @@
         estados();
     })();
 
+
+
+    var sel = document.getElementById("fecha");
+    sel.addEventListener("change", estados);
+
+
+    estados();
     //js crear estatus
     function estados() {
 
+        let fecha = document.getElementById("fecha").value;
 
-        fetch("/EntradaCaja/admins")
+        const post = {
+            fec: fecha
+        }
+
+        fetch("/EntradaCaja/admins",
+            {
+                method: 'POST',
+                body: JSON.stringify(post),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+            })
             .then(function (result) {
                 if (result.ok) {
                     return result.json();

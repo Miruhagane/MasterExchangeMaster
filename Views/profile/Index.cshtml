@@ -42,14 +42,11 @@
                     </div>
 
                     <div class="form-group col-sm-8">
-
-
                         @Html.EditorFor(model => model.Int_IdTipoTran, new { htmlAttributes = new { @class = "form-control", @id = "tipodetrans", @readonly = true } })
                         @Html.ValidationMessageFor(model => model.Int_IdTipoTran, "", new { @class = "text-danger" })
 
-                        @Html.EditorFor(Model => Model.Bol_Cancelar, new { AllowHtmlAttribute = new { @class = "form-control"} })
+                        @Html.EditorFor(Model => Model.Bol_Cancelar, new { AllowHtmlAttribute = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(Model => Model.Bol_Cancelar, "", new { @class = "text-danger" })
-
 
                     </div>
 
@@ -71,15 +68,22 @@
                     </select>
                 </div>
 
+                <div class="form-group col-sm-8" id="especial">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" onclick="especialcast()" id="especialcompra">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Especial
+                        </label>
+                    </div>
+                </div>
 
-              
                 <div class="form-group col-sm-8">
                     <label>Tipo de Cambio</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">$</div>
                         </div>
-                        @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @type = "number", @class = "form-control ", @readonly = true, @id = "valor", @name = "valor" } })
+                        @Html.EditorFor(model => model.Dbl_TipoCambio, new { htmlAttributes = new { @class = "form-control ", @readonly = true, @id = "valor", @name = "valor" } })
                         @Html.ValidationMessageFor(model => model.Dbl_TipoCambio, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -133,7 +137,7 @@
                     </div>
 
                     <div>
-                        @Html.EditorFor(Model => Model.Lng_IdSucursal, new { htmlAttributes = new { @type = "Text", @class = "form-control", @id="sucursalid"} })
+                        @Html.EditorFor(Model => Model.Lng_IdSucursal, new { htmlAttributes = new { @type = "Text", @class = "form-control", @id = "sucursalid" } })
                         @Html.ValidationMessageFor(model => model.Lng_IdSucursal, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -144,6 +148,22 @@
                         <input type="text" id="nombredecliente" readonly class="form-control form-control-sm" value="" />
                     </div>
                 </div>
+
+                <div style="display: none" class="form-group col-sm-8">
+                    <label for="inputAddress2">Especial</label>
+                    <div>
+                        <input type="text" id="IntEspecial" name="Compraespecial" readonly class="form-control form-control-sm" value="0" />
+                    </div>
+                </div>
+
+                <div id="msgEspecial" style="display: none" class="form-group col-sm-8">
+                    <label for="inputAddress2">Orbservaciones</label>
+                    <div>
+                        <input type="text"  name="msgspecial" class="form-control form-control-sm" value="" />
+                    </div>
+                </div>
+
+
 
                 <div class="form-group col-sm-8" style="display : none;">
                     <label> Tipo de Cobro</label>
@@ -161,7 +181,7 @@
                 <div class="form-group col-sm-8" style="display:none">
                     <label for="inputAddress2">Fecha de Registro</label>
 
-                    @Html.TextBoxFor(model => model.Fec_Fecha, new { @Value = @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") })
+                    @Html.TextBoxFor(model => model.Fec_Fecha, new { @Value = @DateTime.Now.AddHours(-5).ToString("yyyy-MM-dd HH:mm:ss") })
                     @Html.ValidationMessageFor(model => model.Fec_Fecha, "", new { @class = "text-danger" })
 
                 </div>
@@ -172,9 +192,9 @@
                 <button type="button" onclick="crt()" id="modal1" class="btn btn-warning"> Comprar </button>
 
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cotizacion">Cotizacion</button>
-                    @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalclientes"> usuarios agregar </button>*@
+                @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalclientes"> usuarios agregar </button>*@
                 @*<button type="button" class="btn btn-primary" onclick="impresionticket()" data-target="#ticket" data-toggle="modal">verificar cliente </button>*@
-             
+
                 <script>
                     function success() {
 
@@ -681,7 +701,7 @@
             // cajero
             case "2":
                 console.log("cajero");
-                document.getElementById("especialdiv").style.display = "none";
+                document.getElementById("especial").style.display = "none";
                 break;
 
             // tipo de usuario no detectado
@@ -692,7 +712,7 @@
     }
 
     //obtener tipo especial
-    var esp = document.getElementById("Bol_Especial");
+    var esp = document.getElementById("especial");
 
     esp.addEventListener("change", refresh);
 
@@ -704,18 +724,37 @@
         console.log(especial);
         if (especial == "false" || especial == "") {
 
+           
         }
         else {
             console.log("funcion remove readonly corriendo");
             var cambiodesabilitado = document.getElementById("valor");
             cambiodesabilitado.removeAttribute("readonly");
+          
         }
     }
+
+    function especialcast()
+    {
+        var checks = document.getElementById("especialcompra");
+        if (checks.checked == true) {
+            document.getElementById("valor").removeAttribute("readonly");
+            document.getElementById("IntEspecial").value = 1;
+            document.getElementById("msgEspecial").style.display = "";
+        }
+        else
+        {
+            document.getElementById("valor").setAttribute("readonly");
+            document.getElementById("IntEspecial").value = 0;
+            document.getElementById("msgEspecial").style.display = "none";
+
+        }
+
+    }
+
 </script>
 
-@*operaciones*@
 
-<script src="~/Scripts/secion.js"></script>
 
 @* Script Buscar Cliente*@
 <script>
@@ -907,12 +946,14 @@
     })();
 
     function llamadarticket() {
+        var dr = document.getElementById("idregistroticket").value;
         if (idregistroticket.value == "" || idregistroticket.value == "0") {
             console.log("funciona");
         }
         else {
             Swal.fire({
                 title: '¿Quieres Imprimir el ticket?',
+                text: 'Codigo de Movimiento: ' + dr,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -1057,4 +1098,143 @@
             }
         }
     }, true);
+</script>
+
+
+<script>
+    function compras_cantidad() {
+
+
+        var valoress = document.getElementById("valor").value;
+        var cantidades = document.getElementById("cantidad").value;
+
+
+        if (cantidad.value == "") {
+
+        }
+
+        else {
+            let t_pagar = cantidades * valoress;
+
+            document.getElementById("total_pago").value = t_pagar;
+            document.getElementById("mtotal").value = t_pagar.toFixed(2);
+
+        }
+
+        var moneda = document.getElementById("padre");
+        var a = moneda.options[moneda.selectedIndex].text;
+        var monto = document.getElementById("cantidad").value;
+        var cambio = document.getElementById("valor").value;
+        var total = document.getElementById("total_pago").value;
+        var totalr = new Intl.NumberFormat().format(total);
+
+        document.getElementById("monedacotizacion").innerHTML = a;
+        document.getElementById("montocotizacion").innerHTML = monto;
+        document.getElementById("cambiocotizacion").innerHTML = cambio;
+        document.getElementById("pagocotizacion").innerHTML = totalr;
+
+        var f = new Date();
+        document.getElementById("fechajs").innerHTML = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
+
+    }
+
+    function crt() {
+
+        var usddiv = document.getElementById("usd").value;
+        var cantidades = document.getElementById("cantidad").value;
+        var usdmax = usddiv * 1000;
+
+        let tuser = document.getElementById("idtipodeusuario").value;
+        var totalp = document.getElementById("total_pago").value;
+        var t = document.getElementById("cantidad").value;
+
+
+        if (tuser == "2") {
+            console.log("asdasd_" + tuser);
+            if (totalp >= usdmax) {
+
+
+                console.log("asjbda_:" + tuser);
+                document.getElementById("btn1").style.display = "";
+                document.getElementById("modal1").classList.add("invisible");
+
+
+                Swal.fire({
+                    title: 'Espera',
+                    text: 'El Total A Pagar Es Mayor A 1000 USD, Por Favor Verifica O Registra Al CLiente',
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+
+                }).then((result) => {
+                    if (result.value) {
+                        $('#modalshow').modal('show');
+                    }
+                })
+
+            }
+            else if (totalp == "" || totalp == "0" || t == "" || t == "0") {
+
+
+                Swal.fire({
+                    title: "Espera",
+                    text: "Tienes Que Llenar El Formulario",
+                    icon: 'error'
+                });
+
+            }
+
+            else if (cantidades >= 100000) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'la cantidad no puede superar el Millon',
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+
+                }).then((result) => {
+                    if (result.value) {
+                        document.getElementById("cantidad").value = "";
+
+                    }
+                })
+
+            }
+
+            else {
+
+                console.log("asjbda_:" + tuser);
+                Swal.fire({
+                    title: "Verificacion Completa",
+                    text: "¿Quieres Registrar o Verificar Al Cliente?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'SI',
+                    cancelButtonText: 'no'
+
+                }).then((result) => {
+
+                    if (result.value) {
+                        $('#modalshow').modal('show');
+                    }
+                })
+                document.getElementById("btn1").style.display = "";
+                document.getElementById("modal1").classList.add("invisible");
+
+            }
+        }
+        else {
+            console.log("asdw_:" + tuser);
+            document.getElementById("btn1").style.display = "";
+            document.getElementById("modal1").classList.add("invisible");
+        }
+
+    }
+
+
+
+
+
 </script>

@@ -22,6 +22,7 @@ namespace WebApplication2.Models
         public string Txt_Identificacion { get; set; }
         public string Txt_Telefono { get; set; }
         public string Txt_Email { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime Fec_Alta { get; set; }
         public string File_Nombre { get; set; }

@@ -36,7 +36,6 @@ namespace WebApplication2.Models
         public virtual DbSet<Tb_RegUsu> Tb_RegUsu { get; set; }
         public virtual DbSet<Ct_Areas> Ct_Areas { get; set; }
         public virtual DbSet<Ct_TipoTran> Ct_TipoTran { get; set; }
-        public virtual DbSet<Tb_Sucursal> Tb_Sucursal { get; set; }
         public virtual DbSet<Taxacompcomb> Taxacompcombs { get; set; }
         public virtual DbSet<Tb_TaxSuc> Tb_TaxSuc { get; set; }
         public virtual DbSet<Tb_EntEmp> Tb_EntEmp { get; set; }
@@ -58,6 +57,8 @@ namespace WebApplication2.Models
         public virtual DbSet<Tb_DotGrupo> Tb_DotGrupo { get; set; }
         public virtual DbSet<Tb_EstatusTesoreria> Tb_EstatusTesoreria { get; set; }
         public virtual DbSet<Tb_TicketTesoreria> Tb_TicketTesoreria { get; set; }
+        public virtual DbSet<Tb_ArqueoTesoria> Tb_ArqueoTesoria { get; set; }
+        public virtual DbSet<Tb_Sucursal> Tb_Sucursal { get; set; }
     
         public virtual ObjectResult<buscar_Result1> buscar(string numero)
         {

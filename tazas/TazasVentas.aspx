@@ -151,7 +151,11 @@
                           <asp:GridView ID="Tb_taxaVentas" runat="server" BackColor="White" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CellPadding="3" ForeColor="Black" GridLines="Vertical" OnSelectedIndexChanged="Page_Load" OnSorted="Page_Load" AutoGenerateColumns="False" DataKeyNames="Lng_IdTaxa,Int_IdMoneda" Height="250px">
                               <AlternatingRowStyle BackColor="#CCCCCC" Width="500px" />
                               <Columns>
-                                  <asp:BoundField DataField="IdTaxa" HeaderText="Num." SortExpression="IdTaxa" />
+                                  <asp:TemplateField>
+                                      <ItemTemplate>
+                                          <asp:Image ID="Image" src="" runat="server" />
+                                      </ItemTemplate>
+                                  </asp:TemplateField>
                                   <asp:TemplateField HeaderText="Valor" SortExpression="Valor">
                                       <ItemTemplate>
                                           <asp:TextBox ID="TextValor" runat="server" Text='<%#Bind("Valor") %>'></asp:TextBox>
@@ -330,6 +334,23 @@
                 )
             }
         })
+
+    }
+</script>
+
+<script>
+
+    setInterval(function () { banderas(); }, 1000);
+    function banderas() {
+
+
+        document.getElementById("Tb_taxaVentas_Image_0").src = "../../Content/baderas/003-estados-unidos.png";
+        document.getElementById("Tb_taxaVentas_Image_1").src = "../../Content/baderas/001-union-europea.png";
+        document.getElementById("Tb_taxaVentas_Image_2").src = "../../Content/baderas/005-canada.png";
+        document.getElementById("Tb_taxaVentas_Image_3").src = "../../Content/baderas/004-reino-unido.png";
+        document.getElementById("Tb_taxaVentas_Image_4").src = "../../Content/baderas/006-suiza.png";
+        document.getElementById("Tb_taxaVentas_Image_5").src = "../../Content/baderas/002-brasil.png";
+        document.getElementById("Tb_taxaVentas_Image_6").src = "../../Content/baderas/007-australia.png";
 
     }
 </script>
