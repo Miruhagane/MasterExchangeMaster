@@ -1,0 +1,373 @@
+﻿@model WebApplication2.Models.Tb_SalidaSuc
+
+@{
+    ViewBag.Title = "historial";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<div class="col-sm-12 mt-3 pl-5">
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-dark text-white row">
+            <div class="col-sm-8">
+                <h5>Historial de Dotaciones</h5>
+            </div>
+
+            <div class="col-sm-4">
+                <label>Fecha de inicio</label>
+                <input type="date" id="fecha1" value="" class="form-control form-control-sm" />
+            </div>
+
+
+        </div>
+        <div class="card-body"> 
+
+            <div class="table-responsive-xxl">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col"><small> Monto</small> </th>
+                            <th scope="col"><small> Moneda</small> </th>
+                            <th scope="col"><small>Sucursal</small></th>
+                            <th scope="col"><small>Usuario</small></th>
+                            <th scope="col"><small>Estatus</small></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo">
+                    </tbody>
+                </table>
+            </div>
+          
+
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Entrada">
+                Ingresar
+            </button>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="actualizarstatus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cambio de Estatus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("status", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnComplete = "Complet()"
+
+            }))
+            {
+                <div class="modal-body">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="col-sm-12">
+                        <label>Actualizar estados</label>
+                        <div>
+                            <select class="custom-select my-1 mr-sm-2" id="estatusselect">
+                                <option selected>selecciona un estatus</option>
+                                <option value="3">En proceso</option>
+                                <option value="4">Entregado</option>
+                                <option value="5">Cancelado</option>
+
+                            </select>
+                            <img src="" />
+                        </div>
+
+                        <div style="display: none">
+                            <input type="text" id="idregistro" class="form-control form-control-sm" name="idregistro" />
+                            <input type="text" id="estatus" name="estatus" class="form-control form-control-sm" />
+                        </div>
+
+                        <div id="motivo" class="col-sm-12" style="display: none">
+                            <label>motivo de Cancelacion</label>
+                            <input type="text" id="mtc" class="form-control form-control-sm" name="mtc" />
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <div style="display: none">
+                        <button id="closeinput" type="button" data-dismiss="modal"></button>
+                    </div>
+                </div>
+
+                <script>
+                    function Complet() {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Datos Actualizados',
+                        })
+
+
+
+                        estados();
+                        document.getElementById("closeinput").click();
+                    }
+
+                </script>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var monedaEntrada = document.getElementById("padre");
+    monedaEntrada.addEventListener("change", refresh);
+
+    refresh();
+
+    function refresh() {
+
+        var mon = document.getElementById("padre").value;
+        document.getElementById("idmonedaEnt").value = mon;
+
+
+        var idu = document.getElementById("iduser").value;
+        document.getElementById("userpost").value = idu;
+
+        var a = 2;
+        document.getElementById("status").value = a;
+
+        document.getElementById("Bol_Activo").value = "true";
+
+    }
+
+    var sucid = document.getElementById("sucursal");
+    sucid.addEventListener("change", cambio);
+
+    cambio();
+
+    function cambio() {
+        var idsucursal = document.getElementById("sucursal").value;
+        document.getElementById("intsucursal").value = idsucursal;
+    }
+
+    var t1 = document.getElementById("turnos");
+    t1.addEventListener("change", turno)
+
+    function turno() {
+        var turno = document.getElementById("turnos").value;
+        document.getElementById("turnopost").value = turno;
+    }
+</script>
+
+<script>
+
+    var funselect = document.getElementById("fecha1");
+
+
+    funselect.addEventListener("change", estados);
+
+    estados();
+
+    function getDateIfDate(d) {
+        var m = d.match(/\/Date\((\d+)\)\//);
+        return m ? (new Date(+m[1])).toLocaleDateString({ day: '2-digit', month: '2-digit',  year: 'numeric' }) : d;
+    }
+
+
+    function estados()
+    {
+        let date = document.getElementById("fecha1").value;
+
+        console.log(date);
+
+        const query = {
+            fecha: date
+        }
+
+        console.log(query);
+
+        fetch("/SalidaSuc/his",
+            {
+                method: 'POST',
+                body: JSON.stringify(query),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                         }
+            })
+
+            .then(function (result) {
+                if (result.ok) {
+                    console.log(result);
+                    return result.json();
+
+                }
+            })
+
+            .then(function (tjson)
+            {
+                console.log(tjson);
+                var cuerpo = document.getElementById("cuerpo");
+
+                cuerpo.innerHTML = "";
+                let valor = 0;
+
+                let estatus = "";
+
+                let cambio = "";
+
+                if (tjson == "") {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Vaya!',
+                        text: 'Parece Que No Exiten Dotaciones En Esta Fecha'
+                    })
+                }
+
+                for (let item of tjson)
+                {
+                    estatus += item.Int_estatus
+                    //Estatus de entradas creadas
+                    if (estatus == "1") {
+                        cambio += item.Dbl_SaldoSalida
+                        var a = new Intl.NumberFormat().format(cambio);
+
+
+                        cuerpo.innerHTML += `
+                        <tr>
+                            <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
+                            <td> <small>$${a} </small></td>
+                            <td> <small>${item.Txt_Moneda} </small> </td>
+                            <td> <small>${item.Txt_sucursal} </small></td>
+                            <td> <small>${item.username} </small> </td>
+                              <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-secondary">Dotacion Inicial</button> </td>
+                        </tr>
+                       `
+                        estatus = "";
+                        cambio = "";
+
+                    }
+                    //estatus de dotaciones solicitados
+                    else if (estatus == "2") {
+                        cambio += item.Dbl_SaldoSalida
+                        var b = new Intl.NumberFormat().format(cambio);
+
+                        var f1 = new Date(item.fecha);
+                        var fec = f1.toLocaleDateString();
+
+                        cuerpo.innerHTML += `
+                        <tr>
+                            <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
+                                   <td> <small>$${b} </small></td>
+                             <td> <small>${item.Txt_Moneda} </small> </td>
+                            <td> <small>${item.Txt_sucursal} </small></td>
+                            <td> <small>${item.username} </small> </td>
+
+                            <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-info">Solicitado</button> </td>
+                        </tr>
+                       `
+                        estatus = "";
+                        cambio = "";
+                    }
+
+                    //estatus de solicitudes validadas por admin
+
+                    else if (estatus == "3") {
+                        cambio += item.Dbl_SaldoSalida
+                        var c = new Intl.NumberFormat().format(cambio);
+
+                        var f1 = new Date(item.fecha);
+                        var fec = f1.toLocaleDateString();
+
+                        cuerpo.innerHTML += `
+                        <tr>
+                            <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
+                                   <td> <small>$${c} </small></td>
+                             <td> <small>${item.Txt_Moneda} </small> </td>
+                            <td> <small>${item.Txt_sucursal} </small></td>
+                            <td> <small>${item.username} </small> </td>
+                           <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-primary">En Proceso</button> </td>
+                        </tr>
+                       `
+                        estatus = "";
+                        cambio = "";
+                    }
+
+                    //estatus de solicitudes ya recibidos por cajero
+                    else if (estatus == "4") {
+                        cambio += item.Dbl_SaldoSalida
+                        var d = new Intl.NumberFormat().format(cambio);
+
+                        var f1 = new Date(item.fecha);
+                        var fec = f1.toLocaleDateString();
+
+                        cuerpo.innerHTML += `
+                        <tr>
+                            <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
+                            <td> <small>$${d} </small></td>
+                          <td> <small>${item.Txt_Moneda} </small> </td>
+                            <td> <small>${item.Txt_sucursal} </small></td>
+                            <td> <small>${item.username} </small> </td>
+                            <td> <button  type="button" class="btn btn-sm btn-success">Recibido</button> </td>
+                        </tr>
+                       `
+                        estatus = "";
+                        cambio = "";
+                    }
+                    //estatus de solicitudes caneladas por cajero
+
+                    else if (estatus == "5") {
+                        cambio += item.Dbl_SaldoSalida
+                        var e = new Intl.NumberFormat().format(cambio);
+
+                        var f1 = new Date(item.fecha);
+                        var fec = f1.toLocaleDateString();
+
+
+                        cuerpo.innerHTML += `
+                        <tr>
+                            <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
+                                   <td> <small>$${e} </small></td>
+                             <td> <small>${item.Txt_Moneda} </small> </td>
+                            <td> <small>${item.Txt_sucursal} </small></td>
+                            <td> <small>${item.username} </small> </td>
+                             <td> <button class="btn btn-sm btn-danger">Cancelado</button> </td>
+                        </tr>
+                       `
+                        estatus = "";
+                        cambio = "";
+                    }
+
+
+                    valor = valor + 1;
+                    estatus = "";
+                    cambio = "";
+                }
+
+            })
+
+
+    }
+
+
+
+
+ 
+
+
+
+</script>

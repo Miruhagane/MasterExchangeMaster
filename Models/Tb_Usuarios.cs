@@ -23,7 +23,6 @@ namespace WebApplication2.Models
         public int Bol_Activo { get; set; }
         public Nullable<int> Int_IdArea { get; set; }
         public Nullable<int> Int_IdSubarea { get; set; }
-
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime Fec_Alta { get; set; }
         public Nullable<System.DateTime> Fec_Baja { get; set; }

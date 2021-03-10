@@ -5,6 +5,12 @@
 
 }
 
+<div style="display: none">
+
+    <button id="cards" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalusuario">mostrar modal</button>
+    <input type="text" id="status" value="@ViewBag.error" />
+</div>
+
 
 @if (Model != null)
 {
@@ -16,6 +22,10 @@
             <div class="card-body card-img-overlay">
                 <div class="form-row">
                             <div style="display: none">
+
+                              
+                                
+
                              <input class="form-control form-control-sm" id="js_msn" value="@ViewBag.msn"/>
                             </div>
 
@@ -151,10 +161,31 @@
     function buscarusuario() {
      
         var usuarioid = document.getElementById("usuarioId").value;
+        var status = document.getElementById("status").value;
+
         if (usuarioid == "") {
-            $('#modalusuario').modal('show');
+
+            var myModal = document.getElementById('modalusuario');
+            var modal = new bootstrap.Modal(myModal)
+            modal.show();
+
+          
         }
 
+        else if (status == "500")
+        {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'error',
+                title: 'Usuario no Encontrado',
+                showConfirmButton: false,
+                timer: 1500
+            })
+
+            var myModal = document.getElementById('modalusuario');
+            var modal = new bootstrap.Modal(myModal)
+            modal.show();
+        }
        
         else {
             Swal.fire({

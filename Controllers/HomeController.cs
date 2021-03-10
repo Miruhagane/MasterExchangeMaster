@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Http;
 using System.Data.SqlClient;
 using System.Data;
 using System;
+using WebApplication2.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace WebApplication2.Controllers
 {
@@ -25,14 +27,107 @@ namespace WebApplication2.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public void sucursales()
+        {
+
+            List<Sucursal> lst = null;
+            using (Models.MasterExchangeEntities dr = new Models.MasterExchangeEntities())
+            {
+                lst = (
+                     from d in dr.Tb_Sucursal
+                     orderby d.Lng_IdSucursal
+                     select new Sucursal
+                     {
+                         Lng_IdSucursal = d.Lng_IdSucursal,
+                         Txt_Sucursal = d.Txt_Sucursal
+
+                     }).ToList();
+            }
+
+
+            List<SelectListItem> items = lst.ConvertAll(df =>
+            {
+                return new SelectListItem()
+                {
+                    Text = df.Txt_Sucursal.ToString(),
+                    Value = df.Lng_IdSucursal.ToString(),
+                    Selected = false
+
+                };
+
+            });
+
+            ViewBag.items = items;
+
+        }
+
+        private class Elementos1
+        {
+            public Nullable<int> value { get; set; }
+            public Nullable<decimal> Text { get; set; }
+        }
+
         public ActionResult Index(string Message)
         {
-            
+            sucursales();
             ViewBag.Message = Message;
 
         
             return View();
         }
+
+       [HttpPost]
+        public JsonResult datosusuario(string usuario, string Pass)
+        {
+            List<users> querty;
+            using (MasterExchangeEntities da = new MasterExchangeEntities())
+            {
+
+                querty = (from a in da.Tb_Usuarios
+                          join ab in da.Tb_Sucursal on a.Lng_IdSucursal equals ab.Lng_IdSucursal
+                          where a.Txt_NomCorto == usuario && a.Txt_Password == Pass
+                          select new users
+                          {
+                              Int_Idusuario = a.Int_Idusuario,
+                              Txt_Nombre = a.Txt_Nombre,
+                              Txt_Apellido = a.Txt_Apellido,
+                              Lng_IdSucursal = ab.Lng_IdSucursal,
+                              txt_sucursal = ab.Txt_Sucursal,
+                              Int_IdArea = a.Int_IdArea
+                              
+
+                          }).ToList();
+
+            }
+
+            return Json(querty, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpPost]
+        public JsonResult actualizarsucursal(int idusuario , int idsucursal)
+        {
+            string msn = "";
+
+            try
+            {
+                SqlDataAdapter caja = new SqlDataAdapter("update Tb_Usuarios set Lng_IdSucursal = "+idsucursal+" where Int_Idusuario = "+idusuario+"", con);
+                DataSet a = new DataSet();
+                caja.Fill(a);
+
+                msn = "1";
+
+                return Json(msn, JsonRequestBehavior.AllowGet);
+            }
+
+            catch (Exception err)
+            {
+                string error = Convert.ToString(err);
+                msn = "2";
+                return Json(msn, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         [HttpPost]
         public ActionResult Index(string usuario, string Pass, string turno, DateTime fecha)
@@ -41,9 +136,12 @@ namespace WebApplication2.Controllers
            
             if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(Pass))
             {
+
                        //validacion de usuario
                MasterExchangeEntities db = new MasterExchangeEntities();
 
+
+           
                 var userv = db.Tb_Usuarios.FirstOrDefault(e => e.Txt_NomCorto == usuario && e.Txt_Password == Pass && e.Bol_Activo == 0);
 
                 
@@ -56,10 +154,15 @@ namespace WebApplication2.Controllers
 
                 if (userv != null)
                 {
+
+
+
+
                     // sesion de usuario 
                     Session["idSucursal"] = userv.Lng_IdSucursal;
                     //obtener los valores del usuario
                     string id = userv.Int_Idusuario.ToString();
+                    Session["idusers"] = userv.Int_Idusuario; 
                     int? tipo = userv.Int_IdArea;
                     int? Sucursal = userv.Lng_IdSucursal;
                     string suc = userv.Lng_IdSucursal.ToString();

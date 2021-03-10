@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<SelectListItem> suc = (List<SelectListItem>)ViewBag.suc;
 }
-
+                                                                 
 <div class="col-sm-11 mt-3 pl-5">
     <div class="card shadow-lg rounded">
 
@@ -60,7 +60,7 @@
 
      function getDateIfDate(d) {
          var m = d.match(/\/Date\((\d+)\)\//);
-         return m ? (new Date(+m[1])).toLocaleDateString('en-US', { day: '2-digit', month: '2-digit',  year: 'numeric' }) : d;
+         return m ? (new Date(+m[1])).toLocaleDateString( { day: '2-digit', month: '2-digit',  year: 'numeric' }) : d;
      }
 
      var sucselect = document.getElementById("sucursales");
@@ -101,6 +101,15 @@
              .then(function (tjson) {
 
                  console.log(tjson);
+
+                 if (tjson == "") {
+
+                     Swal.fire({
+                         icon: 'error',
+                         title: '¡Vaya!',
+                         text: 'Parece Que No Existen Solicitudes De Cajas En Esta Fecha'
+                     })
+                 }
 
                  var cuerpo = document.getElementById("cuerpo");
                  let a = 1;

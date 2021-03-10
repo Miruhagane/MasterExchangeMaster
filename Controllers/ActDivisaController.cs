@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication2.Models;
+using EntityState = System.Data.Entity.EntityState;
 
 namespace WebApplication2.Controllers
 {
@@ -76,20 +77,7 @@ namespace WebApplication2.Controllers
 
         // POST: ActDivisa/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "IdTaxa,Moneda,Valor,Dia,Lng_IdTaxa,Int_IdMoneda")] TaxaCompra taxaCompra)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(taxaCompra).State = (System.Data.Entity.EntityState)System.Data.EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(taxaCompra);
-        }
-
+  
         // GET: ActDivisa/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {

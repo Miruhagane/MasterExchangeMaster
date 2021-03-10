@@ -45,7 +45,7 @@
                 <div class="form-group col-sm-8">
                     <div>
                         <div>
-                            <input id="cliente" name="idcliente" class="form-control" value="0" />
+                            <input id="clientem" name="idcliente" class="form-control" value="0" />
                             <input id="idregistroticket" value="@ViewBag.id" />
 
                             <input id="sucursal" value="@Session["idSucursal"]" />
@@ -98,7 +98,7 @@
 
             <div id="especial" style="display : none;">
                 <div class="form-group col-sm-8">
-                    <label for="inputAddress2">mUltimoneda</label>
+                    <label for="inputAddress2">Multimoneda</label>
                     <div>
                         <div class="checkbox">
                             @Html.EditorFor(model => model.Bol_multimoneda, new { @class = "form-control " })
@@ -241,10 +241,6 @@
             <button type="button" onclick="crt()" id="modal1" class="btn btn-warning"> vender </button>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cotizacionmulti">Cotizacion</button>
 
-
-
-
-
             <script>
                 function success() {
                     Swal.fire({
@@ -274,20 +270,15 @@
             <div style="display: none">
                 <div>
                     <div>
-                        <input id="cliente" name="idcliente" class="form-control" value="0" />
+                        <input id="clienten" name="idcliente" class="form-control" value="0" />
                         <input id="idventa" value="@ViewBag.idventa" />
-
                         <input id="sucursal1" value="@Session["idSucursal"]" />
-
                     </div>
 
 
                 </div>
 
                 <div class="form-group col-sm-8">
-
-
-
                     @Html.EditorFor(model => model.Int_IdTipoTran, new { htmlAttributes = new { @class = "form-control", @id = "trans" } })
                     @Html.ValidationMessageFor(model => model.Int_IdTipoTran, "", new { @class = "text-danger" })
 
@@ -800,7 +791,6 @@
                             <th scope="col">direccion</th>
                             <th scope="col">Identificacion</th>
                             <th scope="col">Telefono</th>
-
                         </tr>
                     </thead>
                     <tbody id="cuerpo">
@@ -866,7 +856,7 @@
                                 <div class="form-group">
                                     <label>Nombre de Cliente</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control is-invalid" name="nombre" required />
+                                        <input type="text" class="form-control is-invalid" onkeyup="javascript:this.value=this.value.toUpperCase();" id="nombre" name="nombre" required />
                                         <div class="invalid-feedback">
                                             Por favor Escribe Su nombre Completo
                                         </div>
@@ -957,7 +947,7 @@
                         </div>
                     </div>
                     <button type="submit" onclick="validacionform()" class="btn btn-success">Agregar</button>
-                    <button type="submit" data-dismiss="modal" style="display:none" onclick="setTimeout(buscarcliente, 2000);" class="btn btn-success">Agregar</button>
+                    <button type="submit" id="agregar" data-dismiss="modal" style="display:none" onclick="setTimeout(buscarcliente, 2000);" class="btn btn-success">Agregar</button>
                     <button type="button" onclick="cancelar()" class="btn btn-danger"> cancelar </button>
                 }
             </div>
@@ -1203,9 +1193,9 @@
     function buscarcliente() {
         var obr = document.getElementById("identificador").value;
 
-        $('#modalclientes').modal('hide');
+        $('#modalclientes').modal('toggle');
 
-        $('#modalshow').modal('show');
+        $('#modalshow').modal('toggle');
 
         fetch("/profile/buscar" + "?numero=" + obr)
             .then(function (result) {
@@ -1268,11 +1258,14 @@
         var id = document.getElementById("idclientes" + idnucli).value;
         var nombreuser = document.getElementById("Nombre" + idnucli).value;
 
-        document.getElementById("cliente").value = id;
+        console.log("user_:" + id);
+
+        document.getElementById("clienten").value = id;         
+        document.getElementById("clientem").value = id;
         document.getElementById("nombredecliente").value = nombreuser;
 
 
-        if (cliente.value != 0) {
+        if (clienten.value != 0 && clientem != 0) {
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
@@ -1300,8 +1293,13 @@
 
     }
     function buscar1() {
-        $('#modalshow').modal('hide');
-        $('#modalclientes').modal('show');
+
+        $('#modalshow').modal('toggle');     
+
+        $('#modalclientes').modal('toggle');
+ 
+
+
     }
 </script>
 
@@ -1369,7 +1367,8 @@
         }
     }
     function impresionticket() {
-        $('#ticket').modal('show');
+
+        $('#ticket').modal('toggle');
         var mir = document.getElementById("idregistroticket").value;
         fetch("/profile/returnticketventa" + "?alt=" + mir)
             .then(function (result) {
@@ -1450,7 +1449,7 @@
         var totala = document.getElementById("total_pago1").value;
 
         var totalk = new Intl.NumberFormat('en-US').format(totala);
-        console.log(totalk);
+        
 
         document.getElementById("monedacotizacion").innerHTML = a;
         document.getElementById("montocotizacion").innerHTML = monto;
@@ -1470,8 +1469,7 @@
 
         var totalb = document.getElementById("total_pago").value;
         var totalm = new Intl.NumberFormat('en-US').format(totalb);
-        console.log(totalm);
-
+    
         document.getElementById("monedacotizacion1").innerHTML = apadre;
         document.getElementById("montocotizacion1").innerHTML = montopadre;
         document.getElementById("cambiocotizacion1").innerHTML = cambiopadre;
@@ -1526,7 +1524,8 @@
 
             }).then((result) => {
                 if (result.value) {
-                    $('#modalshow').modal('show');
+       
+                    $('#modalshow').modal('toggle');
                 }
             })
 
@@ -1558,7 +1557,11 @@
             }).then((result) => {
 
                 if (result.value) {
-                    $('#modalshow').modal('show');
+
+                    var myModal = document.getElementById('modalshow');
+                    var modal = new bootstrap.Modal(myModal)
+                    modal.show();
+                   
                 }
             })
             document.getElementById("btn2").style.display = "";
@@ -1630,7 +1633,9 @@
 
                 }).then((result) => {
                     if (result.value) {
-                        $('#modalshow').modal('show');
+
+                        $('#modalshow').modal('toggle');
+          
                     }
                 })
 
@@ -1653,7 +1658,11 @@
                 }).then((result) => {
 
                     if (result.value) {
-                        $('#modalshow').modal('show');
+
+
+                        $('#modalshow').modal('toggle');
+
+                    ;
                     }
                 })
                 document.getElementById("btn2").style.display = "";
@@ -1664,7 +1673,20 @@
 
         else
         {
-            console.log(tuser);
+            Swal.fire({
+                title: 'Espera',
+                text: 'Se tiene Que Registrar al Cliente',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Entendido'
+
+            }).then((result) => {
+                if (result.value) {
+                    $('#modalshow').modal('toggle');
+                    document.getElementById("archivo").removeAttribute("required");
+                    document.getElementById("identificacion").removeAttribute("required");
+                }
+            })
 
             document.getElementById("btn2").style.display = "";
             document.getElementById("modal2").classList.add("invisible");
@@ -1824,21 +1846,34 @@
 </script>
 <script>
     function validacionform() {
-        var a = document.getElementById("nombreform").value;
+        var a = document.getElementById("nombre").value;
         var b = document.getElementById("identificador").value;
         var c = document.getElementById("archivo").value;
+        let tipousuario = document.getElementById("idtipodeusuario").value;
 
-        if (a == "" && b == "" && c == "") {
+        if (tipousuario == "1") {
+            if (a == "") {
 
+            }
+            else if (a != "") {
 
-
+                document.getElementById("agregar").click();
+            }
         }
-        else if (a != "" && b != "" && c != "") {
 
-            document.getElementById("agregar").click();
+        else
+        {
+            if (a == "" && b == "" && c == "") {
 
+            }
+            else if (a != "" && b != "" && c != "") {
 
+                document.getElementById("agregar").click();
+            }
         }
+
+
+       
 
     }
 </script>

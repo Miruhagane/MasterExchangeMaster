@@ -25,6 +25,7 @@
           </Key>
           <Property Name="Int_IdMoneda" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Txt_Moneda" Type="varchar" MaxLength="20" />
+          <Property Name="Txt_NomCorto" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="Ct_Plazas">
           <Key>
@@ -173,6 +174,17 @@
           <Property Name="Int_IdEstatusTesoreria" Type="int" />
           <Property Name="Int_IdUsuario" Type="int" />
           <Property Name="Fec_Dia" Type="datetime" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.Tb_Personalizacion' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Tb_Personalizacion">
+          <Key>
+            <PropertyRef Name="Lng_Idregistro" />
+          </Key>
+          <Property Name="Lng_Idregistro" Type="int" Nullable="false" />
+          <Property Name="Nom_Empresa" Type="nvarchar(max)" />
+          <Property Name="img_Logo" Type="image" />
+          <Property Name="img_Baner" Type="image" />
         </EntityType>
         <EntityType Name="Tb_PlazasApli">
           <Key>
@@ -432,6 +444,14 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySet Name="Tb_TicketTesoreria" EntityType="Self.Tb_TicketTesoreria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tb_Usuarios" EntityType="Self.Tb_Usuarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tb_Vales" EntityType="Self.Tb_Vales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_Personalizacion" EntityType="Self.Tb_Personalizacion" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Tb_Personalizacion].[Lng_Idregistro] AS [Lng_Idregistro], 
+    [Tb_Personalizacion].[Nom_Empresa] AS [Nom_Empresa], 
+    [Tb_Personalizacion].[img_Logo] AS [img_Logo], 
+    [Tb_Personalizacion].[img_Baner] AS [img_Baner]
+    FROM [dbo].[Tb_Personalizacion] AS [Tb_Personalizacion]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="Tb_RegCli" EntityType="Self.Tb_RegCli" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Tb_RegCli].[Lng_IdRegCli] AS [Lng_IdRegCli], 
@@ -476,13 +496,6 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbcasa_cambio" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Ct_Moneda">
-          <Key>
-            <PropertyRef Name="Int_IdMoneda" />
-          </Key>
-          <Property Name="Int_IdMoneda" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Txt_Moneda" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="Tb_RegistrosHistorico">
           <Key>
             <PropertyRef Name="Lng_IdRegistroHistorico" />
@@ -516,7 +529,6 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Name="Int_IdGrupo" Type="Int32" />
         </EntityType>
         <EntityContainer Name="MasterExchangeEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Ct_Moneda" EntityType="Self.Ct_Moneda" />
           <EntitySet Name="Tb_RegistrosHistorico" EntityType="Self.Tb_RegistrosHistorico" />
           <EntitySet Name="Tb_Taxas" EntityType="Self.Tb_Taxas" />
           <EntitySet Name="Tb_RegCli" EntityType="dbcasa_cambio.Tb_RegCli" />
@@ -558,6 +570,8 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <EntitySet Name="Tb_TicketTesoreria" EntityType="dbcasa_cambio.Tb_TicketTesoreria" />
           <EntitySet Name="Tb_ArqueoTesoria" EntityType="dbcasa_cambio.Tb_ArqueoTesoria" />
           <EntitySet Name="Tb_Sucursal" EntityType="dbcasa_cambio.Tb_Sucursal" />
+          <EntitySet Name="Tb_Personalizacion" EntityType="dbcasa_cambio.Tb_Personalizacion" />
+          <EntitySet Name="Ct_Moneda" EntityType="dbcasa_cambio.Ct_Moneda" />
         </EntityContainer>
         <EntityType Name="Tb_RegCli">
           <Key>
@@ -942,20 +956,29 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
           <Property Name="Txt_NomCorto" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="Bol_Activo" Type="Boolean" />
         </EntityType>
+        <EntityType Name="Tb_Personalizacion">
+          <Key>
+            <PropertyRef Name="Lng_Idregistro" />
+          </Key>
+          <Property Name="Lng_Idregistro" Type="Int32" Nullable="false" />
+          <Property Name="Nom_Empresa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="img_Logo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="img_Baner" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Ct_Moneda">
+          <Key>
+            <PropertyRef Name="Int_IdMoneda" />
+          </Key>
+          <Property Name="Int_IdMoneda" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Txt_Moneda" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Txt_NomCorto" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="dbcasa_cambioStoreContainer" CdmEntityContainer="MasterExchangeEntities">
-          <EntitySetMapping Name="Ct_Moneda">
-            <EntityTypeMapping TypeName="dbcasa_cambio.Ct_Moneda">
-              <MappingFragment StoreEntitySet="Ct_Moneda">
-                <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
-                <ScalarProperty Name="Txt_Moneda" ColumnName="Txt_Moneda" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tb_RegistrosHistorico">
             <EntityTypeMapping TypeName="dbcasa_cambio.Tb_RegistrosHistorico">
               <MappingFragment StoreEntitySet="Tb_RegistrosHistorico">
@@ -1363,6 +1386,25 @@ advertencia 6002: La tabla o vista 'SysMasterExchange.dbo.TaxaVenta' no tiene de
                 <ScalarProperty Name="Txt_Sucursal" ColumnName="Txt_Sucursal" />
                 <ScalarProperty Name="Int_IdPlaza" ColumnName="Int_IdPlaza" />
                 <ScalarProperty Name="Lng_IdSucursal" ColumnName="Lng_IdSucursal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_Personalizacion">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Tb_Personalizacion">
+              <MappingFragment StoreEntitySet="Tb_Personalizacion">
+                <ScalarProperty Name="img_Baner" ColumnName="img_Baner" />
+                <ScalarProperty Name="img_Logo" ColumnName="img_Logo" />
+                <ScalarProperty Name="Nom_Empresa" ColumnName="Nom_Empresa" />
+                <ScalarProperty Name="Lng_Idregistro" ColumnName="Lng_Idregistro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ct_Moneda">
+            <EntityTypeMapping TypeName="dbcasa_cambio.Ct_Moneda">
+              <MappingFragment StoreEntitySet="Ct_Moneda">
+                <ScalarProperty Name="Txt_NomCorto" ColumnName="Txt_NomCorto" />
+                <ScalarProperty Name="Txt_Moneda" ColumnName="Txt_Moneda" />
+                <ScalarProperty Name="Int_IdMoneda" ColumnName="Int_IdMoneda" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -13,7 +13,6 @@ using EntityState = System.Data.Entity.EntityState;
 using WebApplication2.Models.ViewModels;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
-using System.Data.EntityClient;
 
 namespace WebApplication2.Controllers
 {
@@ -127,39 +126,48 @@ namespace WebApplication2.Controllers
 
 
             return Json(querty, JsonRequestBehavior.AllowGet);
+
+
         }
 
         public JsonResult admins(DateTime fec)
         {
-            DateTime fecha = fec;
-            DateTime fec1 = fecha.AddHours(23);
 
-            List<inventario> querty;
-
-            using (MasterExchangeEntities dc = new MasterExchangeEntities())
-            {
-                querty = (from c in dc.Tb_EntradaSuc
-                          join ca in dc.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
-                          join cb in dc.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
-                          join cc in dc.Tb_Sucursal on c.Int_Sucursal equals cc.Lng_IdSucursal
-                          join cd in dc.Tb_Usuarios on ca.Int_IdUsuario equals cd.Int_Idusuario
-                          where c.Fec_Ini > fecha && c.Fec_Ini < fec1 && c.Int_Estatus >= 2 
-                          select new inventario
-                          {
-                              Lng_IdEntrada = c.Lng_IdEntrada,
-                              Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
-                              Txt_Moneda = cb.Txt_Moneda,
-                              Int_Estatus = c.Int_Estatus,
-                              Txt_sucursal = cc.Txt_Sucursal,
-                              n_usuario = cd.Txt_Nombre,
-                              Fec_Ini = c.Fec_Ini,
-                              Txt_Motivo = c.Txt_Motivo
-                          }).ToList();
+             DateTime fecha = fec;
+                DateTime fec1 = fecha.AddHours(23);
 
 
-            }
+
+                List<inventario> querty;
+
+                using (MasterExchangeEntities dc = new MasterExchangeEntities())
+                {
+                    querty = (from c in dc.Tb_EntradaSuc
+                              join ca in dc.Tb_EntEmp on c.Lng_IdEntrada equals ca.Lng_IdEntrada
+                              join cb in dc.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
+                              join cc in dc.Tb_Sucursal on c.Int_Sucursal equals cc.Lng_IdSucursal
+                              join cd in dc.Tb_Usuarios on ca.Int_IdUsuario equals cd.Int_Idusuario
+                              where c.Fec_Ini > fecha && c.Fec_Ini < fec1 && c.Int_Estatus >= 2
+                              select new inventario
+                              {
+                                  Lng_IdEntrada = c.Lng_IdEntrada,
+                                  Dbl_SaldoEntrada = c.Dbl_SaldoEntrada,
+                                  Txt_Moneda = cb.Txt_Moneda,
+                                  Int_Estatus = c.Int_Estatus,
+                                  Txt_sucursal = cc.Txt_Sucursal,
+                                  n_usuario = cd.Txt_Nombre,
+                                  Fec_Ini = c.Fec_Ini,
+                                  Txt_Motivo = c.Txt_Motivo
+                              }).ToList();
+
+
+                }
 
                 return Json(querty, JsonRequestBehavior.AllowGet);
+            
+            
+            
+          
         }
 
 

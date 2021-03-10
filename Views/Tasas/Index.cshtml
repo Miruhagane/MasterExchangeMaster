@@ -14,41 +14,72 @@
                 <h5>Tasas de Compra</h5>
             </div>
 
+            <div class="col-sm-4">
+                @Html.DropDownList("Datos", suc, "selecciona una Plaza", new { @class = "form-control form-control-sm ", id = "plazas" })
+            </div>
+
         </div>
         <div class="card-body">
 
             <div class="card-group">
                 <div class="card">
-                   
+
                     <div class="card-body">
-                      
+                        <div id="cuerposuc">
+                            <div style="display: none" id="cancun">
+
+                            </div>
+
+                            <div style="display: none" id="Playa">
+
+                            </div>
+
+                            <div style="display: none" id="cabos">
+
+                            </div>
+
+                            <div style="display: none" id="Tulum">
+
+                            </div>
+
+                            <div style="display: none" id="CDMX">
+
+                            </div>
+
+                            <div style="display: none" id="Leon">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
                     <table class="table table-sm">
                         <thead>
                             <tr>
-                                <th scope="col"></th>
+                                <th scope="col"><small><span id="fecha"></span></small> </th>
                                 <th scope="col">Moneda</th>
                                 <th scope="col">TC</th>
-                                <th scope="col"><small><span id="fecha"></span></small></th>
+
                             </tr>
                         </thead>
                         <tbody id="cuerpo">
+
                         </tbody>
                     </table>
                 </div>
             </div>
 
-           
+
 
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Entrada">
-                Actualizar
+            <button type="button" class="btn btn-secondary" onclick="postvalores()" data-toggle="modal" data-target="">
+            Actualizar
             </button>
 
         </div>
+        
+
     </div>
 
 </div>
@@ -56,7 +87,11 @@
 <script>
     (function () {
         compra();
+        obtsuc();
     })();
+
+
+
 
     function compra()
     {
@@ -89,13 +124,7 @@
 
                 let query = JSON.parse(tjson);
 
-                console.log(query);
-
                 var a = 1;
-
-
-
-
 
                 for (let item of query)
                 {
@@ -108,10 +137,7 @@
                     <tr>
                         <th>  <img id="img_${a}" src="" /></th>
                         <th><small>${item.Moneda} </small></th>
-                        <th><small>$${item.Valor} </small></th>
-
-
-
+                        <th><small><input type="text" class="form-control form-control-sm" id="mon${item.Int_IdMoneda}" value="${item.Valor}" name="tc_${a}" /> </small></th>
                     </tr>
                      `
                     a = a + 1;
@@ -125,7 +151,294 @@
 
     }
 
+    function obtsuc()
+    {
+        fetch("/Tasas/checksuc",
+            {
 
+                method: 'POST',
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+
+            .then(function (tjson) {
+
+              
+                let valor = 0;
+                let for1 = 0;
+          
+                for (let item of tjson) {
+
+                    if (item.Int_IdPlaza == 1) {
+
+                        var cuerpo = document.getElementById("cancun");
+                      
+
+                        cuerpo.innerHTML += `
+                             <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" id="suc${item.Lng_IdSucursal}">
+                              <label class="form-check-label" for="flexSwitchCheckDefault">${item.Txt_Sucursal}</label>
+                             </div>
+                        `
+    
+
+                    }
+
+                    else if (item.Int_IdPlaza == 2)
+                    {
+                        var cuerpo = document.getElementById("Playa");
+                     
+
+                        cuerpo.innerHTML += `
+                             <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" id="suc${item.Lng_IdSucursal}">
+                              <label class="form-check-label" for="flexSwitchCheckDefault">${item.Txt_Sucursal}</label>
+                             </div>
+                        `
+                      
+                    }
+
+                    else if (item.Int_IdPlaza == 3) {
+                        var cuerpo = document.getElementById("cabos");
+                       
+
+                        cuerpo.innerHTML += `
+                             <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" id="suc${item.Lng_IdSucursal}">
+                              <label class="form-check-label" for="flexSwitchCheckDefault">${item.Txt_Sucursal}</label>
+                             </div>
+                        `
+                        
+                    }
+
+                    else if (item.Int_IdPlaza == 4) {
+                        var cuerpo = document.getElementById("Tulum");
+                     
+
+                        cuerpo.innerHTML += `
+                             <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" id="suc${item.Lng_IdSucursal}">
+                              <label class="form-check-label" for="flexSwitchCheckDefault">${item.Txt_Sucursal}</label>
+                             </div>
+                        `
+                      
+                    }
+                    else if (item.Int_IdPlaza == 5) {
+                        var cuerpo = document.getElementById("CDMX");
+                      
+                        cuerpo.innerHTML += `
+                             <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" id="suc${item.Lng_IdSucursal}">
+                              <label class="form-check-label" for="flexSwitchCheckDefault">${item.Txt_Sucursal}</label>
+                             </div>
+                        `
+                       
+                    }
+                    else if (item.Int_IdPlaza == 6) {
+                        var cuerpo = document.getElementById("Leon");
+                    
+
+                        cuerpo.innerHTML += `
+                             <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" id="suc${item.Lng_IdSucursal}">
+                              <label class="form-check-label" for="flexSwitchCheckDefault">${item.Txt_Sucursal}</label>
+                             </div>
+                        `
+                 
+                    }
+
+                    valor = valor + 1;
+ 
+                }
+
+            })
+
+    }
+
+
+    function postvalores()
+    {
+        let sucids = [];
+        let idmon = [];
+        let valores = [];
+
+        let c = 1;
+
+        for (let b = 0; b < 8; b++) {
+
+            if (c != 7)
+            {
+                var monv = document.getElementById("mon" + c).value;
+                idmon[b] = c;
+                valores[b] = monv;
+
+            }
+        
+            c = c + 1;
+        }
+
+    
+
+        c = 1;
+
+        for (let b = 0; b < 17; b++)
+        {
+            var check = document.getElementById("suc" + c);
+      
+
+            if (check.checked == true)                          
+            {
+                for (let d = 0; d < 8; d++)
+                {
+                    const indice = {
+                        idsuc: c,                             
+                        idmoneda: idmon[d],
+                        valor: valores[d]
+                    }
+
+                    fetch("/Tasas/tasacompra",
+                        {
+
+                            method: 'POST',
+                            body: JSON.stringify(indice),
+                            headers: {
+                                'Accept': "application/json",
+                                "Content-Type": "application/json"
+                            }
+                        })
+                        .then(function (result) {
+                            if (result.ok) {
+                                return result.json();
+                            }
+                        })
+
+                        .then(function (tjson) {
+                            console.log(tjson);
+                        })
+
+                }
+
+
+            }
+            else if (check.checked == false)
+            {
+                sucids[b] = c;
+            }
+
+            c = c + 1;
+
+        }
+
+   
+        Swal.fire({
+            position: 'top-center',
+            icon: 'success',
+            title: 'Tasas Actualizadas',
+            showConfirmButton: false,
+            timer: 1500
+        })
+
+    }
+    
 
 </script>
+
+<script>
+
+    setInterval(function () { banderas(); }, 1000);
+    function banderas() {
+
+
+        document.getElementById("img_1").src = "../../Content/baderas/003-estados-unidos.png";
+        document.getElementById("img_2").src = "../../Content/baderas/001-union-europea.png";
+        document.getElementById("img_3").src = "../../Content/baderas/005-canada.png";
+        document.getElementById("img_4").src = "../../Content/baderas/004-reino-unido.png";
+        document.getElementById("img_5").src = "../../Content/baderas/006-suiza.png";
+        document.getElementById("img_6").src = "../../Content/baderas/002-brasil.png";
+        document.getElementById("img_7").src = "../../Content/baderas/007-australia.png";
+
+    }
+</script>
+
+<script>
+
+    var plazas = document.getElementById("plazas");
+    plazas.addEventListener("change", caso1);
+
+    caso1();
+
+    function caso1()
+    {
+        var ar = document.getElementById("plazas").value;
+
+        if (ar == "1")
+        {
+            document.getElementById("cancun").style.display = "";
+            document.getElementById("Playa").style.display = "none";
+            document.getElementById("cabos").style.display = "none"; 
+            document.getElementById("Tulum").style.display = "none";
+            document.getElementById("CDMX").style.display = "none";
+            document.getElementById("Leon").style.display = "none";
+        }
+        else if (ar == "2")
+        {
+            document.getElementById("cancun").style.display = "none";
+            document.getElementById("Playa").style.display = "";
+            document.getElementById("cabos").style.display = "none";
+            document.getElementById("Tulum").style.display = "none";
+            document.getElementById("CDMX").style.display = "none";
+            document.getElementById("Leon").style.display = "none";
+        }
+
+        else if (ar == "3")
+        {
+            document.getElementById("cancun").style.display = "none";
+            document.getElementById("Playa").style.display = "none";
+            document.getElementById("cabos").style.display = "";
+            document.getElementById("Tulum").style.display = "none";
+            document.getElementById("CDMX").style.display = "none";
+            document.getElementById("Leon").style.display = "none";
+        }
+
+        else if (ar == "4")
+        {
+            document.getElementById("cancun").style.display = "none";
+            document.getElementById("Playa").style.display = "none";
+            document.getElementById("cabos").style.display = "none";
+            document.getElementById("Tulum").style.display = "";
+            document.getElementById("CDMX").style.display = "none";
+            document.getElementById("Leon").style.display = "none";
+        }
+
+        else if (ar == "5")
+        {
+            document.getElementById("cancun").style.display = "none";
+            document.getElementById("Playa").style.display = "none";
+            document.getElementById("cabos").style.display = "none";
+            document.getElementById("Tulum").style.display = "none";
+            document.getElementById("CDMX").style.display = "";
+            document.getElementById("Leon").style.display = "none";
+        }
+
+        else if (ar == "6")
+        {
+            document.getElementById("cancun").style.display = "none";
+            document.getElementById("Playa").style.display = "none";
+            document.getElementById("cabos").style.display = "none";
+            document.getElementById("Tulum").style.display = "none";
+            document.getElementById("CDMX").style.display = "none";
+            document.getElementById("Leon").style.display = "";
+        }
+
+    }
+
+</script>
+
 

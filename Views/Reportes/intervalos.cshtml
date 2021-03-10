@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "intervalos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-sm-12 shadow-lg mt-2 pl-4">
+    <div class="card ">
+
+        <div class="card-header bg-dark text-white row">
+            <h5>Reportes</h5>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card-group mr-5">
+  
+    <div class="card">
+        <div class="card-header">
+            <h5 id="compras y ventas"> Reporte de Compras y Ventas</h5>
+        </div>
+        <div class="card-body">
+
+
+
+            @using (Html.BeginForm("excels", "Reportes", FormMethod.Post))
+            {
+                <div class="col-sm-12">
+                    <span>Fecha Inicio</span>
+                    <input type="date" id="f1" name="f1" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-sm-12">
+                    <span>Fecha fin</span>
+                    <input type="date" id="f2" name="f2" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-sm-12 mt-3">
+                    <input type="submit" value="Obterner Reporte" class="btn btn-success btn-sm" />
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 id="comprasPonderado"> Reporte de Compras ponderado</h5>
+        </div>
+        <div class="card-body">
+          
+
+            @using (Html.BeginForm("comprapon", "Reportes", FormMethod.Post))
+            {
+
+                <div class="col-sm-12">
+                    <span>Fecha Inicio</span>
+                    <input type="date" name="fec1" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-sm-12">
+                    <span>Fecha fin</span>
+                    <input type="date" name="fec2" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-sm-12 mt-3">
+                    <input type="submit" value="Obterner Reporte" class="btn btn-success btn-sm" />
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 id="Ventas"> Reporte de Ventas Ponderado</h5>
+
+        </div>
+        <div class="card-body">
+
+
+            @using (Html.BeginForm("ventapon", "Reportes", FormMethod.Post))
+            {
+
+                <div class="col-sm-12">
+                    <span>Fecha Inicio</span>
+                    <input type="date" name="fec1" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-sm-12">
+                    <span>Fecha fin</span>
+                    <input type="date" name="fec2" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-sm-12 mt-3">
+                    <input type="submit" value="Obterner Reporte" class="btn btn-success btn-sm" />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+
+        </div>
+        <div class="card-body">
+            <div class="col-sm-6">
+                <h5 id="arqueo">Reporte de Remesas</h5>
+
+            </div>
+
+            @using (Html.BeginForm("excels", "Reportes", FormMethod.Post))
+            {
+
+                <div class="col-sm-3">
+                    <span>Dia</span>
+                    <input type="date" name="fecha" class="form-control form-control-sm" />
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+                <div class="col-sm-12">
+                    <input type="submit" value="Obterner Excel" class="btn btn-success btn-sm" />
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

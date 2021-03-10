@@ -34,24 +34,38 @@
                     <label class="h6">Nombre</label>
                     @Html.EditorFor(model => model.Txt_Nombre, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
                     @Html.ValidationMessageFor(model => model.Txt_Nombre, "", new { @class = "text-danger" })
-                </div>
+                      <div class="invalid-feedback">
+                        Datos Requeridos
+                      </div>
+
+                </div>             
 
                 <div class="col-sm-6">
                     <label class="h6">Apellido</label>
                     @Html.EditorFor(model => model.Txt_Apellido, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
                     @Html.ValidationMessageFor(model => model.Txt_Apellido, "", new { @class = "text-danger" })
+
+                    <div class="invalid-feedback">
+                        Datos Requeridos
+                    </div>
                 </div>
 
                 <div class="col-sm-6">
                     <label class="h6">Nombre Corto</label>
                     @Html.EditorFor(model => model.Txt_NomCorto, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
                     @Html.ValidationMessageFor(model => model.Txt_NomCorto, "", new { @class = "text-danger" })
+                    <div class="invalid-feedback">
+                        Datos Requeridos
+                    </div>
                 </div>
 
                 <div class="col-sm-6">
                     <label class="h6">Contraseña</label>
-                    @Html.EditorFor(model => model.Txt_Password, new { htmlAttributes = new { @type="text", @class = "form-control form-control-sm" } })
+                    @Html.EditorFor(model => model.Txt_Password, new { htmlAttributes = new { @type = "text", @class = "form-control form-control-sm" } })
                     @Html.ValidationMessageFor(model => model.Txt_Password, "", new { @class = "text-danger" })
+                    <div class="invalid-feedback">
+                        Datos Requeridos
+                    </div>
                 </div>
 
                 <div class="col-sm-12">
@@ -64,6 +78,10 @@
                     <label class="h6">Telefono Celular </label>
                     @Html.EditorFor(model => model.Num_Telefono_2, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
                     @Html.ValidationMessageFor(model => model.Num_Telefono_2, "", new { @class = "text-danger" })
+
+                    <div class="invalid-feedback">
+                        Datos Requeridos
+                    </div>
                 </div>
                 <div class="col-sm-6">
                     <label class="h6">Telefono de Casa</label>
@@ -79,9 +97,15 @@
                 <div class="col-sm-6">
                     <label class="h6"> Area</label>
                     @Html.DropDownList("Datos", areas, new { @type = "number", @class = "form-control", @id = "Area" })
+
+                    <div class="invalid-feedback">
+                        Datos Requeridos
+                    </div>
+
                     <div style="display: none">
                         @Html.EditorFor(model => model.Int_IdArea, new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "areapost", @readonly = true } })
                         @Html.ValidationMessageFor(model => model.Int_IdArea, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
 
@@ -95,6 +119,10 @@
                 <div class="col-sm-6">
                     <label class="h6">Plaza</label>
                     @Html.DropDownList("Datos", plaza, new { @type = "number", @class = "form-control", @id = "Plaza" })
+
+                    <div class="invalid-feedback">
+                        Datos Requeridos
+                    </div>
                     <div style="display: none">
                         @Html.EditorFor(model => model.Int_IdPlaza, new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "plazapost", @readonly = true } })
                         @Html.ValidationMessageFor(model => model.Int_IdPlaza, "", new { @class = "text-danger" })
@@ -104,6 +132,10 @@
                     <label class="h6">Sucursal</label>
                     <select id="sucursal" class="form-control" name="sucursal">
                     </select>
+
+                    <div class="invalid-feedback">
+                        Datos Requeridos
+                    </div>
                     <div style="display: none">
                         @Html.EditorFor(model => model.Lng_IdSucursal, new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "sucursalpost", @readonly = true } })
                         @Html.ValidationMessageFor(model => model.Lng_IdSucursal, "", new { @class = "text-danger" })

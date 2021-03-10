@@ -27,7 +27,6 @@ namespace WebApplication2.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Ct_Moneda> Ct_Moneda { get; set; }
         public virtual DbSet<Tb_RegistrosHistorico> Tb_RegistrosHistorico { get; set; }
         public virtual DbSet<Tb_Taxas> Tb_Taxas { get; set; }
         public virtual DbSet<Tb_RegCli> Tb_RegCli { get; set; }
@@ -59,6 +58,8 @@ namespace WebApplication2.Models
         public virtual DbSet<Tb_TicketTesoreria> Tb_TicketTesoreria { get; set; }
         public virtual DbSet<Tb_ArqueoTesoria> Tb_ArqueoTesoria { get; set; }
         public virtual DbSet<Tb_Sucursal> Tb_Sucursal { get; set; }
+        public virtual DbSet<Tb_Personalizacion> Tb_Personalizacion { get; set; }
+        public virtual DbSet<Ct_Moneda> Ct_Moneda { get; set; }
     
         public virtual ObjectResult<buscar_Result1> buscar(string numero)
         {

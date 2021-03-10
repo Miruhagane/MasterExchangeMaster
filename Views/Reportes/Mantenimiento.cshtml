@@ -1,0 +1,251 @@
+﻿@model WebApplication2.Models.Tb_Arqueo
+
+@{
+    ViewBag.Title = "Mantenimiento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-sm-11 mt-3 pl-5">
+    <div class="card shadow-lg rounded">
+
+
+        <div class="card-header bg-dark text-white row">
+            <div class="col-sm-8">
+                <h5 id="Titulo"></h5>
+
+                <div style="display: none">
+                    <input id="tipo" value="@ViewBag.tipo" />
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <span>Fecha</span>
+                <input type="date" id="fecha1" class="form-control form-control-sm" />
+            </div>
+
+        </div>
+        <div class="card-body">
+ 
+            <div class="col-sm-12">
+                <button class="btn btn-success btn-sm" type="button" onclick="msng()">Reporte Normal</button>
+                <button class="btn btn-success btn-sm" type="button" onclick="msng2()">Reporte Tesoria</button>
+                <button class="btn btn-success btn-sm" type="button" onclick="msng3()">Reporte especiales</button>
+                <button class="btn btn-success btn-sm" type="button" onclick="msng4()">Reporte usuarios</button>
+
+            </div>
+          
+        </div>
+        <div class="card-footer">
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function msng() {
+
+
+        let fecha = document.getElementById("fecha1").value;
+
+        const post1 = {
+            dias: fecha
+        }
+
+        fetch("/Reportes/mail",
+            {
+                method: 'POST',
+                body: JSON.stringify(post1),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+                
+            }
+        )
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+
+            .then(function (tjson) {
+           
+               
+                console.log(tjson);
+
+                if (tjson == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Mail enviado'
+                    })
+                }
+                else if (tjson == 2) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ups....',
+                        text: 'hubo un problema al enviar el mail'
+                    })
+                }
+
+
+
+            })
+    }
+
+    function msng2() {
+       
+
+        let fecha = document.getElementById("fecha1").value;
+
+        const post1 = {
+            dias: fecha
+        }
+
+
+        fetch("/Reportes/mailtesoreria",
+            {
+                method: 'POST',
+                body: JSON.stringify(post1),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+
+            }
+        )
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+
+            .then(function (tjson) {
+
+                if (tjson == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Mail enviado'
+                    })
+
+                }
+                else if (tjson == 2) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Vale',
+                        text: 'Al parecer los datos del mail estan vacios, asi que el envio del mail se a cancelado'
+                    })
+                }
+
+                else if (tjson == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ups....',
+                        text: 'hubo un problema al enviar el mail'
+                    })
+                }
+
+            })
+    }
+
+    function msng3() {
+
+
+        let fecha = document.getElementById("fecha1").value;
+
+        const post1 = {
+            dias: fecha
+        }
+
+
+        fetch("/Reportes/especiales",
+            {
+                method: 'POST',
+                body: JSON.stringify(post1),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+
+            }
+        )
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+
+            .then(function (tjson) {
+
+                console.log(tjson);
+
+                if (tjson == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Mail enviado'
+                    })
+
+                }
+                else if (tjson == 2) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Vale',
+                        text: 'Al parecer los datos del mail estan vacios, asi que el envio del mail se a cancelado'
+                    })
+                }
+
+                else if (tjson == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ups....',
+                        text: 'hubo un problema al enviar el mail'
+                    })
+                }
+
+            })
+    }
+
+
+    function msng4()
+    {
+        fetch("/Reportes/errores",
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+
+            }
+        )
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+
+            .then(function (tjson) {
+
+                if (tjson == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Mail enviado'
+                    })
+
+                }
+                else
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ups....',
+                        text: 'hubo un problema al enviar el mail'
+                    })
+
+                }
+          
+            })
+    }
+
+</script>

@@ -100,7 +100,7 @@
                     <div class="card-body" style="width: 1000px;">
                         <div id="listcancun" class="checkbox" style="display: none">
                             <asp:CheckBoxList ID="CheckBoxcancun" runat="server" DataSourceID="suc_cancun" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal" CssClass="form-check"></asp:CheckBoxList>
-                            <asp:SqlDataSource ID="suc_cancun" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Txt_Sucursal], [Int_IdPlaza] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
+                            <asp:SqlDataSource ID="suc_cancun" runat="server" ConnectionString="<%$ ConnectionStrings:masterexchangeserver %>" SelectCommand="SELECT [Lng_IdSucursal], [Txt_Sucursal], [Int_IdPlaza] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                 <SelectParameters>
                                     <asp:Parameter DefaultValue="1" Name="Int_IdPlaza" Type="Int32" />
                                 </SelectParameters>
@@ -109,7 +109,7 @@
 
                         <div id="listaplaya" class="checkbox" style="display: none">
                             <asp:CheckBoxList ID="CheckBoxcarmen" runat="server" DataSourceID="suc_playa" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
-                            <asp:SqlDataSource ID="suc_playa" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
+                            <asp:SqlDataSource ID="suc_playa" runat="server" ConnectionString="<%$ ConnectionStrings:masterexchangeserver %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                 <SelectParameters>
                                     <asp:Parameter DefaultValue="2" Name="Int_IdPlaza" Type="Int32" />
                                 </SelectParameters>
@@ -118,7 +118,7 @@
 
                         <div id="listacabos" class="checkbox" style="display: none">
                             <asp:CheckBoxList ID="CheckBoxcabos" runat="server" DataSourceID="suc_cabos" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
-                            <asp:SqlDataSource ID="suc_cabos" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
+                            <asp:SqlDataSource ID="suc_cabos" runat="server" ConnectionString="<%$ ConnectionStrings:masterexchangeserver %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                 <SelectParameters>
                                     <asp:Parameter DefaultValue="3" Name="Int_IdPlaza" Type="Int32" />
                                 </SelectParameters>
@@ -127,7 +127,7 @@
 
                         <div id="listatulum" class="checkbox" style="display: none">
                             <asp:CheckBoxList ID="CheckBoxtulum" runat="server" DataSourceID="suc_tulum" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
-                            <asp:SqlDataSource ID="suc_tulum" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
+                            <asp:SqlDataSource ID="suc_tulum" runat="server" ConnectionString="<%$ ConnectionStrings:masterexchangeserver %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                 <SelectParameters>
                                     <asp:Parameter DefaultValue="4" Name="Int_IdPlaza" Type="Int32" />
                                 </SelectParameters>
@@ -136,7 +136,7 @@
 
                         <div id="listacdmx" class="checkbox" style="display: none">
                             <asp:CheckBoxList ID="CheckBoxcdmx" runat="server" DataSourceID="suc_cdmx" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
-                            <asp:SqlDataSource ID="suc_cdmx" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
+                            <asp:SqlDataSource ID="suc_cdmx" runat="server" ConnectionString="<%$ ConnectionStrings:masterexchangeserver %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                 <SelectParameters>
                                     <asp:Parameter DefaultValue="5" Name="Int_IdPlaza" Type="Int32" />
                                 </SelectParameters>
@@ -145,7 +145,7 @@
 
                         <div id="listaleon" class="checkbox" style="display: none">
                             <asp:CheckBoxList ID="CheckBoxleon" runat="server" DataSourceID="suc_leon" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal"></asp:CheckBoxList>
-                            <asp:SqlDataSource ID="suc_leon" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
+                            <asp:SqlDataSource ID="suc_leon" runat="server" ConnectionString="<%$ ConnectionStrings:masterexchangeserver %>" SelectCommand="SELECT [Lng_IdSucursal], [Int_IdPlaza], [Txt_Sucursal] FROM [Tb_Sucursal] WHERE ([Int_IdPlaza] = @Int_IdPlaza)">
                                 <SelectParameters>
                                     <asp:Parameter DefaultValue="6" Name="Int_IdPlaza" Type="Int32" />
                                 </SelectParameters>

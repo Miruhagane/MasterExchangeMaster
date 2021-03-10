@@ -4,34 +4,39 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="icon" type="image/png" href="~/Content/iconos/Capa1.png" />
     <title>@ViewBag.Title - Master Exchance</title>
     <link href="~/Content/sidebar.css" rel="stylesheet" />
     <!-- sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
+    <link href="~/Content/menumobile.css" rel="stylesheet" />
 
     <!-- bootstrap 4 -->
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 
-    <!-- Ionic icons -->
-    <script src="https://kit.fontawesome.com/30fa52b14d.js" crossorigin="anonymous"></script>
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/secion.js"></script>
 
     <!-- Print.js-->
-    <script src="  https://printjs-4de6.kxcdn.com/print.min.js"></script>
+    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
     <link href="~/Content/Usuarios.css" rel="stylesheet" />
-    <script src="~/Scripts/push.min.js"></script>
+
     <!-- libreria de notificaciones -->
-    
+    <script src="~/Scripts/push.min.js"></script>
+
+    <!-- libreria de graficos -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -39,17 +44,18 @@
 <body class="" >
     <div style="display: none">
         <input id="uservalue" value="@Session["intareadeusurio"]" />
-           <input id="nameuser1" value="@Session["usuario"]"/>
+        <input id="nameuser1" value="@Session["usuario"]" />
+        <input id="idusers" value="@Session["idusers"]" />
     </div>
     
     <div class="d-flex " id="content-wrapper">
-        <div style="display: none" id="sidebar-container" class="fondo ">
+        <div id="sidebar-container" class="fondo ">
 
             <div class="logo">
-               
+
             </div>
 
-            <div  class="menu">
+            <div class="menu" id="sitiedesktop" style="display: none">
                 <div class="d-block text-light p-1 border-0">
 
                     <button type="button" class="btn btn-success menubtn" onclick="location.href='@Url.Action("Index", "profile")'">
@@ -83,10 +89,10 @@
                 </div>
 
                 <div class="btn-group  d-block text-light p-1 border-0">
-                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="usuarios" onclick="btndropdown()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="usuarios" onclick="usuarios()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Control De Usuarios
                     </button>
-                    <div class="dropdown-menu bg-dark">
+                    <div class="dropdown-menu bg-dark" aria-labelledby="usuarios">
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Create", "Usuarios")'">Crear Usuario </button>
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("Index", "Usuarios")'">Buscar Usuario</button>
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("actualizaruser", "Usuarios")'">Actualizar Sucursal de Usuario</button>
@@ -94,14 +100,14 @@
                 </div>
 
                 <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn" id="cajas" style="display: none" onclick="location.href='@Url.Action("actualizar", "EntradaCaja")'">Dotaciones</button>
+                    <button type="button" class="btn btn-dark menubtn" id="cajas" style="display: none" onclick="location.href='@Url.Action("actualizar", "EntradaCaja")'">Solicitudes de Caja</button>
                 </div>
 
                 <div class="btn-group  d-block text-light p-1 border-0">
                     <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="dotaciones" onclick="dotaciones()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dotaciones
                     </button>
-                    <div class="dropdown-menu bg-dark">
+                    <div class="dropdown-menu bg-dark" aria-labelledby="dotaciones">
                         <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("Index", "sucadmin")'">Dotaciones iniciales</button>
                         <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("dotaciones", "EntradaCaja")'">Solicitudes de Caja</button>
                         <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("indexsalidas", "SalidaSuc")'">Historico de Dotaciones</button>
@@ -110,48 +116,45 @@
 
 
                 <div class="btn-group  d-block text-light p-1 border-0">
-                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="tesoreria" onclick="tesoreria()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" onclick="tesoreria()" id="tesoreria" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Tesoreria
                     </button>
-                    <div class="dropdown-menu bg-dark">
+                    <div class="dropdown-menu bg-dark" aria-labelledby="tesoreria">
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("datosvr", "SalidaSuc")'">Comprobantes </button>
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("ArqueoTesoreria", "SalidaSuc")'">Arqueo Tesoreria</button>
                         <button type="button" class="btn btn-dark " onclick="location.href='@Url.Action("vistaTesoreria", "SalidaSuc")'">Historial de Arqueos</button>
                     </div>
                 </div>
 
-                <div class="btn-group  d-block text-light p-1 border-0">
-                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="reportes" onclick="reportes()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     Reportes
-                    </button>
-                    <div class="dropdown-menu bg-dark">
-                        <button type="button" class="btn btn-dark menubtn"  onclick="location.href='@Url.Action("reportes", "Reportes", new { id = 1 })'">Compras</button>
-                        <button type="button" class="btn btn-dark menubtn"  onclick="location.href='@Url.Action("reportes", "Reportes", new { id = 2 })'">Ventas</button>
-                        <button type="button" class="btn btn-dark menubtn"  onclick="location.href='@Url.Action("reportes", "Reportes", new { id = 3 })'">Arqueo Cajeros</button>
-                        <button type="button" class="btn btn-dark menubtn"  onclick="location.href='@Url.Action("reportes", "Reportes", new { id = 4 })'">Arqueo Tesoreria</button>
-                    </div>
-                </div>
-
-              
+               
 
                 <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn" id="salidacaja" onclick="location.href='@Url.Action("Index", "SalidaSuc")'">Salida de Caja</button>
+                    <button type="button" class="btn btn-dark menubtn" id="reportes" onclick="location.href='@Url.Action("intervalos","Reportes")'">Obtener Reportes</button>
                 </div>
 
 
                 <div class="d-block text-light  border-0">
-                    <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("cerrararqueo", "Arqueo")'">Arqueo Final</button>
+                    <button type="button" class="btn btn-dark menubtn" id="salidacaja" onclick="location.href='@Url.Action("Index", "SalidaSuc")'">Dotaciones Iniciales</button>
+                </div>
+
+
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-dark menubtn" id="arqueo" onclick="location.href='@Url.Action("cerrararqueo", "Arqueo")'">Arqueo Final</button>
                 </div>
 
                 <div class="btn-group  d-block text-light p-1 border-0">
-                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="tazas" onclick="tazas()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-dark dropdown-toggle menubtn" id="Tasas" onclick="tasas()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Tasas
                     </button>
-                    <div class="dropdown-menu bg-dark">
+                    <div class="dropdown-menu bg-dark" aria-labelledby="Tasas">
                         <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Taxacompras", "Administracion")'">Tasas de Compra</button>
                         <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("TazasVentas", "Administracion")'">Tasas de Venta</button>
                         <button type="button" class="btn btn-dark menubtn" onclick="location.href='@Url.Action("Historial", "Administracion")'">Tasas por sucursal</button>
                     </div>
+                </div>
+
+                <div class="d-block text-light  border-0">
+                    <button type="button" class="btn btn-dark menubtn" style="display: none" id="mantenimiento" onclick="location.href='@Url.Action("Mantenimiento", "Reportes")'">Mantenimiento</button>
                 </div>
 
                 @*<a href="#" class="d-block text-light p-3 border-0">
@@ -160,15 +163,102 @@
         </a>*@
             </div>
 
-            </div>
+            <nav class="main-menu" id="sitiemobile" style="padding-top: 50px; display: none">
+                <ul>
+                    <li class="has-subnav" style="color: white; text-align: center;">
+                        <a onclick="location.href='@Url.Action("Index", "profile")'">
+                            <i class="fas fa-angle-double-left fa-2x pl-3"></i>
+                            <span class="nav-text">
+                                Compra
+                            </span>
+                        </a>
 
+                    </li>
+                    <li class="has-subnav" style="color: white; text-align: center;">
+                        <a onclick="location.href='@Url.Action("venta", "profile")'">
+                            <i class="fas fa-angle-double-right fa-2x pl-3"></i>
+                            <span class="nav-text">
+                                Venta
+                            </span>
+                        </a>
+
+                    </li>
+
+
+
+                    <li class="has-subnav" style="color: white; text-align: center;">
+                        <a onclick="location.href='@Url.Action("Index", "sucadmin")'">
+                            <i class="fas fa-mail-bulk fa-2x pl-3"></i>
+                            
+                            <span class="nav-text">
+                                Dotaciones Iniciales
+                            </span>
+                        </a>
+
+                    </li>
+
+             
+                    <li class="has-subnav" style="color: white; text-align: center;">
+                        <a onclick="location.href='@Url.Action("historial", "SalidaSuc")'">
+                            <i class="fas fa-clipboard-check fa-2x pl-3"></i>
+                            <span class="nav-text">
+                                Historial de dotaciones
+                            </span>
+                        </a>
+
+                    </li>
+
+
+                    <li class="has-subnav" style="color: white; text-align: center;">
+                        <a onclick="location.href='@Url.Action("Index", "Tasas")'">
+                            <i class="fas fa-money-bill-wave fa-2x pl-2"></i>
+                            <span class="nav-text">
+                                Tasas de Compra
+                            </span>
+                        </a>
+                    </li>
+                    <li class="has-subnav" style="color: white; text-align: center;">
+                        <a onclick="location.href='@Url.Action("ventas", "Tasas")'">
+                            <i class="fas fa-money-bill-wave-alt fa-2x pl-2"></i>
+                            <span class="nav-text">
+                                Tasas de Venta
+                            </span>
+                        </a>
+                    </li>
+                    <li class="has-subnav" style="color: white; text-align: center;">
+                        <a onclick="location.href='@Url.Action("tsucursales", "Tasas")'">
+                            <i class="fas fa-book fa-2x pl-3"></i>
+                            <span class="nav-text">
+                                Tasas por sucursal
+                            </span>
+                        </a>
+                    </li>
+
+
+                </ul>
+
+                <ul class="logout">
+                    <li style="color: white; text-align: center;">
+                        <a href="/home/Logout">
+                            <i class="fas fa-power-off fa-2x pl-2"></i>
+                            <span class="nav-text">
+                                Cerrar Sesion
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
+        </div>
+
+        
+      
         <div class="w-100">
-            <div class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
 
                 <div class="navbar-header">
-
-                    @Html.ActionLink("Master Exchange", "Index", "profile", new { area = "" }, new { @class = "navbar-brand" })
-
+                    <img src="~/Content/iconos/master_nombre.png"  width="300" height="50" class="d-inline-block align-top" alt="" loading="lazy"/>
                 </div>
 
 
@@ -195,7 +285,7 @@
                             <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                                  aria-labelledby="navbarDropdownMenuLink-55">
                                 <a class="dropdown-item" href="#">@Html.ActionLink("Mi Perfil", "Perfil", "usuarios", new { Usuario = Session["cortoName"] }, new { @class = "dropdown-item" })</a>
-                                
+
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <a class="dropdown-item " href="/home/Logout">Cerrar Sesion</a>
@@ -205,13 +295,13 @@
                             </div>
                         </li>
 
-                        
+
 
                     </ul>
 
                 </div>
 
-            </div>
+            </nav>
 
             <div id="content" class="bg-grey w-100">
                 <div>
@@ -260,6 +350,7 @@
                     document.getElementById("salidacaja").style.display = "none";
                     document.getElementById("tesoreria").style.display = "";
                     document.getElementById("reportes").style.display = "";
+                    document.getElementById("arqueo").style.display = "none";
                  
                     break;
 
@@ -267,11 +358,11 @@
                 case "2":
                     console.log("cajero");
                     document.getElementById("usuarios").style.display = "none";
-                    document.getElementById("tazas").style.display = "none";
+                    document.getElementById("Tasas").style.display = "none";
                     document.getElementById("dotaciones").style.display = "none";
                     document.getElementById("cajas").style.display = "";
-            
 
+                    document.getElementById("arqueo").style.display = "";
                     document.getElementById("cancelaciones").style.display = "";
             
                     document.getElementById("salidacaja").style.display = "";
@@ -286,45 +377,6 @@
                     break;
             }
         }
-
-
-        function btndropdown()
-        {
-            $('#usuarios').dropdown('toggle')
-            
-        }
-
-        function arqueo() {
-            $('#arqueo').dropdown('toggle')
-
-        }
-
-        function tazas() {
-            $('#tazas').dropdown('toggle')
-
-        }
-
-        function tesoreria()
-        {
-
-            $('#tesoreria').dropdown('toggle')
-        }
-
-
-        function Profile() {
-            $('#Profile').dropdown('toggle')
-            
-        }
-
-        function dotaciones()
-        {
-            $('#dotaciones').dropdown('toggle')
-        }
-
-        function reportes() {
-            $('#reportes').dropdown('toggle')
-        }
-    
 
     </script>
 
@@ -431,7 +483,122 @@
         setInterval(function () { notificaciones(); }, 300000);
 
     </script>
+   
+     <script>
+
+         (function () {
+             mantenimiento();
+         })();
+         function mantenimiento()
+         {
+             var userside = document.getElementById("idusers").value;
+
+             if (userside == "18" || userside == "1")
+             {
+                 document.getElementById("mantenimiento").style.display = "";
+             }
+            
+         }
+     </script>
+
+    <script>
+        const doc = document,
+            n = navigator,
+            ua = n.userAgent;
+        (function () {
+            mobile();
+        })();
 
 
+        function mobile()
+        {
+
+            ismobile = {
+                android: () => ua.match(/Android/),
+                iphone: () => ua.match(/iPhone/),
+                ipad: () => ua.match(/IPad/),
+                ipod: () => ua.match(/Ipod/),
+                wimdows: () => ua.match(/windows phone/),
+                any: function () {                                          
+                    return this.android() || this.iphone() || this.ipad || this.ipod || this.wimdows();
+                }
+
+            }
+
+            isdesktop = {
+
+                linux: () => ua.match(/Linux/),
+                windows: () => ua.match(/Windows NT/),
+                any: function ()
+                {
+                    return this.linux() || this.windows();
+                }
+                 
+            }
+        
+            if (ismobile.android())
+            {
+              
+                document.getElementById("sitiemobile").style.display = "";
+                document.getElementById("sitiedesktop").style.display = "none";
+            }
+
+            else if (ismobile.iphone()) {
+
+                document.getElementById("sitiemobile").style.display = "";
+                document.getElementById("sitiedesktop").style.display = "none";
+            }
+
+            else if (ismobile.ipad()) {
+
+                document.getElementById("sitiemobile").style.display = "";
+                document.getElementById("sitiedesktop").style.display = "none";
+            }
+            else if (ismobile.ipod()) {
+
+                document.getElementById("sitiemobile").style.display = "";
+                document.getElementById("sitiedesktop").style.display = "none";
+            }
+            else if (ismobile.wimdows()) {
+
+                document.getElementById("sitiemobile").style.display = "";
+                document.getElementById("sitiedesktop").style.display = "none";
+            }
+            else if (isdesktop.any())
+            {
+                document.getElementById("sitiemobile").style.display = "none";
+                document.getElementById("sitiedesktop").style.display = "";
+            }
+                
+
+       
+        }
+      
+      
+    </script>
+
+    <script>
+        function usuarios() {
+            $('#usuarios').dropdown('toggle')
+
+        }
+    
+        function tasas() {
+            $('#Tasas').dropdown('toggle')
+        }
+        function tesoreria() {
+            $('#tesoreria').dropdown('toggle')
+        }
+        function Profile() {
+            $('#Profile').dropdown('toggle')
+
+        }
+        function dotaciones() {
+            $('#dotaciones').dropdown('toggle')
+        }
+        function reportes() {
+            $('#reportes').dropdown('toggle')
+        }
+    </script>
 </body>
 </html>

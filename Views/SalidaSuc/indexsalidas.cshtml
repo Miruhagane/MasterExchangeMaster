@@ -9,7 +9,7 @@
 }
 
 
-<div class="col-sm-10 mt-3 pl-5">
+<div class="col-sm-12 mt-3 pl-5">
     <div class="card shadow-lg rounded">
         <div class="card-header bg-dark text-white row">
             <div class="col-sm-8">
@@ -18,7 +18,7 @@
 
             <div class="col-sm-4">
                 <label>Fecha de inicio</label>
-                <input type="date" id="fecha1"  value="2020-11-01" class="form-control form-control-sm" />
+                <input type="date" id="fecha1"  value="" class="form-control form-control-sm" />
             </div>
 
           
@@ -27,13 +27,13 @@
             <table class="table table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">Monto</th>
-                        <th scope="col">Moneda</th>
-                        <th scope="col">Sucursal</th>
-                        <th scope="col">Usuario</th>
-                        <th scope="col">Mensaje </th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Estatus</th>
+                        <th scope="col"><small> Monto</small> </th>
+                        <th scope="col"><small> Moneda</small> </th>
+                        <th scope="col"><small>Sucursal</small></th>
+                        <th scope="col"><small>Usuario</small></th>
+                        <th scope="col"><small>Mensaje</small> </th>
+                        <th scope="col"><small>Fecha</small></th>
+                        <th scope="col"><small>Estatus</small></th>
 
 
                     </tr>
@@ -309,7 +309,7 @@
 
     function getDateIfDate(d) {
         var m = d.match(/\/Date\((\d+)\)\//);
-        return m ? (new Date(+m[1])).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : d;
+        return m ? (new Date(+m[1])).toLocaleDateString({ day: '2-digit', month: '2-digit',  year: 'numeric' }) : d;
     }
 
 
@@ -369,12 +369,12 @@
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
-                            <td>$ ${a}</td>
-                            <td>${item.Txt_Moneda} </td>
-                            <td>${item.Txt_sucursal}</td>
-                            <td>${item.username} </td>
-                            <td>${item.Txt_Motivo}</td>
-                            <td>${getDateIfDate(item.fecha)} </td>
+                            <td> <small>$${a} </small></td>
+                            <td> <small>${item.Txt_Moneda} </small> </td>
+                            <td> <small>${item.Txt_sucursal} </small></td>
+                            <td> <small>${item.username} </small> </td>
+                            <td> <small>${item.Txt_Motivo} </small> </td>
+                            <td> <small>${getDateIfDate(item.fecha)} </small> </td>
                               <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-secondary">Dotacion Inicial</button> </td>
                         </tr>
                        `
@@ -393,12 +393,12 @@
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
-                            <td>$ ${b}</td>
-                              <td>${item.Txt_Moneda} </td>
-                            <td>${item.Txt_sucursal}</td>
-                            <td>${item.username} </td>
-                            <td>${item.Txt_Motivo}</td>
-                            <td>${getDateIfDate(item.fecha)} </td>
+                                   <td> <small>$${b} </small></td>
+                             <td> <small>${item.Txt_Moneda} </small> </td>
+                            <td> <small>${item.Txt_sucursal} </small></td>
+                            <td> <small>${item.username} </small> </td>
+                            <td> <small>${item.Txt_Motivo} </small> </td>
+                            <td> <small>${getDateIfDate(item.fecha)} </small> </td>
 
                             <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-info">Solicitado</button> </td>
                         </tr>
@@ -419,12 +419,12 @@
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
-                            <td>$ ${c}</td>
-                               <td>${item.Txt_Moneda} </td>
-                            <td>${item.Txt_sucursal}</td>
-                            <td>${item.username} </td>
-                            <td>${item.Txt_Motivo}</td>
-                            <td>${getDateIfDate(item.fecha)} </td>
+                                   <td> <small>$${c} </small></td>
+                             <td> <small>${item.Txt_Moneda} </small> </td>
+                            <td> <small>${item.Txt_sucursal} </small></td>
+                            <td> <small>${item.username} </small> </td>
+                            <td> <small>${item.Txt_Motivo} </small> </td>
+                            <td> <small>${getDateIfDate(item.fecha)} </small> </td>
                            <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-primary">En Proceso</button> </td>
                         </tr>
                        `
@@ -443,12 +443,12 @@
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
-                            <td>$ ${d}</td>
-                              <td>${item.Txt_Moneda} </td>
-                            <td>${item.Txt_sucursal}</td>
-                            <td>${item.username} </td>
-                            <td>${item.Txt_Motivo}</td>
-                            <td>${getDateIfDate(item.fecha)} </td>
+                            <td> <small>$${d} </small></td>
+                          <td> <small>${item.Txt_Moneda} </small> </td>
+                            <td> <small>${item.Txt_sucursal} </small></td>
+                            <td> <small>${item.username} </small> </td>
+                            <td> <small>${item.Txt_Motivo} </small> </td>
+                            <td> <small>${getDateIfDate(item.fecha)} </small> </td>
                             <td> <button  type="button" class="btn btn-sm btn-success">Recibido</button> </td>
                         </tr>
                        `
@@ -468,12 +468,12 @@
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
-                            <td>$ ${e}</td>
-                              <td>${item.Txt_Moneda} </td>
-                            <td>${item.Txt_sucursal}</td>
-                            <td>${item.username} </td>
-                            <td>${item.Txt_Motivo}</td>
-                            <td>${getDateIfDate(item.fecha)} </td>
+                                   <td> <small>$${e} </small></td>
+                             <td> <small>${item.Txt_Moneda} </small> </td>
+                            <td> <small>${item.Txt_sucursal} </small></td>
+                            <td> <small>${item.username} </small> </td>
+                            <td> <small>${item.Txt_Motivo} </small> </td>
+                            <td> <small>${getDateIfDate(item.fecha)} </small> </td>
                              <td> <button class="btn btn-sm btn-danger">Cancelado</button> </td>
                         </tr>
                        `

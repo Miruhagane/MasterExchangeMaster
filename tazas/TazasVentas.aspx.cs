@@ -148,7 +148,7 @@ namespace WebApplication2.tazas
                     for (int b = 0; b < 7; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
-                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 2)", conectorbd);
                         conectorbd.Open();
                         inser1.ExecuteNonQuery();
                         conectorbd.Close();
@@ -214,7 +214,7 @@ namespace WebApplication2.tazas
                     for (int b = 0; b < 7; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
-                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 2)", conectorbd);
                         conectorbd.Open();
                         inser1.ExecuteNonQuery();
                         conectorbd.Close();
@@ -279,7 +279,7 @@ namespace WebApplication2.tazas
                     for (int b = 0; b < 7; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
-                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 2)", conectorbd);
                         conectorbd.Open();
                         inser1.ExecuteNonQuery();
                         conectorbd.Close();
@@ -343,7 +343,7 @@ namespace WebApplication2.tazas
                     for (int b = 0; b < 7; b++)
                     {
                         SqlConnection conectorbd = new SqlConnection(con);
-                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 2)", conectorbd);
                         conectorbd.Open();
                         inser1.ExecuteNonQuery();
                         conectorbd.Close();
@@ -409,7 +409,7 @@ namespace WebApplication2.tazas
                     {
                  
                         SqlConnection conectorbd = new SqlConnection(con);
-                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 1)", conectorbd);
+                        SqlCommand inser1 = new SqlCommand("INSERT INTO [dbo].[Tb_Taxas] ([Int_IdMoneda],[dbl_Valor], [Bol_Tipo] ,[Fec_Dia], [Fec_Vencimiento], [Int_IdGrupo]) VALUES (" + idmonedas[valor] + "," + valoresmoneda[valor] + ", 1, GETDATE(), '', 2)", conectorbd);
                         conectorbd.Open();
                         inser1.ExecuteNonQuery();
                         conectorbd.Close();

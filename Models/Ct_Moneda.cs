@@ -16,5 +16,6 @@ namespace WebApplication2.Models
     {
         public int Int_IdMoneda { get; set; }
         public string Txt_Moneda { get; set; }
+        public string Txt_NomCorto { get; set; }
     }
 }

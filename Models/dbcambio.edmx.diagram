@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="55937394423d4a6fbd0fcf6e8aae3a2c" Name="Diagram1" ZoomLevel="98" DisplayType="true">
-        <EntityTypeShape EntityType="dbcasa_cambio.Ct_Moneda" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_RegistrosHistorico" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_Taxas" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_RegCli" Width="1.5" PointX="6.75" PointY="6.75" />
@@ -36,6 +35,8 @@
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_TicketTesoreria" Width="1.5" PointX="15.375" PointY="0.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_ArqueoTesoria" Width="1.5" PointX="17.375" PointY="0.75" />
         <EntityTypeShape EntityType="dbcasa_cambio.Tb_Sucursal" Width="1.5" PointX="3.375" PointY="11.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Tb_Personalizacion" Width="1.5" PointX="17.375" PointY="4.75" />
+        <EntityTypeShape EntityType="dbcasa_cambio.Ct_Moneda" Width="1.5" PointX="0.75" PointY="0.75" />
 
       </Diagram>
     </edmx:Diagrams>

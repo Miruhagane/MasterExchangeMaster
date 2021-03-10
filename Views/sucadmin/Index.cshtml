@@ -8,12 +8,12 @@
 
 }
 
-<div class="col-sm-12 pl-5 pt-5 row">
+<div id="maincard" class="col-sm-12 pl-5 pt-5 row">
     <form action="/sucadmin/insert">
 
-        <div class="col-sm-12 margin1 row">
+        <div id="margenes" class="col-sm-12 margin1 row">
 
-            <div class="col-sm-6 pl-5">
+            <div id="idcardsa" class="col-sm-6 pl-5">
                 <div class="card carta shadow-lg">
 
                     <div class="card-body cardbody">
@@ -39,11 +39,12 @@
 
                                     {
                                         <tr class="backdek">
+                                            <td style="display: none"><input type="text" class="btnhovermonto form-control form-control-sm" value="@item.Lng_IdSucursal" name="id_@a" /> </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Txt_Sucursal)
                                             </td>
                                             <td>
-                                                <input type="text" class=" btnhovermonto form-control form-control-sm" value="0" name="monto_@a" />
+                                                <input type="text" class="btnhovermonto form-control form-control-sm" value="0" name="monto_@a" />
                                             </td>
 
                                         </tr>
@@ -54,7 +55,7 @@
                                     a = a + 1;
                                 }
                             </tbody>
-                        
+
 
                         </table>
                     </div>
@@ -62,7 +63,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-6 pl-5">
+            <div id="idcardsb" class="col-sm-6 pl-5">
                 <div class="card carta  shadow-lg">
 
                     <div class="card-body cardbody">
@@ -80,7 +81,7 @@
 
                                 </tr>
                             </thead>
-                        
+
                             <tbody>
                                 @foreach (var item in Model)
                                 {
@@ -89,6 +90,8 @@
 
                                     {
                                         <tr class="backdek">
+
+                                            <td style="display: none"><input type="text" class="btnhovermonto form-control form-control-sm" value="@item.Lng_IdSucursal" name="id_@valor" /> </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Txt_Sucursal)
                                             </td>
@@ -106,7 +109,7 @@
                                 }
 
                             </tbody>
-                      
+
 
                         </table>
                     </div>
@@ -139,27 +142,152 @@
 
 
 <script>
-    function submit()
-    {
+    function submit() {
         document.getElementById("postdotacion").click();
 
-       
-
-            Push.create("Buen dia " + nombre + "", {
-                tag: 'foo',
-                body: "Se a generado nuevas dotaciones Iniciales",
-                icon: '../../Content/img/logo.png',
-                requireInteraction: true,
-                onClick: function () {
-                    window.focus();
-                    this.close();
-
-                    Push.close('foo');
-                }
-
-            });
 
 
-     
+        Push.create("Buen dia " + nombre + "", {
+            tag: 'foo',
+            body: "Se a generado nuevas dotaciones Iniciales",
+            icon: '../../Content/img/logo.png',
+            requireInteraction: true,
+            onClick: function () {
+                window.focus();
+                this.close();
+
+                Push.close('foo');
+            }
+
+        });
+
+
+
     }
+</script>
+
+
+<script>
+    const docu = document,
+        n1 = navigator,
+        ua1 = n1.userAgent;
+    (function () {
+        mobile();
+    })();
+
+
+    function mobile() {
+
+        ismobile = {
+            android: () => ua1.match(/Android/),
+            iphone: () => ua1.match(/iPhone/),
+            ipad: () => ua1.match(/IPad/),
+            ipod: () => ua1.match(/Ipod/),
+            wimdows: () => ua1.match(/windows phone/),
+            any: function () {
+                return this.android() || this.iphone() || this.ipad || this.ipod || this.wimdows();
+            }
+
+        }
+
+        isdesktop = {
+
+            linux: () => ua1.match(/Linux/),
+            windows: () => ua1.match(/Windows NT/),
+            any: function () {
+                return this.linux() || this.windows();
+            }
+
+        }
+
+        if (ismobile.android()) {
+
+            document.getElementById("margenes").classList.remove("margin1");
+            document.getElementById("maincard").classList.remove("pl-5");
+            document.getElementById("maincard").classList.remove("pt-5");
+
+            document.getElementById("idcardsa").classList.remove("pl-5");
+            document.getElementById("idcardsb").classList.remove("pl-5");
+
+            document.getElementById("maincard").style.marginLeft = "4%";
+
+
+      
+        }
+
+        else if (ismobile.iphone()) {
+
+            document.getElementById("margenes").classList.remove("margin1");
+            document.getElementById("maincard").classList.remove("pl-5");
+            document.getElementById("maincard").classList.remove("pt-5");
+
+            document.getElementById("idcardsa").classList.remove("pl-5");
+            document.getElementById("idcardsb").classList.remove("pl-5");
+
+            document.getElementById("maincard").style.marginLeft = "4%";
+       
+        }
+
+        else if (ismobile.ipad()) {
+
+            document.getElementById("margenes").classList.remove("margin1");
+            document.getElementById("maincard").classList.remove("pl-5");
+            document.getElementById("maincard").classList.remove("pt-5");
+
+            document.getElementById("idcardsa").classList.remove("pl-5");
+            document.getElementById("idcardsb").classList.remove("pl-5");
+
+            document.getElementById("maincard").style.marginLeft = "4%";
+
+        }
+        else if (ismobile.ipod()) {
+
+            document.getElementById("margenes").classList.remove("margin1");
+            document.getElementById("maincard").classList.remove("pl-5");
+            document.getElementById("maincard").classList.remove("pt-5");
+
+            document.getElementById("idcardsa").classList.remove("pl-5");
+            document.getElementById("idcardsb").classList.remove("pl-5");
+
+            document.getElementById("maincard").style.marginLeft = "4%";
+
+        }
+        else if (ismobile.wimdows()) {
+
+           
+            document.getElementById("margenes").classList.add("margin1");
+            document.getElementById("maincard").classList.remove("pl-5");
+            document.getElementById("maincard").classList.remove("pt-5");
+
+            document.getElementById("maincard").classList.add("pl-5");
+            document.getElementById("maincard").classList.add("pt-5");
+
+            document.getElementById("idcardsa").classList.remove("pl-5");
+            document.getElementById("idcardsb").classList.remove("pl-5");
+
+            document.getElementById("idcardsa").classList.add("pl-5");
+            document.getElementById("idcardsb").classList.add("pl-5");
+
+        }
+        else if (isdesktop.any()) {
+            document.getElementById("margenes").classList.add("margin1");
+            document.getElementById("maincard").classList.remove("pl-5");
+            document.getElementById("maincard").classList.remove("pt-5");
+
+            document.getElementById("maincard").classList.add("pl-5");
+            document.getElementById("maincard").classList.add("pt-5");
+
+            document.getElementById("idcardsa").classList.remove("pl-5");
+            document.getElementById("idcardsb").classList.remove("pl-5");
+
+            document.getElementById("idcardsa").classList.add("pl-5");
+            document.getElementById("idcardsb").classList.add("pl-5");
+
+        }
+
+
+
+    }
+
+
 </script>

@@ -277,7 +277,7 @@ namespace WebApplication2.Controllers
                 }
                 else
                 {
-                    ViewBag.msn = "2";
+                    ViewBag.error = "500";
                     return View();
                 }
             }

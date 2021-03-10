@@ -1,7 +1,7 @@
 ﻿@model WebApplication2.Models.Tb_EntradaSuc
 
 @{
-    ViewBag.Title = "Dotaciones";
+    ViewBag.Title = "Solicitudes de caja";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
@@ -281,20 +281,32 @@
 
                 let fecha = "";
 
-                for (let item of tjson) {
+                if (tjson == "")
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Vaya!',
+                        text: 'Parece Que No Existen Solicitudes De Cajas En Esta Fecha'
+                    })
+                }
 
-                    estatus += item.Int_Estatus
-                    fecha += item.Fec_Ini
 
+                 for (let item of tjson) {
 
+                  
 
-                    //Estatus de entradas creadas
-                    if (estatus == "1") {
-                        cambio += item.Dbl_SaldoEntrada
+                        estatus += item.Int_Estatus
                         fecha += item.Fec_Ini
-                        var a = new Intl.NumberFormat().format(cambio);
 
-                        cuerpo.innerHTML += `
+
+
+                        //Estatus de entradas creadas
+                        if (estatus == "1") {
+                            cambio += item.Dbl_SaldoEntrada
+                            fecha += item.Fec_Ini
+                            var a = new Intl.NumberFormat().format(cambio);
+
+                            cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
                             <td>$ ${a}</td>
@@ -302,21 +314,21 @@
                             <td>${item.Txt_Motivo} </td>
                             <td>${item.Txt_sucursal} </td>
                             <td>${item.n_usuario} </td>
-                            <td>${ getDateIfDate(fecha)}</td>
+                            <td>${getDateIfDate(fecha)}</td>
                             <td> <button onclick="obtid(${valor})" class="btn btn-sm btn-secondary">Creado</button> </td>
                         </tr>
                        `
-                        estatus = "";
-                        cambio = "";
+                            estatus = "";
+                            cambio = "";
 
-                    }
-                    //estatus de dotaciones solicitados
-                    else if (estatus == "2") {
-                        cambio += item.Dbl_SaldoEntrada
-                        fecha += item.Fec_Ini
-                        var b = new Intl.NumberFormat().format(cambio);
+                        }
+                        //estatus de dotaciones solicitados
+                        else if (estatus == "2") {
+                            cambio += item.Dbl_SaldoEntrada
+                            fecha += item.Fec_Ini
+                            var b = new Intl.NumberFormat().format(cambio);
 
-                        cuerpo.innerHTML += `
+                            cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
                             <td>$ ${b}</td>
@@ -328,18 +340,18 @@
                             <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-info">Solicitado</button> </td>
                         </tr>
                        `
-                        estatus = "";
-                        cambio = "";
-                    }
+                            estatus = "";
+                            cambio = "";
+                        }
 
-                    //estatus de solicitudes validadas por admin
+                        //estatus de solicitudes validadas por admin
 
-                    else if (estatus == "3") {
-                        cambio += item.Dbl_SaldoEntrada
-                        fecha += item.Fec_Ini
-                        var c = new Intl.NumberFormat().format(cambio);
+                        else if (estatus == "3") {
+                            cambio += item.Dbl_SaldoEntrada
+                            fecha += item.Fec_Ini
+                            var c = new Intl.NumberFormat().format(cambio);
 
-                        cuerpo.innerHTML += `
+                            cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
                             <td>$ ${c}</td>
@@ -347,21 +359,21 @@
                             <td>${item.Txt_Motivo}</td>
                             <td>${item.Txt_sucursal}</td>
                             <td>${item.n_usuario}</td>
-                            <td>${ getDateIfDate(fecha)}</td>
+                            <td>${getDateIfDate(fecha)}</td>
                            <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-primary">En Proceso</button> </td>
                         </tr>
                        `
-                        estatus = "";
-                        cambio = "";
-                    }
+                            estatus = "";
+                            cambio = "";
+                        }
 
-                    //estatus de solicitudes ya recibidos por cajero
-                    else if (estatus == "4") {
-                        cambio += item.Dbl_SaldoEntrada
-                        fecha += item.Fec_Ini
-                        var d = new Intl.NumberFormat().format(cambio);
+                        //estatus de solicitudes ya recibidos por cajero
+                        else if (estatus == "4") {
+                            cambio += item.Dbl_SaldoEntrada
+                            fecha += item.Fec_Ini
+                            var d = new Intl.NumberFormat().format(cambio);
 
-                        cuerpo.innerHTML += `
+                            cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
                             <td>$ ${d}</td>
@@ -373,18 +385,18 @@
                             <td> <button  type="button" class="btn btn-sm btn-success">Recibido</button> </td>
                         </tr>
                        `
-                        estatus = "";
-                        cambio = "";
-                    }
-                    //estatus de solicitudes caneladas por cajero
+                            estatus = "";
+                            cambio = "";
+                        }
+                        //estatus de solicitudes caneladas por cajero
 
-                    else if (estatus == "5") {
-                        cambio += item.Dbl_SaldoEntrada
-                        fecha += item.Fec_Ini
-                        var e = new Intl.NumberFormat().format(cambio);
+                        else if (estatus == "5") {
+                            cambio += item.Dbl_SaldoEntrada
+                            fecha += item.Fec_Ini
+                            var e = new Intl.NumberFormat().format(cambio);
 
 
-                        cuerpo.innerHTML += `
+                            cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdEntrada}" /></td>
                             <td>$ ${e}</td>
@@ -396,15 +408,18 @@
                              <td> <button class="btn btn-sm btn-danger">Cancelado</button> </td>
                         </tr>
                        `
+                            estatus = "";
+                            cambio = "";
+                     }
+                        
+
+
+                        valor = valor + 1;
                         estatus = "";
                         cambio = "";
                     }
-
-
-                    valor = valor + 1;
-                    estatus = "";
-                    cambio = "";
-                }
+              
+                
 
             })
 

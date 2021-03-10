@@ -10,7 +10,7 @@
     <div class="card shadow-lg rounded">
         <div class="card-header bg-dark text-white row">
             <div class="col-sm-4">
-                <h5>Saldo actual</h5>
+                <h5>Comprobates Tesoreia</h5>
             </div>
 
             <div class="col-sm-4">
@@ -76,9 +76,6 @@
 
                     <button type="button" onclick="cancelaciones()" class="btn btn-primary">Cancelar</button>
                 </div>
-
-             
-          
         </div>
     </div>
 </div>
@@ -142,7 +139,7 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="submit" class="btn btn-primary">Proceso Cancelado</button>
+                    <button type="submit" class="btn btn-primary">Ticket Guardado</button>
                 </div>
 
                 <script>
@@ -219,10 +216,14 @@
                 for (let item of query) {
                     fecha = new Date(item.fecha);
                     fecha = fecha.toLocaleDateString();
+
+                    var a = new Intl.NumberFormat().format(item.total);
+                  
+
                     cuerpo.innerHTML += `
                          <tr>
                             <td style="display: none"><input type="text" id="idgrupo${valor}" readonly class="form-control form-control-sm"  value="${item.Grupo}" /></td>
-                            <td><small>$ ${item.total}</small></td>
+                            <td><small>$ ${a}</small></td>
                             <td><small>${fecha}</small></td>
                             <td><small>${item.Usuario}</small></td>
                             <td><button data-toggle="modal" data-target="#actualizarstatus" type="button" class="btn btn-sm" onclick="obtgrupocancelacion(${valor})"><img src="../../Content/iconos/eliminar.png" /> </button>

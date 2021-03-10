@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <div class="card-footer border-light">
-                    <button id="btn1" type="button" class=" btn btn-info" onclick="adverencia1()">Guardar</button>
+                    <button id="btn1" type="button" class=" btn btn-info" onclick="validador()">Guardar</button>
 
                     <button id="btn2" type="button" style="display: none" class=" btn btn-warning" onclick="adverencia2()">Guardar</button>
 
@@ -393,6 +393,8 @@
    <script>
        function sumas()
        {
+
+
            var t1 = parseInt(document.getElementById("Tb_arqueofinal_Cantidad_0").value) * 1000;
            var t2 = parseInt(document.getElementById("Tb_arqueofinal_Cantidad_1").value) * 500;
            var t3 = parseInt(document.getElementById("Tb_arqueofinal_Cantidad_2").value) * 200;
@@ -479,6 +481,43 @@
             document.body.innerHTML = contenidoOriginal;
             
             window.print();
+        }
+
+        function validador()
+        {
+            var a1 = document.querySelector("#Tb_arqueofinal_Cantidad_0").value;
+            var a2 = document.querySelector("#Tb_arqueofinal_Cantidad_1").value;
+            var a3 = document.querySelector("#Tb_arqueofinal_Cantidad_2").value;
+            var a4 = document.querySelector("#Tb_arqueofinal_Cantidad_3").value;
+            var a5 = document.querySelector("#Tb_arqueofinal_Cantidad_4").value;
+            var a6 = document.querySelector("#Tb_arqueofinal_Cantidad_5").value;
+            var a7 = document.querySelector("#Tb_arqueofinal_Cantidad_6").value;
+            var a8 = document.querySelector("#Tb_arqueofinal_Cantidad_7").value;
+            var a9 = document.querySelector("#Tb_arqueofinal_Cantidad_8").value;
+            var a10 = document.querySelector("#Tb_arqueofinal_Cantidad_9").value;
+            var a11 = document.querySelector("#Tb_arqueofinal_Cantidad_10").value;
+
+            var b1 = document.querySelector("#Tb_arqueoXmoenda_Valor_0").value;
+            var b2 = document.querySelector("#Tb_arqueoXmoenda_Valor_1").value;
+            var b3 = document.querySelector("#Tb_arqueoXmoenda_Valor_2").value;
+            var b4 = document.querySelector("#Tb_arqueoXmoenda_Valor_3").value;
+            var b5 = document.querySelector("#Tb_arqueoXmoenda_Valor_4").value;
+            var b6 = document.querySelector("#Tb_arqueoXmoenda_Valor_5").value;
+
+            if (a1 != "" && a2 != "" && a3 != "" && a4 != "" && a5 != "" && a6 != "" && a7 != "" && a8 != "" && a9 != "" && a10 != "" && a11 != "" && b1 != "" && b2 != "" && b3 != "" && b4 != "" && b5 != "" && b6 != "")
+            {
+                adverencia1();
+            }
+            else
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Espera',
+                    text: 'Ninguna valor puede estar vacio',
+                 
+                })
+            }
+
         }
 
     </script>

@@ -29,7 +29,7 @@
            <div class="col-sm-12 row">
                <div class="select col-sm-4 ml-5" >
                    <asp:DropDownList ID="sucursalselect" runat="server" DataSourceID="sucursales" AutoPostBack="true" DataTextField="Txt_Sucursal" DataValueField="Lng_IdSucursal" OnSelectedIndexChanged="sucursalselect_SelectedIndexChanged" OnTextChanged="sucursalselect_SelectedIndexChanged"></asp:DropDownList>
-                   <asp:SqlDataSource ID="sucursales" runat="server" ConnectionString="<%$ ConnectionStrings:SysMasterExchangeConnectionString2 %>" SelectCommand="SELECT [Txt_Sucursal], [Lng_IdSucursal] FROM [Tb_Sucursal]"></asp:SqlDataSource>
+                   <asp:SqlDataSource ID="sucursales" runat="server" ConnectionString="<%$ ConnectionStrings:masterexchangeserver %>" SelectCommand="SELECT [Txt_Sucursal], [Lng_IdSucursal] FROM [Tb_Sucursal]"></asp:SqlDataSource>
                </div>
 
                <div class="col-sm-6">

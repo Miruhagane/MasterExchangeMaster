@@ -13,12 +13,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="icon" type="image/png" href="~/Content/iconos/Capa1.png" />
     <title>@ViewBag.Title - Master Exchance</title>
     <link href="~/Content/sidebar.css" rel="stylesheet" />
     <!-- sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-
 
     <!-- bootstrap 4 -->
 
@@ -84,7 +83,10 @@
                                 <div class="col-sm-6 mb-2">
                                     <label>Saldo Entrada</label>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.Dbl_SaldoEntrada, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.EditorFor(model => model.Dbl_SaldoEntrada, new { htmlAttributes = new { @class = "form-control is-invalid" } })
+                                        <div class="invalid-feedback">
+                                            Campo Nesesario.
+                                        </div>
                                         @Html.ValidationMessageFor(model => model.Dbl_SaldoEntrada, "", new { @class = "text-danger" })
                                     </div>
                                 </div>

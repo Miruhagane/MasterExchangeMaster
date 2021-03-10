@@ -19,7 +19,9 @@
                     <tr>
                         <th scope="col">Monto</th>
                         <th scope="col">Moneda</th>
+                        <th scope="col">Fecha</th>    
                         <th scope="col">Estatus</th>
+
                     </tr>
                 </thead>
                 <tbody id="cuerpo">
@@ -253,6 +255,12 @@
         estados();
     })();
 
+    function getDateIfDate(d) {
+        var m = d.match(/\/Date\((\d+)\)\//);
+        return m ? (new Date(+m[1])).toLocaleDateString( { day: '2-digit', month: '2-digit', year: 'numeric' }) : d;
+    }
+
+
 
     function estados()
     {
@@ -277,6 +285,9 @@
 
                 let cambio = "";
 
+                let fecha = '';
+             
+
                 for (let item of tjson)
                 {
 
@@ -289,13 +300,14 @@
                         cambio += item.Dbl_SaldoSalida
                         var a = new Intl.NumberFormat().format(cambio);
 
-                        
+
 
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
                             <td>$ ${a}</td>
                             <td>${item.Txt_Moneda} </td>
+                            <td>${getDateIfDate(item.fecha)}</td>
                               <td> <button onclick="obtid(${valor})" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-secondary">Dotacion Inicial</button> </td>
                         </tr>
                        `
@@ -308,11 +320,14 @@
                         cambio += item.Dbl_SaldoSalida
                         var b = new Intl.NumberFormat().format(cambio);
 
+             
+
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td> 
                             <td>$ ${b}</td>
                             <td>${item.Txt_Moneda} </td>
+                             <td>${getDateIfDate(item.fecha)}</td>
                             <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-info">Solicitado</button> </td>
                         </tr>
                        `
@@ -326,11 +341,17 @@
                         cambio += item.Dbl_SaldoSalida
                         var c = new Intl.NumberFormat().format(cambio);
 
+                        fecha = new Date(item.fecha);
+             
+
+
+
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none" ><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
                             <td>$ ${c}</td>
                             <td>${item.Txt_Moneda} </td>
+                              <td>${getDateIfDate(item.fecha)}</td>
                            <td> <button onclick="obtid(${valor})" type="button" data-toggle="modal" data-target="#actualizarstatus" class="btn btn-sm btn-primary">En Proceso</button> </td>
                         </tr>
                        `
@@ -343,11 +364,14 @@
                         cambio += item.Dbl_SaldoSalida
                         var d = new Intl.NumberFormat().format(cambio);
 
+                    
+
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
                             <td>$ ${d}</td>
                             <td>${item.Txt_Moneda} </td>
+                             <td>${getDateIfDate(item.fecha)}</td>
                             <td> <button  type="button" class="btn btn-sm btn-success">Recibido</button> </td>
                         </tr>
                        `
@@ -360,12 +384,15 @@
                         cambio += item.Dbl_SaldoSalida
                         var e = new Intl.NumberFormat().format(cambio);
 
+          
+
 
                         cuerpo.innerHTML += `
                         <tr>
                             <td style="display: none"><input type="text" id="idestatus${valor}" readonly class="form-control form-control-sm"  value="${item.Lng_IdSalida}" /></td>
                             <td>$ ${e}</td>
                             <td>${item.Txt_Moneda} </td>
+                             <td>${getDateIfDate(item.fecha)}</td>
                              <td> <button class="btn btn-sm btn-danger">Cancelado</button> </td>
                         </tr>
                        `

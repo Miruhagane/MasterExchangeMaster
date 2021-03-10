@@ -9,43 +9,21 @@
 <div class="col-sm-11 mt-3 pl-5">
     <div class="card shadow-lg rounded">
 
-        @using (Ajax.BeginForm("postarqueo", new AjaxOptions
-        {
-            HttpMethod = "POST",
-            OnComplete = "Complet()"
-
-        }))
-        {
-
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
             <div class="card-header bg-dark text-white row">
                 <div class="col-sm-">
-                    <h5>Remesas por Sucursal</h5>
+                    <h5>Arqueo por Sucursal</h5>
                 </div>
 
                 <div class="col-sm-3">
                     <span>Fecha</span>
-                    <input type="date" id="fecha1" class="form-control form-control-sm" />
+                    <input type="date" id="fecha1" class="form-control form-control-sm" name="fechapost"/>
                 </div>
 
                 <div class="col-sm-3">
                     <span>Sucursales</span>
                     @Html.DropDownList("Datos", suc, "Selecciona una sucursal", new { @type = "number", @class = "form-control form-control-sm", @id = "sucursales" })
                
-                <div style="display: none">
-                    <input class="form-control form-control-sm" id="idsucursal" name="idsucursal" />
-                    <input id="txtvalidado1" name="check1" />
-                    <input id="txtvalidado2" name="check2" />
-                    <input id="txtvalidado3" name="check3" />
-                    <input id="txtvalidado4" name="check4" />
-                    <input id="txtvalidado5" name="check5" />
-                    <input id="txtvalidado6" name="check6" />        
-                    
-       
-
-                </div>
+        
                 
                 </div>
 
@@ -59,7 +37,8 @@
                             <th scope="col">Monto a ingresar</th>
                             <th scope="col">Validar</th>
                             <th scope="col">Monto de la sucursal</th>
-                            <th scope="col">Fecha </th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Turno</th>
 
                         </tr>
                     </thead>
@@ -71,34 +50,29 @@
             <div class="card-footer">
                     <button class="btn-success btn btn-sm" onclick="crear()" type="button">Guardar</button>
 
-                <div style="display: none">
-                    <input class="btn btn-sm btn-secondary" id="postguardado" type="submit" value="crear" />
-                </div>
+               
             </div>
 
-            <script>
-                function Complet()
-                {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Datos Guardados',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-
-            </script>
-
-        }
+          
     </div>
 
 </div>
 
 <script>
+
+    let checks = [];
+    let posts = [];
+    let casts = [];
+    let idsuc;
+    let idregistro = [];
+    let idmone = [];
+    let amax = 0;
+    let turnos = [];
+    
+
     function getDateIfDate(d) {
         var m = d.match(/\/Date\((\d+)\)\//);
-        return m ? (new Date(+m[1])).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : d;
+        return m ? (new Date(+m[1])).toLocaleDateString( { day: '2-digit', month: '2-digit', year: 'numeric' }) : d;
     }
 
     var sucselect = document.getElementById("sucursales");
@@ -112,11 +86,11 @@
      function obtarqueo()
      {
          var sucid = document.getElementById("sucursales").value;
-         document.getElementById("idsucursal").value = sucid;
+    
 
 
          let fecha = document.getElementById("fecha1").value;
-
+         let a = 1;
          const post = {
              sucursal: sucid,
              fec: fecha
@@ -140,25 +114,34 @@
              })
              .then(function (tjson)
              {
-                
+                 if (tjson == "") {
+
+                     Swal.fire({
+                         icon: 'error',
+                         title: '¡Vaya!',
+                         text: 'Parece que no hay registros de esta sucursal pregunte a Sistemas para mas informacion'
+                     })
+                 }
                
                  var cuerpo = document.getElementById("cuerpo");
-                 let a = 1;
+                 
                  cuerpo.innerHTML = "";
-
-
-                 console.log(tjson);
 
                  for (let item of tjson) {
 
                      if (item.idregistro != 0) {
                          cuerpo.innerHTML += `
-                         <th style="display: none"><input id="registro${a}" type="number" name="registro${a}" class="form-control form-control-sm" value="${item.idregistro}"/> </th>
+                         <th style="display: none">
+                          <input id="registro${a}" type="number" name="registro${a}" class="form-control form-control-sm" value="${item.idregistro}"/> 
+                          <input class="form-control form-control-sm" value="${item.idmoneda}" id="idmoneda${a}" />
+                          
+                         </th>
                          <th>${item.moneda} </th>
                          <th><input id="montoposts${a}" type="number" name="post${a}" oninput="validar()" class="form-control form-control-sm" value="0"/> </th>
                          <th><input type="checkbox" class="form-check-input ml-3" id="checks${a}"  disabled> </th>
-                         <th> <input id="montoget${a}" type="number" name="cast${a}" class="form-control form-control-sm" readonly value="${item.monto}"/></th>
+                         <th><input id="montoget${a}" type="number" name="cast${a}" class="form-control form-control-sm" readonly value="${item.monto}"/></th>
                          <th> ${ getDateIfDate(item.fecha)} </th>
+                         <th><input class="form-control form-control-sm" value="${item.turno}" id="turnoid${a}" /> </th>     
                       `
                      }
                      else
@@ -174,203 +157,92 @@
 
                    
                      a = a + 1;
-                 }
 
+
+                 }
+                 amax = a - 1; 
              })
+
+         
     }
 
     function validar()
     {
-        var a1 = document.getElementById("montoposts1").value;
-        var a2 = document.getElementById("montoposts2").value;
-        var a3 = document.getElementById("montoposts3").value;
-        var a4 = document.getElementById("montoposts4").value;
-        var a5 = document.getElementById("montoposts5").value;
-        var a6 = document.getElementById("montoposts6").value;
+        let c = 1;
+        for (let a = 0; a < amax; a++) {
 
-        var b1 = document.getElementById("montoget1").value;
-        var b2 = document.getElementById("montoget2").value;
-        var b3 = document.getElementById("montoget3").value;
-        var b4 = document.getElementById("montoget4").value;
-        var b5 = document.getElementById("montoget5").value;
-        var b6 = document.getElementById("montoget6").value;
+            var a1 = document.getElementById("montoposts" + c).value;
 
-        if (a1 != b1)
-        {
-            var c = document.getElementById("montoposts1");
-            c.style.backgroundColor = "#ffb8b0";
+            var b1 = document.getElementById("montoget" + c).value;
 
-            $("#checks1").prop('checked', false);
-        }
-        else
-        {
-            var c = document.getElementById("montoposts1");
-            c.style.backgroundColor = "#a7ffaa";
+            var k1 = document.getElementById("registro" + c).value;
 
-            $("#checks1").prop('checked', true);
-        }
+            var h1 = document.getElementById("idmoneda" + c).value;
 
-        if (a2 != b2) {
+            var df1 = document.getElementById("turnoid" + c).value;
 
-            var c = document.getElementById("montoposts2");
-            c.style.backgroundColor = "#ffb8b0";
+            if (a1 != b1) {
+                var k = document.getElementById("montoposts" + c);
+                k.style.backgroundColor = "#ffb8b0";
 
-            $("#checks2").prop('checked', false);
-        }
-        else
-        {
-            var c = document.getElementById("montoposts2");
-            c.style.backgroundColor = "#a7ffaa";
+                $("#checks" + c).prop('checked', false);
 
-            $("#checks2").prop('checked', true);
-        }
-       
+                posts[a] = a1;
+                casts[a] = b1;
+                idregistro[a] = k1;
+                idmone[a] = h1;
+                turnos[a] = df1;
 
-        if (a3 != b3)
-        {
-            var c = document.getElementById("montoposts3");
-            c.style.backgroundColor = "#ffb8b0";
 
-            $("#checks3").prop('checked', false);
-        }
-        else
-        {
-            var c = document.getElementById("montoposts3");
-            c.style.backgroundColor = "#a7ffaa";
+            }
+            else {
+                var k = document.getElementById("montoposts" + c);
+                k.style.backgroundColor = "#a7ffaa";
 
-            $("#checks3").prop('checked', true);
+                $("#checks" + c).prop('checked', true);
+
+                posts[a] = a1;
+                casts[a] = b1;
+                idregistro[a] = k1;
+                idmone[a] = h1;
+                turnos[a] = df1;
+            }
+
+            c = c + 1;
+
         }
 
-        if (a4 != b4)
-        {
-            var c = document.getElementById("montoposts4");
-            c.style.backgroundColor = "#ffb8b0";
 
-            $("#checks4").prop('checked', false);
-        }
-        else
-        {
-            var c = document.getElementById("montoposts4");
-            c.style.backgroundColor = "#a7ffaa";
-
-            $("#checks4").prop('checked', true);
-        }
-
-        if (a5 != b5)
-        {
-            var c = document.getElementById("montoposts5");
-            c.style.backgroundColor = "#ffb8b0";
-
-            $("#checks5").prop('checked', false);
-        }
-        else
-        {
-            var c = document.getElementById("montoposts5");
-            c.style.backgroundColor = "#a7ffaa";
-
-            $("#checks5").prop('checked', true);
-        }
-
-        if (a6 != b6) {
-            var c = document.getElementById("montoposts6");
-            c.style.backgroundColor = "#ffb8b0";
-
-            $("#checks6").prop('checked', false);
-        }
-        else
-        {
-            var c = document.getElementById("montoposts6");
-            c.style.backgroundColor = "#a7ffaa";
-
-            $("#checks6").prop('checked', true);
-        }
-        
-      
     }
-
 
     setInterval(function () { validadores(); }, 1000);
     function validadores()
     {
-        var c1 = document.getElementById("checks1");
-        var c2 = document.getElementById("checks2");
-        var c3 = document.getElementById("checks3");
-        var c4 = document.getElementById("checks4");
-        var c5 = document.getElementById("checks5");
-        var c6 = document.getElementById("checks6");
+        let c = 1;
+        for (let a = 0; a < amax; a++) {
 
-        if (c1.checked == true) {
-     
-         
-            document.getElementById("txtvalidado1").value = 1;
-        }
+            var c1 = document.getElementById("checks" + c);
 
-        else {
-    
-          
-            document.getElementById("txtvalidado1").value = 0;
-        }
+            if (c1.checked == true) {
 
-        if (c2.checked == true) {
-            document.getElementById("txtvalidado2").value = 1;
-        }
 
-        else {
-            document.getElementById("txtvalidado2").value = 0;
-        }
+                checks[a] = 1;
+            }
 
-        if (c3.checked == true) {
-            document.getElementById("txtvalidado3").value = 1;
-        }
+            else {
 
-        else {
-            document.getElementById("txtvalidado3").value = 0;
-        }
 
-        if (c4.checked == true) {
-            document.getElementById("txtvalidado4").value = 1;
-        }
+                checks[a] = 0;
+            }
 
-        else {
-            document.getElementById("txtvalidado4").value = 0;
-        }
-
-        if (c5.checked == true) {
-            document.getElementById("txtvalidado5").value = 1;
-        }
-
-        else {
-            document.getElementById("txtvalidado5").value = 0;
-        }
-
-        if (c6.checked == true) {
-            document.getElementById("txtvalidado6").value = 1;
-        }
-
-        else {
-            document.getElementById("txtvalidado6").value = 0;
+            c = c + 1;
         }
 
     }
 
-
-
     function crear()
     {
-        var c1 = document.getElementById("checks1");
-        var c2 = document.getElementById("checks2");
-        var c3 = document.getElementById("checks3");
-        var c4 = document.getElementById("checks4");
-        var c5 = document.getElementById("checks5");
-        var c6 = document.getElementById("checks6");
-
-        if (c1.checked == true && c2.checked == true && c3.checked == true && c4.checked == true && c5.checked == true && c6.checked == true) {
-            document.getElementById("postguardado").click();
-         
-        }
-
-        else
-        {
+  
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -381,7 +253,7 @@
 
             swalWithBootstrapButtons.fire({
                 title: 'Espera',
-                text: "Una o Mas valores son diferentes quieres guardarlos asi",
+                text: "¿Quieres guardarlos los datos asi?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Yes, Guardar como esta!',
@@ -395,7 +267,7 @@
                         'success'
                     )
 
-                    document.getElementById("postguardado").click();
+                    postdust();
                 } else if (
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
@@ -409,8 +281,56 @@
             })
 
          
-        }
+        
     }
 
+
+    function postdust()
+    {  
+        let ids = document.getElementById("sucursales").value;
+     
+       
+        for (let a = 0; a < amax; a++) {
+          
+
+            const sub = {
+                post: posts[a],
+                cast: casts[a],
+                check: checks[a],
+                idmon: idmone[a],
+                turnos: turnos[a], 
+                registro: idregistro[a],
+                idsucursal: ids,
+                fechapost: document.getElementById("fecha1").value
+
+            }
+
+
+            fetch("/SalidaSuc/tesoreriapost" ,
+                {
+
+                    method: 'POST',
+                    body: JSON.stringify(sub),
+                    headers: {
+                        'Accept': "application/json",
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(function (result) {
+                    if (result.ok) {
+                        return result.json();
+                    }
+                })
+                .then(function (tjson) {
+
+                    console.log(tjson);
+
+                    var cuerpo = document.getElementById("cuerpo");
+                    let a = 1;
+                    cuerpo.innerHTML = "";
+
+                })
+        }
+    }
 
 </script>

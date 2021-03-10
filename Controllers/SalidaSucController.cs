@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 namespace WebApplication2.Controllers
 {
 
+    [Authorize]
 
     public class SalidaSucController : Controller
     {
@@ -116,19 +117,21 @@ namespace WebApplication2.Controllers
             {
                 querty = (from c in dr.Tb_SalidaSuc
                           join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
-                          where c.int_IdSucursal == sucursalid && c.Int_IdTurno == turno && c.Bol_Activo == a && c.Fec_Fin > f2 && c.Fec_Fin < f1 
+                          where c.int_IdSucursal == sucursalid && c.Bol_Activo == a && c.Fec_Fin >= f2 && c.Fec_Fin <= f1 
                           select new Salidas
                           {
                               Int_IdMoneda = cb.Int_IdMoneda,
                               Lng_IdSalida = c.Lng_IdSalida,
                               Dbl_SaldoSalida = c.Dbl_SaldoSalida,
                               Int_estatus = c.Int_estatus,
-                              Txt_Moneda = cb.Txt_Moneda
+                              Txt_Moneda = cb.Txt_Moneda,
+                              fecha = c.Fec_Fin
                           }).ToList();
             }
 
             return Json(querty, JsonRequestBehavior.AllowGet);
         }
+
 
         public ActionResult indexsalidas()
         {
@@ -351,9 +354,50 @@ namespace WebApplication2.Controllers
             return View();
         }
 
+        public ActionResult historial()
+        {
+           
 
-  
+            return View();
+        }
 
+
+
+        public JsonResult his(DateTime fecha)
+        {
+
+
+            DateTime fecha1 = fecha;
+
+            DateTime fecha2 = fecha.AddHours(23);
+
+
+            List<Salidas> querty;
+            using (MasterExchangeEntities dr = new MasterExchangeEntities())
+            {
+                querty = (from c in dr.Tb_SalidaSuc
+                          join cb in dr.Ct_Moneda on c.Int_IdMoneda equals cb.Int_IdMoneda
+                          join cc in dr.Tb_Usuarios on c.Int_Idusuario equals cc.Int_Idusuario
+                          join cd in dr.Tb_Sucursal on c.int_IdSucursal equals cd.Lng_IdSucursal
+                          where c.Fec_Fin > fecha1 && c.Fec_Fin < fecha2
+                          select new Salidas
+                          {
+                              Int_IdMoneda = cb.Int_IdMoneda,
+                              Lng_IdSalida = c.Lng_IdSalida,
+                              Dbl_SaldoSalida = c.Dbl_SaldoSalida,
+                              Int_estatus = c.Int_estatus,
+                              Txt_Moneda = cb.Txt_NomCorto,
+                              Txt_sucursal = cd.Txt_Sucursal,
+                              Txt_Motivo = c.Txt_Motivo,
+                              username = cc.Txt_Nombre + " " + cc.Txt_Apellido,
+                              fecha = c.Fec_Fin
+
+                          }).ToList();
+            }
+
+            return Json(querty, JsonRequestBehavior.AllowGet);
+
+        }
 
         [HttpPost]
         public JsonResult atesoria(string sucursal, DateTime fec)
@@ -393,14 +437,17 @@ namespace WebApplication2.Controllers
                     {
                         querty = (from a in dr.Tb_ArqueoMoneda
                                   join ab in dr.Ct_Moneda on a.Int_IdMoneda equals ab.Int_IdMoneda
+                                  join ac in dr.Tb_Usuarios on a.Int_IdUsuario equals ac.Int_Idusuario
                                   where a.Fec_Cierre > ft1 && a.Fec_Cierre < ft2 && a.Bol_Congelar == congelar && a.Int_IdSucursal == sucursallid
                                   select new arqueotesoreria
                                   {
 
                                       idregistro = a.Lng_IdArqueoMoneda,
+                                      idmoneda = a.Int_IdMoneda,
                                       moneda = ab.Txt_Moneda,
                                       monto = a.Dbl_Valor,
-                                      fecha = a.Fec_Cierre
+                                      fecha = a.Fec_Cierre,
+                                      turno = a.Int_IdTurno
 
                                   }).ToList();
 
@@ -438,9 +485,11 @@ namespace WebApplication2.Controllers
                               {
 
                                   idregistro = a.Lng_IdArqueoMoneda,
+                                  idmoneda = a.Int_IdMoneda, 
                                   moneda = ab.Txt_Moneda,
                                   monto = a.Dbl_Valor,
-                                  fecha = a.Fec_Cierre
+                                  fecha = a.Fec_Cierre,
+                                  turno = a.Int_IdTurno
 
                               }).ToList();
 
@@ -449,40 +498,24 @@ namespace WebApplication2.Controllers
                 return Json(querty, JsonRequestBehavior.AllowGet);
 
             }
-
-            
-
-
-            
+   
         }
 
-
         [HttpPost]
-        public ActionResult postarqueo(decimal post1, decimal post2, decimal post3, decimal post4, decimal post5, decimal post6 , decimal cast1, decimal cast2, decimal cast3, decimal cast4, decimal cast5, decimal cast6, int registro1, int registro2, int registro3, int registro4, int registro5, int registro6, int idsucursal, int check1,  int check2, int check3, int check4, int check5, int check6 )
+        public JsonResult tesoreriapost(string post, string cast, string check, int idsucursal, int idmon,  int registro, int turnos,  DateTime fechapost)
         {
-            decimal[] tpost = { post1, post2, post3, post4, post5, post6 };
-            decimal[] tcast = { cast1, cast2, cast3, cast4, cast5, cast6 };
-            int[] tcheck = { check1, check2, check3, check4 , check5, check6 };
-            int[] registros = { registro1, registro2, registro3, registro4, registro5, registro6 };
+            int a = 1;                                
+                
+            fechapost = fechapost.AddHours(12);
+            string formatfecha = fechapost.ToString("yyyy-MM-dd HH:mm:ss");
 
-            var monedas = db.Ct_Moneda.Max(x => x.Int_IdMoneda);
+            SqlDataAdapter caja = new SqlDataAdapter("insert into Tb_ArqueoTesoria ( Dbl_Monto, Dbl_MontoSuc, Int_IdMoneda, Bol_Ok , Int_IdUsuario, Int_IdSucursal, Fec_Registro, Int_IdEstatusArq, Lng_IdArqueoMoneda, Int_IdTurno) values ( " + post + " , " + cast + " , " + idmon + ", " + check + " , " + User.Identity.Name + ", " + idsucursal + " , '" + formatfecha + "' , 1, " + registro + " , "+ turnos + " )", con);
+            DataSet insert = new DataSet();
+            caja.Fill(insert);
+            insert.Reset();
 
-          
-            int a = 1;
-
-            for (int id = 0; id < monedas; id++)
-            {
-                if (tpost[id] != 7)
-                {
-                    SqlDataAdapter caja = new SqlDataAdapter("insert into Tb_ArqueoTesoria ( Dbl_Monto, Dbl_MontoSuc, Int_IdMoneda, Bol_Ok , Int_IdUsuario, Int_IdSucursal, Fec_Registro, Int_IdEstatusArq, Lng_IdArqueoMoneda) values ( "+ tpost[id]+" , "+tcast[id]+" , "+a+", "+tcheck[id]+" , "+ User.Identity.Name +", "+ idsucursal + " ,GETDATE(), 1, "+ registros[id] + " )", con);
-                    DataSet insert = new DataSet();
-                    caja.Fill(insert);
-                    insert.Reset();
-                }
-                a = a + 1;
-            }
-
-            return View();
+            return Json(a, JsonRequestBehavior.AllowGet);
+        
         }
 
 

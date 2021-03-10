@@ -143,7 +143,7 @@ namespace WebApplication2.Controllers
                            value = d.Int_IdMoneda,
                            Text = d.Valor
                        }
-                     ).ToList();
+                      ).ToList();
 
             }
 
@@ -514,6 +514,8 @@ namespace WebApplication2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Clientes(string nombre, string numcliente, string dirreccion, string identificacion, HttpPostedFileBase archivo, string nombrearchivo, string telefono, string mail)
         {
+            int tusuario = Convert.ToInt32(Session["intareadeusurio"]);
+
             using (Models.MasterExchangeEntities mir1 = new Models.MasterExchangeEntities())
             {
 
@@ -540,6 +542,22 @@ namespace WebApplication2.Controllers
                             Fec_Alta = DateTime.Now,
                             File_Nombre = nombrearchivo,
                             Doc_cliente = temparchivo
+
+                        };
+
+                        mir1.Tb_Clientes.Add(ut);
+                        mir1.SaveChanges();
+                    }
+                    else if (tusuario == 1)
+                    {
+                        var ut = new Tb_Clientes()
+                        {
+
+                            Txt_Cliente = nombre,
+                            Txt_NumCliente = numcliente,
+                            Txt_Direccion = dirreccion,
+                            Txt_Telefono = telefono,
+                            Fec_Alta = DateTime.Now
 
                         };
 

@@ -12,7 +12,7 @@
 
         <div class="card-header bg-dark text-white row">
             <div class="col-sm-8">
-                <h5 id="Titulo" ></h5>
+                <h5 id="Titulo"></h5>
 
                 <div style="display: none">
                     <input id="tipo" value="@ViewBag.tipo" />
@@ -27,9 +27,11 @@
 
         </div>
         <div class="card-body">
-         
+
 
             <div id="compras" style="display: none">
+
+
                 <table class="table table-sm" id="comprasexcel">
                     <thead>
                         <tr>
@@ -38,8 +40,6 @@
                             <th scope="col">Valor</th>
                             <th scope="col">Pesos</th>
                             <th scope="col">Moneda</th>
-                   
-
                         </tr>
                     </thead>
 
@@ -47,10 +47,13 @@
                     </tbody>
                 </table>
 
+                <div id="chart_div"></div>
+
                 <div class="col-sm-12">
-                      <button class="btn btn-sm btn-success"  onclick="tableToExcel('comprasexcel', 'Tabla de Compras')"> Exportar a excel</button>
-                      <button class="btn btn-success btn-sm" type="button" onclick="msng()">mandar mensaje</button>
+                    <button class="btn btn-sm btn-success" onclick="tableToExcel('comprasexcel', 'Tabla de Compras')"> Exportar a excel</button>
                 </div>
+
+
             </div>
 
             <div id="Ventas" style="display: none">
@@ -62,7 +65,7 @@
                             <th scope="col">Valor</th>
                             <th scope="col">Pesos</th>
                             <th scope="col">Moneda</th>
-                        
+
                         </tr>
                     </thead>
 
@@ -105,7 +108,7 @@
                             <th scope="col">Monto</th>
                             <th scope="col">Monto en Sucursal </th>
                             <th scope="col">Usuario</th>
-                       
+
 
                         </tr>
                     </thead>
@@ -116,7 +119,7 @@
 
                 <div class="col-sm-12">
                     <button class="btn btn-sm btn-success" onclick="tableToExcel('tesoreriaarqueo', 'Arqueo de Tesoreria')"> Exportar a excel</button>
-                </div>                                                                                              
+                </div>
             </div>
 
 
@@ -143,8 +146,7 @@
 
     auto();
 
-    function auto()
-    {
+    function auto() {
         var id = document.getElementById("tipo").value;
         switch (id) {
             case "1":
@@ -160,19 +162,18 @@
                 carga_arqueoTesoreria();
                 break;
 
-           
+
         }
     }
 
 
-    function carga_compras()
-    {
+    function carga_compras() {
         document.getElementById("Titulo").innerText = "Reportes Compras";
 
 
         let fecha = document.getElementById("fecha1").value;
 
-      
+
 
         const post1 = {
             fecha: fecha
@@ -198,11 +199,11 @@
 
 
                 var cuerpo = document.getElementById("cuerpo");
-            
+
                 cuerpo.innerHTML = "";
 
                 let query = JSON.parse(tjson);
-            
+
                 for (let item of query) {
 
                     var f1 = new Date(item.fecha);
@@ -212,14 +213,14 @@
 
                     var tc = new Intl.NumberFormat().format(tipocambio);
 
-                        cuerpo.innerHTML += `
+                    cuerpo.innerHTML += `
                     <tr>
                         <th><small>${item.sucursaL} </small></th>
                         <th><small>$${tc} </small></th>
                         <th><small>${item.Valor} </small></th>
                         <th><small>${item.PesosNew} </small></th>
                         <th><small>${item.txt_moneda} </small></th>
-                    
+
                     </tr>
                       `
                 }
@@ -234,13 +235,12 @@
 
     }
 
-    function carga_ventas()
-    {
+    function carga_ventas() {
         document.getElementById("Titulo").innerText = "Reportes Ventas";
 
         let fecha = document.getElementById("fecha1").value;
 
-        
+
 
         const post1 = {
             fecha: fecha
@@ -270,7 +270,7 @@
                 cuerpo.innerHTML = "";
 
                 let query = JSON.parse(tjson);
-             
+
                 for (let item of query) {
 
                     var f1 = new Date(item.fecha);
@@ -282,15 +282,15 @@
                     var tc = new Intl.NumberFormat().format(item.TC);
 
                     cuerpo.innerHTML += `
-                 
-             
+
+
                     <tr>
                         <th><small>${item.sucursaL} </small></th>
                         <th><small>$${tc} </small></th>
                         <th><small>${item.Valor} </small></th>
                         <th><small>${item.Pesos} </small></th>
                         <th><small>${item.txt_moneda} </small></th>
-                   
+
                     </tr>
                       `
 
@@ -304,8 +304,7 @@
         document.getElementById("arqueotesoreria").style.display = "none";
     }
 
-    function carga_arqueocajeros()
-    {
+    function carga_arqueocajeros() {
         document.getElementById("Titulo").innerText = "Reportes Arqueo de Caja";
 
 
@@ -340,7 +339,7 @@
                 cuerpo.innerHTML = "";
 
                 let query = JSON.parse(tjson);
-              
+
                 for (let item of query) {
 
                     var f1 = new Date(item.fecha);
@@ -352,15 +351,15 @@
                     let valor = item.Valor;
                     let v1 = new Intl.NumberFormat().format(valor);
                     cuerpo.innerHTML += `
-                 
-             
+
+
                     <tr>
                         <th><small>${item.Sucursal} </small></th>
                         <th><small>$${d1} </small></th>
                         <th><small>${item.Cantidad} </small></th>
                         <th><small>$${v1} </small></th>
                         <th><small>${item.Txt_Nombre} </small></th>
-                      
+
                     </tr>
                       `
 
@@ -373,15 +372,14 @@
         document.getElementById("arqueotesoreria").style.display = "none";
     }
 
-    function carga_arqueoTesoreria()
-    {
+    function carga_arqueoTesoreria() {
 
         document.getElementById("Titulo").innerText = "Reportes Remesas Tesoreria";
 
 
         let fecha = document.getElementById("fecha1").value;
 
-      
+
 
         const post1 = {
             fecha: fecha
@@ -424,8 +422,8 @@
                     let ms1 = new Intl.NumberFormat().format(montosuc);
 
                     cuerpo.innerHTML += `
-                 
-             
+
+
                     <tr>
                         <th><small>${item.Sucursal} </small></th>
                         <th><small>${item.Moneda} </small></th>
@@ -433,7 +431,7 @@
                         <th><small>$${ms1} </small></th>
                         <th><small>${item.Usuario} </small></th>
                         <th><small>${f1} </small></th>
-                      
+
                     </tr>
                       `
 
@@ -447,12 +445,11 @@
         document.getElementById("arqueotesoreria").style.display = "";
     }
 
-    function msng()
-    {
+    function msng() {
         var bodyhtml = document.getElementById("compras").value;
 
 
-        fetch("/Reportes/mail") 
+        fetch("/Reportes/mail")
             .then(function (result) {
                 if (result.ok) {
                     return result.json();
@@ -463,28 +460,93 @@
                 var cuerpo = document.getElementById("cuerpo");
                 cuerpo.innerHTML = "";
                 console.log(tjson);
-                
+
             })
     }
-
 
 
 </script>
 
 <script>
+    function msng2() {
+        var bodyhtml = document.getElementById("compras").value;
 
-  
-        var tableToExcel = (function () {
-            var uri = 'data:application/vnd.ms-excel;base64,'
-                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="https://www.w3.org/TR/html40/"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
-                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
-            return function (table, name) {
-                if (!table.nodeType) table = document.getElementById(table)
-                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
-                window.location.href = uri + base64(format(template, ctx))
-            }
-        })()
+
+        fetch("/Reportes/mailtesoreria")
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+
+            .then(function (tjson) {
+                var cuerpo = document.getElementById("cuerpo");
+                cuerpo.innerHTML = "";
+                console.log(tjson);
+
+            })
+    }
+
+</script>
+
+<script>
+
+
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="https://www.w3.org/TR/html40/"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
 
 
 </script>
+
+
+
+<script>
+
+
+
+    google.charts.load('current', { 'packages': ['corechart'] });
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() { 
+
+        var data = google.visualization.arrayToDataTable([
+            ['Task', 'Hours per Day'],
+            ['Work', 11],
+            ['Eat', 2],
+            ['Commute', 2],
+            ['Watch TV', 2],
+            ['Sleep', 7]
+        ]);
+
+        var options = {
+            title: 'Dolares',
+            pieHole: 0.4,
+        };
+
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
